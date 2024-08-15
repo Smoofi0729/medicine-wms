@@ -1,9 +1,10 @@
-import static dao.ObjectDBIO.startWMS;
+import dao.ObjectDBIO;
+import java.sql.Date;
+import java.time.LocalDate;
+import services.WarehouseServiceImpl;
+import vo.Warehouse;
 
-import dto.warehouse.Warehouse;
-import service.warehouse.WarehouseServiceImpl;
-
-public class WMSMain {
+public class WMSMain extends ObjectDBIO {
 
   public static void main(String[] args) {
     startWMS();
@@ -17,5 +18,6 @@ public class WMSMain {
     wi.addWarehouseToList(wh3);
     wi.addWarehouseToList(wh4);
     System.out.println(wi.readAllWh());
+    System.out.println(Date.valueOf(LocalDate.now()));
   }
 }

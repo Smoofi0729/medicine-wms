@@ -3,10 +3,12 @@ package services;
 import dao.warehouse.WarehouseDao;
 import dto.warehouse.Warehouse;
 import java.util.ArrayList;
+import vo.Warehouse;
 
 public class WarehouseServiceImpl {
 
   private WarehouseDao warehouseDao;
+  private static ArrayList<Warehouse> warehouseList = new ArrayList<>();
 
   public ArrayList<Warehouse> addWarehouseToList(Warehouse warehouse) {
     Warehouse.getInstance().add(warehouse);
