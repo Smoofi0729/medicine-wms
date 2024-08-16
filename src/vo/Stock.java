@@ -14,7 +14,7 @@ public class Stock {
     private String warehouseId;
     private String sectionId;
 
-    //getter, setter 전부 만들기
+    //getter, setter 전부 만들기 (롬복 에러 해결했으므로 타 브랜치에서 삭제 예정)
     public String getProductLotNo() {
         return productLotNo;
     }
