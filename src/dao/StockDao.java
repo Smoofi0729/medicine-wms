@@ -12,6 +12,7 @@ import java.util.List;
 public class StockDao {
 
     private final Connection connection;
+    private Stock stock;
 
     public StockDao(Connection connection) {
         this.connection = connection;
@@ -32,7 +33,6 @@ public class StockDao {
     private List<Stock> executeQuery(String query) throws SQLException {
         List<Stock> stocks = new ArrayList<>();
         PreparedStatement stmt = connection.prepareStatement(query);
-
 
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
