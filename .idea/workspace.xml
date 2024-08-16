@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee804f6f-60b3-4f0c-b5e6-1cf99e67134b" name="Changes" comment="" />
+    <list default="true" id="ee804f6f-60b3-4f0c-b5e6-1cf99e67134b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,7 +82,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "feature/fix-ignore-error2",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Workspace/medicine-wms",
     "project.structure.last.edited": "Libraries",
