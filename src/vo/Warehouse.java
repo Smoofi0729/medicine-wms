@@ -12,6 +12,7 @@ public class Warehouse {
   private String address;
   private String contact;
   private int capacity;
+  private int available;
   private Date registerDate;
   private Member manager;
   private String note;
