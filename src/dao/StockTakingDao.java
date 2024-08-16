@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//커넥션 연결은 아직 안된 상태
 public class StockTakingDao {
     private final Connection connection;
     private StockTaking stockTaking;
@@ -23,6 +24,7 @@ public class StockTakingDao {
         return executeQuery("INSERT INTO stock_taking VALUES (?,?,?,?,?,?,?,?,?,?,?)", stockTaking);
     }
 
+    //set ~~ 추가해야함
     public int updateStockTakingList(List<StockTaking> stockTakings) throws SQLException {
         return executeQuery("UPDATE stock_taking SET ~~ WHERE stocktaking_id = ?", stockTaking); //내부 수정해야함
     }
@@ -44,6 +46,7 @@ public class StockTakingDao {
         return stockTakings;
     }
 
+    //내부 수정해야함
     private int executeQuery(String query, StockTaking Taking) throws SQLException {
         PreparedStatement pstmt = connection.prepareStatement(query);
         pstmt.setString(1, stockTaking.getProductId());
@@ -60,6 +63,7 @@ public class StockTakingDao {
         return pstmt.executeUpdate();
     }
 
+    //내부 수정해야함
     private StockTaking createStockTakingFromResultSet(ResultSet rs) throws SQLException {
         StockTaking st = new StockTaking();
 

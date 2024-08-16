@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Getter
-@Setter
+@Setter // 롬복 에러때매 추가했었는데 지울 예정
 public class StockTaking {
     private String stockTakingId;
     private String warehouseId;
