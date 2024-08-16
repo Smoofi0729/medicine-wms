@@ -1,3 +1,4 @@
+/*
 import static dao.ObjectDBIO.startWMS;
 
 import dto.warehouse.Warehouse;
@@ -19,3 +20,4 @@ public class WMSMain {
     System.out.println(wi.readAllWh());
   }
 }
+*/
