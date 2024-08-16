@@ -1,12 +1,12 @@
 package services;
 
-import dao.warehouse.WhSectionDao;
+/*import dao.warehouse.WhSectionDao;
 import dto.warehouse.Inventory;
 import dto.warehouse.WhSection;
-import java.util.ArrayList;
+import java.util.ArrayList;*/
 
 public class WhSectionServiceImpl {
-  private WhSectionDao whSectionDao;
+/*  private WhSectionDao whSectionDao;
   private ArrayList<WhSection> whSectionList;
 
   public ArrayList<WhSection> readUsableWhSection(WhSection whSection) {
@@ -19,5 +19,5 @@ public class WhSectionServiceImpl {
 
   public ArrayList<Inventory> readInventoryInSection(WhSection whSection) {
     return null;
-  }
+  }*/
 }

@@ -1,11 +1,11 @@
 package services;
 
-import dao.warehouse.WarehouseDao;
+/*import dao.warehouse.WarehouseDao;
 import dto.warehouse.Warehouse;
-import java.util.ArrayList;
+import java.util.ArrayList;*/
 
 public class WarehouseServiceImpl {
-
+/*
   private WarehouseDao warehouseDao;
 
   public ArrayList<Warehouse> addWarehouseToList(Warehouse warehouse) {
@@ -28,5 +28,5 @@ public class WarehouseServiceImpl {
 
   public ArrayList<Warehouse> readByWhName() {
     return null;
-  }
+  }*/
 }
