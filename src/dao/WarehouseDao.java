@@ -1,3 +1,4 @@
+/*
 package dao;
 
 import dao.ObjectDBIO;
@@ -29,3 +30,4 @@ public class WarehouseDao extends ObjectDBIO {
     String query = ""
   }
 }
+*/

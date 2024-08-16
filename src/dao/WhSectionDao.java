@@ -1,3 +1,4 @@
+/*
 package dao;
 
 import dto.warehouse.WhSection;
@@ -22,3 +23,4 @@ public class WhSectionDao {
     return false;
   }
 }
+*/
