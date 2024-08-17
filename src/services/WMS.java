@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class WMS {
   static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  static Manager manager = Manager.getInstance();
+  static InboundServiceImpl InboundService = new InboundServiceImpl();
   static int nsel;
   public static void main(String[] args) throws IOException {
     WMS Instance = new WMS();
@@ -51,22 +51,21 @@ public class WMS {
   public void serviceInbound() throws IOException {
     while(true){
       System.out.println("===========[1. 입고]===========");
-      System.out.println("        1. 입고검수");
-      System.out.println("        2. 입고승인");
-      System.out.println("        3. 입고현황");
+      System.out.println("        1. 입고요청 검수");
+      System.out.println("        2. 입고요청 승인");
+      System.out.println("        3. 입고요청 현황");
       System.out.println("        4. 이전으로");
       System.out.print(">>메뉴선택: ");
       nsel = System.in.read() - 48;
       System.in.skip(System.in.available());
       switch (nsel){
         case 1:
-          manager.inspectInbound();
+          InboundService.processInboundInspection();
           continue;
         case 2:
-          manager.approveInbound();
           continue;
         case 3:
-          manager.showInboundInfo();
+          InboundService.showInboundRequest();
           continue;
         case 4:
           break;
