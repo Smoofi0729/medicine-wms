@@ -11,6 +11,7 @@ import java.util.List;
 
 public class StockDao {
 
+    //
     private final Connection connection;
     private Stock stock;
 
