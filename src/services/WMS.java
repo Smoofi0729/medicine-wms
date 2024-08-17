@@ -63,6 +63,7 @@ public class WMS {
           InboundService.processInboundInspection();
           continue;
         case 2:
+          InboundService.processInboundApproval();
           continue;
         case 3:
           InboundService.showInboundRequest();

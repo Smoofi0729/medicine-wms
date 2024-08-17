@@ -1,10 +1,8 @@
 package services;
 
-import Connection.ObjectDBIO;
-import DTO.InboundApproval;
-import DTO.InboundInspection;
-import DTO.InboundRequest;
-import Interface.InboundIO;
+import dao.ObjectDBIO;
+import vo.*;
+import interfaces.InboundIO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -15,12 +13,35 @@ public abstract class InboundDBIO extends ObjectDBIO implements InboundIO {
 
   @Override
   public ArrayList<InboundApproval> getInboundApproval() {
-    return null;
+    ArrayList<InboundApproval> inboundApprovalList = new ArrayList<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String query = "SELECT * FROM InboundApproval";
+    ResultSet rs = null;
+    rs = super.execute(query, rs);
+
+    try {
+      while(rs.next()){
+        String requestId = rs.getString("request_id");
+        String approverId = rs.getString("approver_id");
+        Date originDate = rs.getDate("approval_date");
+        String approvalStatus = rs.getString("approval_status");
+        String approvalDate = (originDate != null) ? sdf.format(originDate) : "   null   ";
+        InboundApproval inboundApproval = new InboundApproval(requestId, approvalDate, approverId, approvalStatus);
+        inboundApprovalList.add(inboundApproval);
+      }
+      rs.close();
+      super.close();
+    } catch (SQLException e) {
+      System.err.println(e.getMessage());
+    }
+
+    return inboundApprovalList;
   }
 
   @Override
-  public void updateInboundApproval(String requestId) {
-
+  public int updateInboundApproval(String requestId, String approvalStatus) {
+    String query = "UPDATE InboundApproval SET approval_status = '"+approvalStatus+"' WHERE request_id = '"+requestId+"'";
+    return super.execute(query);
   }
 
   @Override
