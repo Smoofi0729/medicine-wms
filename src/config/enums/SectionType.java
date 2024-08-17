@@ -1,4 +1,4 @@
-package config;
+package config.enums;
 
 public enum SectionType {
     REFRIGERATED("냉장"),

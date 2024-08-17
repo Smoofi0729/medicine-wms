@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.warehouse;
 
 import java.sql.ResultSet;
 

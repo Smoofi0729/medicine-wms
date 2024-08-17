@@ -1,12 +1,18 @@
 package config;
 
+import config.enums.TaskAbbreviations;
+import config.enums.SectionType;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class UtilMethod {
+
+  private static int sequence = 0;
 
   public static String inputStr(String input) {
     System.out.print(input + " : ");
@@ -69,6 +75,18 @@ public class UtilMethod {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static String autoCreateId(String abbr,LocalDateTime now) {
+    now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+    String id = new StringBuilder()
+        .append(TaskAbbreviations.fromDescription(abbr))
+        .append(now.format(formatter))
+        .append(String.format("%04d",sequence++))
+        .toString();
+
+    return id;
   }
 }
 

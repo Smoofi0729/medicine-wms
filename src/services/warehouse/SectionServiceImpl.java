@@ -1,15 +1,15 @@
-package services;
+package services.warehouse;
 
 import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 
-import config.SectionType;
+import config.enums.SectionType;
 import config.UtilMethod;
-import dao.SectionDao;
-import dao.WarehouseDao;
-import interfaces.SectionService;
-import interfaces.WarehouseService;
+import dao.warehouse.SectionDao;
+import dao.warehouse.WarehouseDao;
+import interfaces.warehouse.SectionService;
+import interfaces.warehouse.WarehouseService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,11 +24,11 @@ public class SectionServiceImpl implements SectionService {
   private WarehouseDao warehouseDao;
   private WarehouseService warehouseService;
 
-
+@Override
   public void sectionMenu() {
     while (true) {
       System.out.println("섹션관리 메뉴");
-      System.out.println("1. 등록 | 2. 조회 | 3. 수정 및 삭제 | 4. 상위메뉴");
+      System.out.println("1. 등록 | 2. 조회 | 3. 수정 및 삭제 | 4. 상위메뉴로");
       switch (inputInt("메뉴선택")) {
         case 1 -> {
           String warehouseId = inputStr("등록할 창고ID");
@@ -47,8 +47,8 @@ public class SectionServiceImpl implements SectionService {
       }
     }
   }
-
-  private boolean estimateSection(String warehouseId, int available) {
+@Override
+  public boolean estimateSection(String warehouseId, int available) {
     int width = inputInt("섹션 가로 길이");
     int length = inputInt("섹션 세로 길이");
     int height = inputInt("섹션 높이");
@@ -65,14 +65,13 @@ public class SectionServiceImpl implements SectionService {
     }
   }
 
-
-
   public void showSelectMenu() {
-    System.out.println("1. 전체조회 | 2. 개별조회 | 3. 타입별조회");
+    System.out.println("1. 전체조회 | 2. 개별조회 | 3. 타입별조회 | 4. 상위메뉴");
     switch (inputInt("조회방법을 선택해주세요")) {
       case 1 -> readAllSection();
       case 2 -> readBySectionId();
       case 3 -> readSectionByType();
+      case 4 -> sectionMenu();
     }
   }
 

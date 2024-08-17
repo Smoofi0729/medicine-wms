@@ -1,6 +1,6 @@
-package vo;
+package vo.warehouse;
 
-import config.SectionType;
+import config.enums.SectionType;
 import lombok.Data;
 
 @Data

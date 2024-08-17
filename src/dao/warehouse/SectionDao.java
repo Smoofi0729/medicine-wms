@@ -1,6 +1,5 @@
-package dao;
+package dao.warehouse;
 
-import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputSectionType;
 import static config.UtilMethod.inputStr;
 import java.sql.Connection;

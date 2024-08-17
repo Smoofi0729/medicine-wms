@@ -1,11 +1,10 @@
-package dao;
+package dao.warehouse;
 
 import config.ObjectDBIO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import lombok.Data;
 
-@Data
 public class WarehouseDBIO extends ObjectDBIO {
 
   @Override
