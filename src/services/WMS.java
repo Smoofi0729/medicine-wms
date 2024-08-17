@@ -60,6 +60,7 @@ public class WMS {
       System.in.skip(System.in.available());
       switch (nsel){
         case 1:
+          InboundService.processInboundInspection();
           continue;
         case 2:
           continue;
