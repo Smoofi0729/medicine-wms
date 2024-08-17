@@ -53,7 +53,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     String id = inputStr("수정 및 삭제할 창고의 id를 입력하세요");
     ResultSet rs = warehouseDao.selectFilterBy("warehouse_id", id);
     if (isValidId(warehouseDao.selectFilterBy("warehouse_id", id))) {
-      printWarehouseInfo(rs);
+      printInfo(rs);
       System.out.println("1. 수정 | 2. 삭제");
       switch (UtilMethod.inputInt("메뉴선택")) {
         case 1:
@@ -86,24 +86,24 @@ public class WarehouseServiceImpl implements WarehouseService {
 
   @Override
   public void readAllWh() {
-    printWarehouseInfo(warehouseDao.selectWh());
+    printInfo(warehouseDao.selectWh());
   }
 
   @Override
   public void readByWhLocation() {
     String address = inputStr("창고소재지");
-    printWarehouseInfo(warehouseDao.selectFilterBy("warehouse_address", address));
+    printInfo(warehouseDao.selectFilterBy("warehouse_address", address));
   }
 
   @Override
   public void readByWhId() {
     String id = inputStr("창고ID");
-    printWarehouseInfo(warehouseDao.selectFilterBy("warehouse_id", id));
+    printInfo(warehouseDao.selectFilterBy("warehouse_id", id));
   }
 
 
   @Override
-  public void printWarehouseInfo(ResultSet rs) {
+  public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append(
         "창고ID\t\t\t창고이름\t\t\t창고주소\t\t\t창고연락처\t\t\t창고수용량\t\t\t현재가용량\t\t\t등록날짜\t\t\t관리자ID\t\t\t비고\n");

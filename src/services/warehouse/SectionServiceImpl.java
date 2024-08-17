@@ -77,26 +77,26 @@ public class SectionServiceImpl implements SectionService {
 
   @Override
   public void readAllSection() {
-    printSectionInfo(sectionDao.selectSection());
+    printInfo(sectionDao.selectSection());
   }
 
   @Override
   public void readBySectionId() {
     String id = inputStr("섹션Id");
-    printSectionInfo(sectionDao.selectFilterBy("section_id", id));
+    printInfo(sectionDao.selectFilterBy("section_id", id));
   }
 
   @Override
   public void readSectionByType() {
     String type = SectionType.fromDescription(inputStr("섹션종류")).getDescription();
-    printSectionInfo(sectionDao.selectFilterBy("section_type", type));
+    printInfo(sectionDao.selectFilterBy("section_type", type));
   }
 
   public void showUpdateMenu() {
     String id = inputStr("수정 및 삭제할 섹션의 id를 입력하세요");
     ResultSet rs = sectionDao.selectFilterBy("section_id", id);
     if (isValidId(sectionDao.selectFilterBy("section_id", id))) {
-      printSectionInfo(rs);
+      printInfo(rs);
       System.out.println("1. 수정 | 2. 삭제");
       switch (inputInt("메뉴선택")) {
         case 1:
@@ -130,7 +130,7 @@ public class SectionServiceImpl implements SectionService {
   }
 
   @Override
-  public void printSectionInfo(ResultSet rs) {
+  public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append("섹션ID\t\t\t창고ID\t\t\t가로길이\t\t\t세로길이\t\t\t높이\t\t\t섹션종류\t\t\t수용가능량\t\t\t비고\n");
     try {

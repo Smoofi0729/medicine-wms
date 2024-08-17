@@ -1,8 +1,9 @@
 package interfaces.warehouse;
 
+import interfaces.Services;
 import java.sql.ResultSet;
 
-public interface SectionService {
+public interface SectionService extends Services {
 
   void sectionMenu();
 
@@ -14,5 +15,5 @@ public interface SectionService {
 
   void readSectionByType();
 
-  void printSectionInfo(ResultSet rs);
+  void printInfo(ResultSet rs);
 }

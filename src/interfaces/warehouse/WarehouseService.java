@@ -1,8 +1,9 @@
 package interfaces.warehouse;
 
+import interfaces.Services;
 import java.sql.ResultSet;
 
-public interface WarehouseService {
+public interface WarehouseService extends Services {
   void warehouseMenu();
 
   void readAllWh();
@@ -11,5 +12,5 @@ public interface WarehouseService {
 
   void readByWhId();
 
-  void printWarehouseInfo(ResultSet rs);
+  void printInfo(ResultSet rs);
 }
