@@ -1,15 +1,15 @@
 package config;
 
 import config.ConnectionFactory;
+import interfaces.ExpenditureService;
+import interfaces.RevenueService;
 import interfaces.StockPrintService;
 import interfaces.StockTakingService;
+import services.ExpenditureServiceImpl;
 import services.StockPrintServiceImpl;
 import services.StockTakingServiceImpl;
 import services.memberServices;
-import vo.LOGO;
-import vo.Stock;
-import vo.StockTaking;
-import vo.UserMessege;
+import vo.*;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -67,7 +67,7 @@ public class CLIController {
 
     }
 
-    public static void MemberMainMenu(String memberId) throws IOException {
+    public static void MemberMainMenu(String memberId) throws IOException, SQLException {
         System.out.println(memberId + " 님 환영합니다.");
         System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보");
         int select = SystemIn.SystemInInt();
@@ -84,7 +84,12 @@ public class CLIController {
                     break;
                 case 3:
                     System.out.println("재고 조회");
-
+                    CLIController cliController = new CLIController();
+                    try {
+                        cliController.stockMenu();
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
                     validinput = true;
                     break;
                 case 4:
@@ -155,7 +160,15 @@ public class CLIController {
                     validinput = true;
                     break;
                 case 3:
-                    System.out.println("재고");
+                    System.out.println("재고 메뉴");
+                    CLIController cliController = new CLIController();
+                    try {
+                        cliController.stockMenu();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
                     validinput = true;
                     break;
                 case 4:
@@ -312,6 +325,36 @@ public class CLIController {
                 stockTaking.setNote(SystemIn.SystemInString());
 
                 sts.insertStockTakingList(stockTaking);
+        }
+    }
+
+    public void financeMenu() {
+        ExpenditureService es = new ExpenditureServiceImpl();
+        RevenueService rs = new ExpenditureServiceImpl();
+
+        System.out.println("1. 매출 조회 2. 지출 ");
+        System.out.print("->");
+        int num = 0;
+        try {
+            num = SystemIn.SystemInInt();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        switch (num) {
+            case 1:
+                System.out.println("매출 조회");
+                break;
+            case 2:
+                System.out.println("매입 조회");
+                break;
+            case 3:
+                System.out.println("재고 조회");
+                break;
+            case 4:
+                System.out.println("재무 보고서 조회");
+                break;
+            default:
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
         }
     }
 }
