@@ -21,7 +21,7 @@ public class FinanceDao {
              ResultSet rs = stmt.executeQuery()) {
             List<Revenue> revenues = new ArrayList<>();
             while (rs.next()) {
-                revenues.add(createRevenueFromResultSet(rs));
+                revenues.add(createRevenue(rs));
             }
             return revenues;
         }
@@ -33,10 +33,23 @@ public class FinanceDao {
              ResultSet rs = stmt.executeQuery()) {
             List<Expenditure> expenditures = new ArrayList<>();
             while (rs.next()) {
-                expenditures.add(createExpenditureFromResultSet(rs));
+                expenditures.add(createExpenditure(rs));
             }
             return expenditures;
         }
+    }
+
+    public Expenditure selectOneExpenditure(Expenditure expenditure) throws SQLException {
+        String query = "SELECT * FROM expenditure WHERE expenditure_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, expenditure.getExpenditureId());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return createExpenditure(rs);
+                }
+            }
+        }
+        return null;
     }
 
     public int insertExpenditure(Expenditure expenditure) throws SQLException {
@@ -65,7 +78,7 @@ public class FinanceDao {
         }
     }
 
-    private Revenue createRevenueFromResultSet(ResultSet rs) throws SQLException {
+    private Revenue createRevenue(ResultSet rs) throws SQLException {
         Revenue revenue = new Revenue();
         revenue.setRevenueId(rs.getString("revenue_id"));
         revenue.setWarehouseId(rs.getString("warehouse_id"));
@@ -76,7 +89,7 @@ public class FinanceDao {
         return revenue;
     }
 
-    private Expenditure createExpenditureFromResultSet(ResultSet rs) throws SQLException {
+    private Expenditure createExpenditure(ResultSet rs) throws SQLException {
         Expenditure expenditure = new Expenditure();
         expenditure.setExpenditureId(rs.getString("expenditure_id"));
         expenditure.setWarehouseId(rs.getString("warehouse_id"));
