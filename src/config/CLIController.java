@@ -1,8 +1,14 @@
 package config;
 
 import config.ConnectionFactory;
+import interfaces.StockPrintService;
+import interfaces.StockTakingService;
+import services.StockPrintServiceImpl;
+import services.StockTakingServiceImpl;
 import services.memberServices;
 import vo.LOGO;
+import vo.Stock;
+import vo.StockTaking;
 import vo.UserMessege;
 
 import java.io.IOException;
@@ -10,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class CLIController {
     private static Connection connection;
@@ -76,7 +83,8 @@ public class CLIController {
                     validinput = true;
                     break;
                 case 3:
-                    System.out.println("재고");
+                    System.out.println("재고 조회");
+
                     validinput = true;
                     break;
                 case 4:
@@ -217,5 +225,93 @@ public class CLIController {
         }
     }
 
+    public void stockMenu() throws SQLException, IOException, ParseException {
+        System.out.println("1. 재고 전체 조회 2. 재고 구역 별 조회 3. 재고 실사");
+        System.out.print("->");
+        int num = SystemIn.SystemInInt();
+        StockPrintService sps = new StockPrintServiceImpl(ConnectionFactory.getInstance().open());
+        StockTakingService sts = new StockTakingServiceImpl(ConnectionFactory.getInstance().open());
+        switch (num) {
+            // 재고 조회
+            case 1:
+                System.out.println("전체 재고를 조회합니다.");
+                sps.printAllStock();
+                break;
+            //재고 실사
+            case 2:
+                System.out.println("재고 구역별 조회. 구역 아이디를 입력하세요.");
+                System.out.print("->");
 
+                String sectionId = SystemIn.SystemInString();
+                Stock stock = new Stock();
+                stock.setSectionId(sectionId);
+
+                sps.printBySectionStock(stock);
+                break;
+            case 3:
+                System.out.println("재고 실사 조회. 재고 실사 아이디를 입력해주세요.");
+                System.out.print("->");
+                String stockTakingId = SystemIn.SystemInString();
+                StockTaking s = new StockTaking();
+                s.setStockTakingId(stockTakingId);
+                s = sts.printStockTakingList(s);
+
+                System.out.println("1. 재고 실사 수정 2. 재고 실사 삭제");
+                int choice = SystemIn.SystemInInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("재고 실사 수정. 재고 실사 정보를 수정해주세요.");
+                        // 재고 실사 수정 값 입력받기
+                        System.out.println("전산 상 재고");
+                        s.setComputerizedStock(SystemIn.SystemInInt());
+                        System.out.println("실제 재고");
+                        s.setPhysicalStock(SystemIn.SystemInInt());
+                        System.out.println("차이 수량");
+                        s.setDifferenceQuantity(SystemIn.SystemInInt());
+                        System.out.println("비고");
+                        s.setNote(SystemIn.SystemInString());
+
+                        sts.UpdateStockTakingList(s);
+                        break;
+                    case 2:
+                        System.out.println("재고 실사 삭제. 해당 재고 실사 정보를 삭제할까요? 예, 아니오");
+                        String answer = SystemIn.SystemInString();
+                        if (answer.equals("예"))
+                            sts.deleteStockTakingList(s);
+                        else
+                            System.out.println("삭제를 취소합니다.");
+                        break;
+                    default:
+                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+                }
+                break;
+            case 4:
+                System.out.println("재고 실사 등록. 재고 실사 정보를 등록해주세요.");
+                StockTaking stockTaking = new StockTaking();
+                System.out.println("재고 실사 아이디");
+                stockTaking.setStockTakingId(SystemIn.SystemInString());
+                System.out.println("창고 아이디");
+                stockTaking.setWarehouseId(SystemIn.SystemInString());
+                System.out.println("제품 아이디");
+                stockTaking.setProductId(SystemIn.SystemInString());
+                System.out.println("제품 이름");
+                stockTaking.setProductName(SystemIn.SystemInString());
+                System.out.println("총 수량");
+                stockTaking.setTotal(SystemIn.SystemInInt());
+                System.out.println("로트 번호");
+                stockTaking.setLotNo(SystemIn.SystemInString());
+                System.out.println("전산 상 재고");
+                stockTaking.setComputerizedStock(SystemIn.SystemInInt());
+                System.out.println("실제 재고");
+                stockTaking.setPhysicalStock(SystemIn.SystemInInt());
+                System.out.println("차이 수량");
+                stockTaking.setDifferenceQuantity(SystemIn.SystemInInt());
+                System.out.println("재고 실사 날짜 ex) 2024-08-19");
+                stockTaking.setStockTakingDate(SystemIn.SystemInDate());
+                System.out.println("비고");
+                stockTaking.setNote(SystemIn.SystemInString());
+
+                sts.insertStockTakingList(stockTaking);
+        }
+    }
 }

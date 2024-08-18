@@ -19,7 +19,7 @@ public class ConnectionFactory {
     private static String id = "root";
     private static String pwd = "1234";
 
-    public Connection open() {
+    public static Connection open() {
         try {
             connection = DriverManager.getConnection(url, id, pwd);
         } catch (SQLException e) {
