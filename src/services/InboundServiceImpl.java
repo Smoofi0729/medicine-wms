@@ -9,7 +9,9 @@ import java.util.Scanner;
 public class InboundServiceImpl extends InboundDBIO{
   public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
   public static Scanner sc = new Scanner(System.in);
+  public void processInboundRequest(){
 
+  }
   public void processInboundInspection(){ // 1. 입고검수 현황 출력 2. "Complete"되지 않은 검수 결과 갱신
     ArrayList<InboundInspection> inboundInspectionsList = super.getInboundInspection();
     int updated_row = 0;
@@ -56,7 +58,7 @@ public class InboundServiceImpl extends InboundDBIO{
 
   }
 
-  public void showInboundRequest() { // 입고요청 현황 출력 메서드
+  public void showInboundStatus() { // 입고요청 현황 출력 메서드
     ArrayList<InboundRequest> inboundRequests = super.getInboundRequest();
     System.out.println("===========[3. 입고요청 현황]===========");
     System.out.println(" 입고요청 ID || 입고요청 날짜 || 요청회원 ID");

@@ -24,9 +24,10 @@ public class WMS {
             System.out.println("===========[WMS]===========");
             System.out.println("        1. 입고");
             System.out.println("        2. 출고");
-            System.out.println("        3. 재고현황");
-            System.out.println("        4. 재무현황");
-            System.out.println("        5. 이전으로");
+            System.out.println("        3. 재고");
+            System.out.println("        4. 재무");
+            System.out.println("        5. 보고서 생성");
+            System.out.println("        6. 이전으로");
             System.out.print(">>메뉴선택: ");
             nsel = System.in.read() - 48;
             System.in.skip(System.in.available());
@@ -51,24 +52,28 @@ public class WMS {
   public void serviceInbound() throws IOException {
     while(true){
       System.out.println("===========[1. 입고]===========");
-      System.out.println("        1. 입고요청 검수");
-      System.out.println("        2. 입고요청 승인");
-      System.out.println("        3. 입고요청 현황");
-      System.out.println("        4. 이전으로");
+      System.out.println("        1. 입고요청");
+      System.out.println("        2. 입고요청 검수");
+      System.out.println("        3. 입고요청 승인");
+      System.out.println("        4. 입고요청 현황");
+      System.out.println("        5. 이전으로");
       System.out.print(">>메뉴선택: ");
       nsel = System.in.read() - 48;
       System.in.skip(System.in.available());
       switch (nsel){
         case 1:
-          InboundService.processInboundInspection();
+          InboundService.processInboundRequest();
           continue;
         case 2:
-          InboundService.processInboundApproval();
+          InboundService.processInboundInspection();
           continue;
         case 3:
-          InboundService.showInboundRequest();
+          InboundService.processInboundApproval();
           continue;
         case 4:
+          InboundService.showInboundStatus();
+          continue;
+        case 5:
           break;
       }
       break;
