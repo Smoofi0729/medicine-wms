@@ -2,15 +2,19 @@ package config;
 
 import config.enums.TaskAbbreviations;
 import config.enums.SectionType;
+import dao.MysqlDBIO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
-public class UtilMethod {
+public class UtilMethod{
 
   private static int sequence = 0;
 
@@ -87,6 +91,27 @@ public class UtilMethod {
         .toString();
 
     return id;
+  }
+
+  public static HashMap<Integer, String> selectColumn(String table) {
+    HashMap<Integer, String> columns = new HashMap<>();
+    int number = 0;
+    String query = "select column_name from information_schema.columns where table_name = '" + table + "'";
+    try (Connection connection = new MysqlDBIO().open();
+        PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+      try (ResultSet rs = pstmt.executeQuery()) {
+
+        while (rs.next()) {
+          number++;
+          columns.put(number, rs.getString("column_name"));
+        }
+        return columns;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
 

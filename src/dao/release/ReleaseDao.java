@@ -56,8 +56,8 @@ public class ReleaseDao extends ReleaseDBIO {
   }
 
   public void callMyReleaseProc(String id) {
-    String query = "{CALL GetMemberReleaseStatus(?)}";
-    try (CallableStatement cstmt = getConnection().prepareCall(query)) {
+    String procedure = "{CALL GetMemberReleaseStatus(?)}";
+    try (CallableStatement cstmt = getConnection().prepareCall(procedure)) {
       cstmt.setString(1, id);
       try (ResultSet rs = cstmt.executeQuery()) {
         while (rs.next()) {
