@@ -21,6 +21,10 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
   private String table = "release_inpsection";
   private ReleaseInspectionDao releaseInspectionDao;
 
+  public ReleaseInspectionServiceImpl() {
+    this.releaseInspectionDao = new ReleaseInspectionDao();
+  }
+
   @Override
   public void releaseInspectionMenu() {
     while (true) {

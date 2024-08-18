@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 
 public interface ReleaseService {
 
-  void releaseMenu();
+  void showReleaseMenuForManager();
 
   void showReleasesForMall();
 

@@ -1,24 +1,35 @@
 package config;
 
+import static config.UtilMethod.inputInt;
 import interfaces.ExpenditureService;
 import interfaces.RevenueService;
 import interfaces.StockPrintService;
 import interfaces.StockTakingService;
-import services.FinanceServiceImpl;
-import services.StockPrintServiceImpl;
-import services.StockTakingServiceImpl;
-import services.memberServices;
-import vo.*;
-
+import interfaces.release.ReleaseRequestService;
+import interfaces.release.ReleaseService;
+import interfaces.warehouse.WarehouseService;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import services.FinanceServiceImpl;
+import services.StockPrintServiceImpl;
+import services.StockTakingServiceImpl;
+import services.memberServices;
+import services.release.ReleaseRequestServiceImpl;
+import services.release.ReleaseServiceImpl;
+import services.warehouse.WarehouseServiceImpl;
+import vo.Expenditure;
+import vo.LOGO;
+import vo.Stock;
+import vo.StockTaking;
+import vo.UserMessege;
 
 public class CLIController {
     private static Connection connection;
+
     public static void BasicMenu() throws Exception {
         boolean validinput = false;
 
@@ -78,7 +89,18 @@ public class CLIController {
                     validinput = true;
                     break;
                 case 2:
-                    System.out.println("출고");
+                    System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고현황");
+                    switch (inputInt("메뉴선택")) {
+                        case 1 :
+                            ReleaseRequestService releaseRequestService = new ReleaseRequestServiceImpl();
+                            releaseRequestService.releaseRequestMenuForMall();
+                            break;
+                        case 2:
+                            ReleaseService releaseService = new ReleaseServiceImpl();
+                            releaseService.showReleasesForMall();
+                    }
+
+
                     validinput = true;
                     break;
                 case 3:
@@ -145,7 +167,7 @@ public class CLIController {
 
     public static void adminMainMenu(String memberId) throws IOException {
         System.out.println(memberId + " 님 환영합니다.");
-        System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 | 7.로그아웃");
+        System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.창고 | 6.회원정보 | 7.로그아웃");
         int select = SystemIn.SystemInInt();
         boolean validinput = false;
         while (!validinput) {
@@ -155,7 +177,8 @@ public class CLIController {
                     validinput = true;
                     break;
                 case 2:
-                    System.out.println("출고");
+                    ReleaseService releaseService = new ReleaseServiceImpl();
+                    releaseService.showReleaseMenuForManager();
                     validinput = true;
                     break;
                 case 3:
@@ -175,7 +198,8 @@ public class CLIController {
                     validinput = true;
                     break;
                 case 5:
-                    System.out.println("고객센터");
+                    WarehouseService warehouseService = new WarehouseServiceImpl();
+                    warehouseService.warehouseMenu();
                     validinput = true;
                     break;
                 case 6:
