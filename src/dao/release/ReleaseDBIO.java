@@ -1,10 +1,11 @@
 package dao.release;
 
-import config.ObjectDBIO;
+import dao.MysqlDBIO;
+import dao.ObjectDBIO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class ReleaseDBIO extends ObjectDBIO {
+public class ReleaseDBIO extends MysqlDBIO {
 
   @Override
   public Connection open() {

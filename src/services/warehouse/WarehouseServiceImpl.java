@@ -1,7 +1,9 @@
 package services.warehouse;
 
+import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
+import static config.UtilMethod.selectColumn;
 
 import config.UtilMethod;
 import dao.warehouse.WarehouseDao;
@@ -10,16 +12,19 @@ import interfaces.warehouse.WarehouseService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
 
+  private String table = "warehouse";
   private WarehouseDao warehouseDao;
   private SectionService sectionService;
 
+  public WarehouseServiceImpl() {
+    this.warehouseDao = new WarehouseDao();
+    this.sectionService = new SectionServiceImpl(this);
+  }
 
   @Override
   public void warehouseMenu() {
@@ -29,11 +34,14 @@ public class WarehouseServiceImpl implements WarehouseService {
       System.out.println("=====================================================================");
 
       System.out.println("1. 창고등록 | 2. 창고조회 | 3. 창고수정 및 삭제 | 4. 섹션관리 | 5. 상위메뉴로");
-      switch (UtilMethod.inputInt("메뉴선택")) {
+      switch (inputInt("메뉴선택")) {
         case 1 -> warehouseDao.registerWh();
         case 2 -> showSelectMenu();
         case 3 -> showUpdateMenu();
-        case 4 -> sectionService.sectionMenu();
+        case 4 -> {
+          sectionService.sectionMenu();
+          return;
+        }
         default -> System.out.println("입력이 잘못되었습니다.");
       }
     }
@@ -41,7 +49,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
   public void showSelectMenu() {
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 지역별조회 | 4. 현재 가용량조회 | 5. 상위메뉴로");
-    switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
+    switch (inputInt("조회방법을 선택해주세요")) {
       case 1 -> readAllWh();
       case 2 -> readByWhId();
       case 3 -> readByWhLocation();
@@ -55,12 +63,16 @@ public class WarehouseServiceImpl implements WarehouseService {
     if (isValidId(warehouseDao.selectFilterBy("warehouse_id", id))) {
       printInfo(rs);
       System.out.println("1. 수정 | 2. 삭제");
-      switch (UtilMethod.inputInt("메뉴선택")) {
+      switch (inputInt("메뉴선택")) {
         case 1:
+
           HashMap<String, String> updates = new HashMap<>();
+          System.out.println(("수정할 항목을 선택해주세요 (없으면 0 입력)"));
+          System.out.println("1.창고ID 2.창고이름	3.창고주소 4.창고연락처 5.창고수용량 6.현재가용량 7.등록날짜 8.관리자ID	9.비고");
           while (true) {
-            String column = inputStr("수정할 항목을 입력해주세요 (없으면 exit 입력)");
-            if (column.equals("exit")) {
+            int choice = inputInt("수정할 항목");
+            String column = selectColumn(table).get(choice);
+            if (choice==0) {
               break;
             }
             String update = inputStr("수정할 내용을 입력해주세요");
@@ -101,8 +113,6 @@ public class WarehouseServiceImpl implements WarehouseService {
     printInfo(warehouseDao.selectFilterBy("warehouse_id", id));
   }
 
-
-  @Override
   public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append(
