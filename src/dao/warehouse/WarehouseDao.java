@@ -3,6 +3,7 @@ package dao.warehouse;
 import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,28 +16,33 @@ import lombok.Data;
 @Data
 public class WarehouseDao extends WarehouseDBIO {
 
-  public boolean registerWh() {
+  public void registerWh() {
 
-    String query = "INSERT warehouse VALUES(?,?,?,?,?,?,?,?,?)";
+    String procedure = "{CALL registerWarehouse(?,?,?,?,?,?,?,?,?)}";
+    boolean success = false;
+    while (!success) {
+      try (Connection connection = open();
+          CallableStatement cstmt = connection.prepareCall(procedure)) {
 
-    try (Connection connection = open();
-        PreparedStatement pstmt = connection.prepareStatement(query)) {
-      pstmt.setString(1, inputStr("창고id"));
-      pstmt.setString(2, inputStr("창고이름"));
-      pstmt.setString(3, inputStr("창고주소"));
-      pstmt.setString(4, inputStr("창고연락처"));
-      pstmt.setInt(5, inputInt("창고수용량"));
-      pstmt.setInt(6, inputInt("현재가용량"));
-      pstmt.setDate(7, Date.valueOf(LocalDate.now()));
-      pstmt.setString(8, inputStr("관리자id"));
-      pstmt.setString(9, inputStr("비고"));
-      pstmt.executeUpdate();
-      System.out.println("등록성공");
-      return true;
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
+        cstmt.setString(1, inputStr("창고id"));
+        cstmt.setString(2, inputStr("창고이름"));
+        cstmt.setString(3, inputStr("창고주소"));
+        cstmt.setString(4, inputStr("창고연락처"));
+        int capacity = inputInt("창고수용량");
+        cstmt.setInt(5, capacity);
+        cstmt.setInt(6, capacity);
+        cstmt.setDate(7, Date.valueOf(LocalDate.now()));
+        cstmt.setString(8, inputStr("관리자id"));
+        cstmt.setString(9, inputStr("비고"));
+        cstmt.executeUpdate();
+        System.out.println("등록성공");
+        success = true;
+      } catch (SQLException e) {
+        System.out.println(e.getMessage() + "다시 입력해주세요.");
+        }
+      }
     }
-  }
+
 
   public ResultSet selectWh() {
     String query = "SELECT * FROM warehouse";
@@ -87,8 +93,8 @@ public class WarehouseDao extends WarehouseDBIO {
     for (String column : columns.keySet()) {
       query.append(column).append(" = ?, ");
     }
-        query.setLength(query.length()-2);
-        query.append(" where warehouse_id = ?");
+    query.setLength(query.length() - 2);
+    query.append(" where warehouse_id = ?");
 
     try {
       open();

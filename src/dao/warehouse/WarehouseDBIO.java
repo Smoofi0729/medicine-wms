@@ -1,11 +1,11 @@
 package dao.warehouse;
 
-import config.ObjectDBIO;
+import dao.MysqlDBIO;
+import dao.ObjectDBIO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import lombok.Data;
 
-public class WarehouseDBIO extends ObjectDBIO {
+public class WarehouseDBIO extends MysqlDBIO {
 
   @Override
   public Connection open() {

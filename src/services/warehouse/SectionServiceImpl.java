@@ -3,6 +3,7 @@ package services.warehouse;
 import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
+import static config.UtilMethod.selectColumn;
 
 import config.enums.SectionType;
 import config.UtilMethod;
@@ -17,14 +18,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class SectionServiceImpl implements SectionService {
+
+  private String table = "section";
 
   private SectionDao sectionDao;
   private WarehouseDao warehouseDao;
   private WarehouseService warehouseService;
 
-@Override
+  public SectionServiceImpl() {
+    this.sectionDao = new SectionDao();
+    this.warehouseDao = new WarehouseDao();
+  }
+
+  public SectionServiceImpl(WarehouseService warehouseService) {
+    this();
+    this.warehouseService = warehouseService;
+  }
+
+  @Override
   public void sectionMenu() {
     while (true) {
       System.out.println("섹션관리 메뉴");
@@ -47,7 +59,8 @@ public class SectionServiceImpl implements SectionService {
       }
     }
   }
-@Override
+
+  @Override
   public boolean estimateSection(String warehouseId, int available) {
     int width = inputInt("섹션 가로 길이");
     int length = inputInt("섹션 세로 길이");
@@ -100,10 +113,14 @@ public class SectionServiceImpl implements SectionService {
       System.out.println("1. 수정 | 2. 삭제");
       switch (inputInt("메뉴선택")) {
         case 1:
+
           HashMap<String, String> updates = new HashMap<>();
+          System.out.println(("수정할 항목을 선택해주세요 (없으면 0 입력)"));
+          System.out.println("1.섹션ID 2.창고ID 3.가로길이 4.세로길이 5.높이 6.섹션종류");
           while (true) {
-            String column = inputStr("수정할 항목을 입력해주세요 (없으면 exit 입력)");
-            if (column.equals("exit")) {
+            int choice = inputInt("수정할 항목");
+            String column = selectColumn(table).get(choice);
+            if (choice == 0) {
               break;
             }
             String update = inputStr("수정할 내용을 입력해주세요");
@@ -129,7 +146,6 @@ public class SectionServiceImpl implements SectionService {
     }
   }
 
-  @Override
   public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append("섹션ID\t\t\t창고ID\t\t\t가로길이\t\t\t세로길이\t\t\t높이\t\t\t섹션종류\t\t\t수용가능량\t\t\t비고\n");
