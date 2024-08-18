@@ -5,6 +5,7 @@ import interfaces.StockTakingService;
 import services.StockPrintServiceImpl;
 import services.StockTakingServiceImpl;
 import vo.Stock;
+import vo.StockTaking;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 //합치고 지울 예정
 public class mymenu {
     public static void main(String[] args) throws SQLException {
-        int num = 1;
+        int num = 3;
         StockPrintService sps = new StockPrintServiceImpl(ConnectionFactory.getInstance().open());
         StockTakingService sts = new StockTakingServiceImpl(ConnectionFactory.getInstance().open());
         switch (num) {
@@ -34,6 +35,9 @@ public class mymenu {
                 break;
             case 3:
                 System.out.println("재고 실사");
+                StockTaking s = new StockTaking();
+                s.setStockTakingId("ST001");
+                sts.printStockTakingList(s);
                 //1. 재고 실사 등록
                 //2. 재고 실사 조회
                     //2.1 수정
