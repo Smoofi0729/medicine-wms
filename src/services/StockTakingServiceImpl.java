@@ -5,29 +5,37 @@ import interfaces.StockTakingService;
 import vo.Stock;
 import vo.StockTaking;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class StockTakingServiceImpl implements StockTakingService {
     private StockTakingDao stockTakingDao;
+    private StockTaking st;
+    int result = 0;
 
-    @Override
-    public void printStockTakingList() throws SQLException {
-        stockTakingDao.selectStockTakingList();
+    public StockTakingServiceImpl(Connection connection) {
+        this.stockTakingDao = new StockTakingDao(connection);
     }
 
     @Override
-    public void insertStockTakingList(List<StockTaking> stockTakings) throws SQLException {
-        stockTakingDao.insertStockTakingList(stockTakings);
+    public void printStockTakingList(StockTaking stockTaking) throws SQLException {
+         st = stockTakingDao.selectStockTaking(stockTaking);
+        System.out.println(st.toString());
     }
 
     @Override
-    public void UpdateStockTakingList(List<StockTaking> stockTakings) throws SQLException {
-        stockTakingDao.updateStockTakingList(stockTakings);
+    public void insertStockTakingList(StockTaking stockTaking) throws SQLException {
+        result =  stockTakingDao.insertStockTaking(stockTaking);
     }
 
     @Override
-    public void deleteStockTakingList(List<StockTaking> stockTakings) throws SQLException {
-        stockTakingDao.deleteStockTakingList(stockTakings);
+    public void UpdateStockTakingList(StockTaking stockTaking) throws SQLException {
+        result = stockTakingDao.updateStockTaking(stockTaking);
+    }
+
+    @Override
+    public void deleteStockTakingList(StockTaking stockTaking) throws SQLException {
+        result = stockTakingDao.deleteStockTaking(stockTaking);
     }
 }

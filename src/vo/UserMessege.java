@@ -1,11 +1,12 @@
 package vo;
 
-public enum userMessages {
+public enum UserMessege {
 
     //공통
     MENU_CHOICE("메뉴 선택 : "),
-    ID("아이디를 등록해주세요."),
+    ID("아이디를 입력해주세요."),
     PASSWORD("비밀번호를 입력해주세요."),
+    NEW_PASSWORD("새로운 비밀번호를 입력해주세요."),
     CONTACT("전화번호를 입력해주세요."),
     NOT_MEMBER("일치하는 정보를 찾을 수 없습니다"),
     PW_CHECK("비밀번호를 다시 한번 입력해주세요."),
@@ -13,7 +14,7 @@ public enum userMessages {
 
     // 시작메뉴
     START_WELCOME_MESSEGE("SMOOFI에 오신 것을 환영합니다"),
-    START_MAIN_MENU("메인 메뉴 : 1.로그인 | 2.회원가입 | 3.아이디 찾기 | 4.비밀번호 찾기"),
+    START_MAIN_MENU("\n메인 메뉴 : 1.로그인 | 2.회원가입 | 3.아이디 찾기 | 4.비밀번호 찾기"),
 
 
     //회원가입
@@ -22,7 +23,7 @@ public enum userMessages {
     SIGN_UP_ID_ALREADY("이미 존재하는 ID입니다."),
     SIGN_UP_EMAIL("E-MAIL을 입력해 주세요."),
     SIGN_UP_ADDRESS("주소를 입력해주세요"),
-    SIGN_UP_MEMBER_TYPE("회원종류 : 1. 총관리자 | 2. 창고 관리자| 3. 일반회원 | 4. 배송기사"),
+    SIGN_UP_MEMBER_TYPE("회원종류 : 1. 일반회원 | 2. 배송기사 | 3. 관리자"),
     SIGN_UP_BUSINESS_NAME("사업장이름을 입력해주세요."),
     SIGN_UP_BUSINESS_NUMER("사업자 번호를 입력해주세요."),
     SIGN_UP_WAREHOUSE_NAME("관리창고 번호를 입력해주세요"),
@@ -31,7 +32,7 @@ public enum userMessages {
 
     //로그인
     LOGIN("로그인 화면입니다."),
-    LOGIN_PW_ERROR("비밀번호가 맞지 않습니다."),
+    LOGIN_ERROR("회원정보를 찾을 수 없습니다."),
 
     //메뉴화면(접속)
     MENU_WELCOME("님 어서오세요."),//앞에 MEMBER NAME
@@ -51,6 +52,8 @@ public enum userMessages {
     FIND_PW_RESET_PASSWORD("새로운 비밀번호를 생성해주세요."),
 
 
+    //일반
+
     //회원 접근 권한
     ACCESS_DENIED("접근 권한이 없습니다."),
 
@@ -61,7 +64,7 @@ public enum userMessages {
 
     private final String message;
 
-    userMessages(String message) {
+    UserMessege(String message) {
         this.message = message;
     }
 
