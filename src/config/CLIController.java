@@ -70,6 +70,8 @@ public class CLIController {
 
     public void MemberMainMenu(String memberId) throws IOException { // Changed to non-static
         boolean exit = false;
+        CLIController cliController = new CLIController();
+
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
             System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 | 7.로그아웃");
@@ -83,16 +85,21 @@ public class CLIController {
                     break;
                 case 3:
                     System.out.println("재고 조회");
-                    CLIController cliController = new CLIController();
                     try {
                         cliController.stockMenu();
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
                     }
-                    validinput = true;
                     break;
                 case 4:
                     System.out.println("재무");
+                    try {
+                        cliController.financeMenu();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 5:
                     System.out.println("고객센터");
@@ -142,6 +149,8 @@ public class CLIController {
 
     public void adminMainMenu(String memberId) throws IOException, SQLException { // Changed to non-static
         boolean exit = false;
+        CLIController cliController = new CLIController();
+        
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
             System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 관리 | 7.로그아웃");
@@ -154,8 +163,6 @@ public class CLIController {
                     System.out.println("출고");
                     break;
                 case 3:
-                    System.out.println("재고 메뉴");
-                    CLIController cliController = new CLIController();
                     try {
                         cliController.stockMenu();
                     } catch (SQLException e) {
@@ -163,10 +170,14 @@ public class CLIController {
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-                    validinput = true;
                     break;
                 case 4:
                     System.out.println("재무");
+                    try {
+                        cliController.financeMenu();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 5:
                     System.out.println("고객센터");
@@ -413,7 +424,6 @@ public class CLIController {
                 int choice = SystemIn.SystemInInt();
                 switch (choice) {
                     case 1:
-                        //warehouse_id = ?, expenditure_date = ?, expenditure_charge = ?, expenditure_category = ?, note = ?
                         System.out.println("지출 수정");
                         System.out.println("수정할 지출 ID:");
                         expenditure.setExpenditureId(SystemIn.SystemInString());
