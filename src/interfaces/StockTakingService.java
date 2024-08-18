@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface StockTakingService {
 
-    public void printStockTakingList(StockTaking stockTaking) throws SQLException;
+    public StockTaking printStockTakingList(StockTaking stockTaking) throws SQLException;
 
     public void UpdateStockTakingList(StockTaking stockTaking) throws SQLException;
 
