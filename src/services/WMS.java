@@ -1,3 +1,4 @@
+/*
 package services;
 
 import java.io.BufferedReader;
@@ -76,3 +77,4 @@ public class WMS {
   }
 
 }
+*/

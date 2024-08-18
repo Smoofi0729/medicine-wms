@@ -9,8 +9,9 @@ import java.util.Date;
 @Data
 public class Expenditure {
     private String expenditureId;
-    private String expenditureHistory;
+    private String warehouseId;
     private Date expenditureDate;
     private int expenditureCharge;
+    private String expenditureCategory;
     private String note;
 }
