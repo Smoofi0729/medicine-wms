@@ -1,9 +1,9 @@
 package interfaces.release;
 
-import interfaces.Services;
+import interfaces.CrudService;
 import java.sql.ResultSet;
 
-public interface ReleaseRequestService extends Services {
+public interface ReleaseRequestService {
   void releaseRequestMenuForMall();
 
   void releaseRequestMenuForManager();
@@ -15,6 +15,4 @@ public interface ReleaseRequestService extends Services {
   void readByReleaseRequestId();
 
   void readByCustId();
-
-  void printInfo(ResultSet rs);
 }

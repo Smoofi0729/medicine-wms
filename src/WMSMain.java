@@ -1,28 +1,18 @@
-import config.ObjectDBIO;
-import dao.warehouse.SectionDao;
-import dao.warehouse.WarehouseDao;
+import dao.ObjectDBIO;
 import interfaces.warehouse.SectionService;
 import interfaces.warehouse.WarehouseService;
-import java.sql.Date;
-import java.time.LocalDateTime;
 import services.warehouse.SectionServiceImpl;
 import services.warehouse.WarehouseServiceImpl;
+import vo.release.ReleaseManagerMenu;
 
-public class WMSMain extends ObjectDBIO {
-
+public class WMSMain {
   public static void main(String[] args) {
-    WarehouseDao warehouseDao = new WarehouseDao();
-    SectionDao sectionDao = new SectionDao();
 
-    SectionService sectionService = new SectionServiceImpl(sectionDao, warehouseDao, null); // 임시로 null을 전달
-    WarehouseService warehouseService = new WarehouseServiceImpl(warehouseDao, sectionService);
+//    WarehouseService warehouseService = new WarehouseServiceImpl();
+//
+//    warehouseService.warehouseMenu();
 
-    // 이제 SectionService에 WarehouseService를 다시 설정
-    ((SectionServiceImpl) sectionService).setWarehouseService(warehouseService);
-
-    warehouseService.warehouseMenu();
-
-
-
+    ReleaseManagerMenu release = new ReleaseManagerMenu();
+    release.releaseMenu();
   }
 }

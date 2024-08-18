@@ -1,9 +1,9 @@
 package interfaces.release;
 
-import interfaces.Services;
+import interfaces.CrudService;
 import java.sql.ResultSet;
 
-public interface ReleaseInspectionService extends Services {
+public interface ReleaseInspectionService {
 
   void releaseInspectionMenu();
 
@@ -12,6 +12,4 @@ public interface ReleaseInspectionService extends Services {
   void readByReleaseInspectionId();
 
   void showStatusMenu();
-
-  void printInfo(ResultSet rs);
 }

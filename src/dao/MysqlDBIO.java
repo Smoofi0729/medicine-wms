@@ -1,4 +1,4 @@
-package config;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,16 +8,16 @@ import java.sql.SQLException;
 import lombok.Data;
 
 @Data
-public abstract class ObjectDBIO {
+public class MysqlDBIO extends ObjectDBIO{
 
-  private String MYSQL_URL = "jdbc:mysql://localhost:3306/wms";
-  private String MYSQL_ID = "ssg";
-  private String MYSQL_PW = "ssg";
   private Connection connection;
   private PreparedStatement pstmt;
   private ResultSet rs;
+  private String MYSQL_URL = "jdbc:mysql://localhost:3306/wms";
+  private String MYSQL_ID = "ssg";
+  private String MYSQL_PW = "ssg";
 
-
+  @Override
   public Connection open() {
     try {
       this.connection = DriverManager.getConnection(this.getMYSQL_URL(), this.getMYSQL_ID(),
@@ -37,6 +37,7 @@ public abstract class ObjectDBIO {
     }
   }
 
+  @Override
   public <T extends AutoCloseable> void close(T t) {
     try {
       t.close();
