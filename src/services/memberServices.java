@@ -1,8 +1,8 @@
 package services;
 
 import config.CLIController;
+import config.ConnectionFactory;
 import config.SystemIn;
-import dao.ConnectionFactory;
 import dao.MemberCRUDImpl;
 import vo.UserMessege;
 

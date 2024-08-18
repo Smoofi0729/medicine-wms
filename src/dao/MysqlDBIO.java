@@ -1,5 +1,6 @@
 package dao;
 
+import config.ObjectDBIO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 import lombok.Data;
 
 @Data
-public class MysqlDBIO extends ObjectDBIO{
+public class MysqlDBIO extends ObjectDBIO {
 
   private Connection connection;
   private PreparedStatement pstmt;

@@ -19,23 +19,42 @@ public class StockTakingServiceImpl implements StockTakingService {
     }
 
     @Override
-    public void printStockTakingList(StockTaking stockTaking) throws SQLException {
-         st = stockTakingDao.selectStockTaking(stockTaking);
+    public StockTaking printStockTakingList(StockTaking stockTaking) throws SQLException {
+        st = stockTakingDao.selectStockTaking(stockTaking);
         System.out.println(st.toString());
+        return st;
     }
 
     @Override
     public void insertStockTakingList(StockTaking stockTaking) throws SQLException {
-        result =  stockTakingDao.insertStockTaking(stockTaking);
+        result = stockTakingDao.insertStockTaking(stockTaking);
+
+        if (result > 0) {
+            System.out.println("재고 실사 목록이 추가되었습니다.");
+        } else {
+            System.out.println("재고 실사 목록 추가에 실패했습니다.");
+        }
     }
 
     @Override
     public void UpdateStockTakingList(StockTaking stockTaking) throws SQLException {
         result = stockTakingDao.updateStockTaking(stockTaking);
+
+        if (result > 0) {
+            System.out.println("재고 실사 목록이 수정되었습니다.");
+        } else {
+            System.out.println("재고 실사 목록 수정에 실패했습니다.");
+        }
     }
 
     @Override
     public void deleteStockTakingList(StockTaking stockTaking) throws SQLException {
         result = stockTakingDao.deleteStockTaking(stockTaking);
+
+        if (result > 0) {
+            System.out.println("재고 실사 목록이 삭제되었습니다.");
+        } else {
+            System.out.println("재고 실사 목록 삭제에 실패했습니다.");
+        }
     }
 }

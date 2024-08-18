@@ -1,7 +1,6 @@
-/*
 package services;
 
-import dao.ObjectDBIO;
+import config.ObjectDBIO;
 import vo.*;
 import interfaces.InboundIO;
 import java.sql.ResultSet;
@@ -106,4 +105,3 @@ public abstract class InboundDBIO extends ObjectDBIO implements InboundIO {
     return inboundRequestList;
   }
 }
-*/

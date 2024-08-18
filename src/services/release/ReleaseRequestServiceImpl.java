@@ -30,18 +30,18 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
   @Override
   public void releaseRequestMenuForMall() {
     System.out.println("출고요청 메뉴");
-    System.out.println("1. 보유재고조회 | 2. 출고요청 | 3. 수정 및 삭제 요청 | 4. 요청처리상태 확인");
+    System.out.println("1. 출고요청 | 2. 수정 및 삭제 요청 | 3. 요청처리상태 확인");
     switch (inputInt("메뉴선택")) {
       case 1 -> showSelectMenu();
       case 2 -> releaseRequestDao.registerReleaseRequest();
-      case 3 -> requestUpdate();
+      case 3 -> requestUpdateByMall();
       case 4 -> System.out.println(
           "처리상태 : " + releaseRequestDao.checkRequestStatus(inputStr("확인할 출고요청ID")));
       default -> System.out.println("입력이 잘못되었습니다.");
     }
   }
 
-  public void requestUpdate() {
+  public void requestUpdateByMall() {
     String id = inputStr("수정 및 삭제할 출고요청의 id를 입력하세요");
     ResultSet rs = releaseRequestDao.selectFilterBy("release_reqId", id);
     if (isValidId(releaseRequestDao.selectFilterBy("release_reqId", id))) {
@@ -85,23 +85,6 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
     }
   }
 
-
-  @Override
-  public void releaseRequestMenuForManager() {
-    while (true) {
-      System.out.println("=====================================================================");
-      System.out.println("출고요청관리 메뉴");
-      System.out.println("=====================================================================");
-
-      System.out.println("1. 조회 | 2. 수정 및 삭제");
-      switch (inputInt("메뉴선택")) {
-        case 1 -> showSelectMenu();
-        case 2 -> showUpdateMenu();
-        default -> System.out.println("입력이 잘못되었습니다.");
-      }
-    }
-  }
-
   public void showSelectMenu() {
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 처리상태별 조회 | 4. 주문자별조회 | 5. 쇼핑몰요청확인");
 
@@ -122,6 +105,22 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
       case 1 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.ON_PROCESS);
       case 2 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.APPROVED);
       case 3 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.REJECTED);
+    }
+  }
+
+  @Override
+  public void releaseRequestMenuForManager() {
+    while (true) {
+      System.out.println("=====================================================================");
+      System.out.println("출고요청관리 메뉴");
+      System.out.println("=====================================================================");
+
+      System.out.println("1. 조회 | 2. 수정 및 삭제");
+      switch (inputInt("메뉴선택")) {
+        case 1 -> showSelectMenu();
+        case 2 -> showUpdateMenu();
+        default -> System.out.println("입력이 잘못되었습니다.");
+      }
     }
   }
 
