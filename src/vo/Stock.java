@@ -1,7 +1,7 @@
 package vo;
 
+import java.util.Date;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
 public class Stock {
