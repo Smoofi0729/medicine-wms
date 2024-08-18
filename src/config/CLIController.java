@@ -1,11 +1,10 @@
 package config;
 
-import config.ConnectionFactory;
 import interfaces.ExpenditureService;
 import interfaces.RevenueService;
 import interfaces.StockPrintService;
 import interfaces.StockTakingService;
-import services.ExpenditureServiceImpl;
+import services.FinanceServiceImpl;
 import services.StockPrintServiceImpl;
 import services.StockTakingServiceImpl;
 import services.memberServices;
@@ -328,30 +327,77 @@ public class CLIController {
         }
     }
 
-    public void financeMenu() {
-        ExpenditureService es = new ExpenditureServiceImpl();
-        RevenueService rs = new ExpenditureServiceImpl();
+    public void financeMenu() throws SQLException, IOException {
+        ExpenditureService es = new FinanceServiceImpl(ConnectionFactory.getInstance().open());
+        RevenueService rs = new FinanceServiceImpl(ConnectionFactory.getInstance().open());
 
-        System.out.println("1. 매출 조회 2. 지출 ");
+        System.out.println("1. 매출 조회 2. 지출 조회 3. 지출 등록 4. 지출 수정 5. 지출 삭제 6. 지출 조회 (ID)");
         System.out.print("->");
-        int num = 0;
-        try {
-            num = SystemIn.SystemInInt();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        int num = SystemIn.SystemInInt();
         switch (num) {
             case 1:
-                System.out.println("매출 조회");
+                System.out.println("전체 매출을 조회합니다.");
+                rs.printAllRevenue();
                 break;
             case 2:
-                System.out.println("매입 조회");
+                System.out.println("전체 지출을 조회합니다");
+                es.printAllExpenditure();
                 break;
             case 3:
-                System.out.println("재고 조회");
+                System.out.println("지출 등록");
+                Expenditure newExpenditure = new Expenditure();
+                System.out.println("지출 ID:");
+                newExpenditure.setExpenditureId(SystemIn.SystemInString());
+                System.out.println("창고 ID:");
+                newExpenditure.setWarehouseId(SystemIn.SystemInString());
+                System.out.println("지출 날짜 (yyyy-MM-dd):");
+                try {
+                    newExpenditure.setExpenditureDate(SystemIn.SystemInDate());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("지출 금액:");
+                newExpenditure.setExpenditureCharge(SystemIn.SystemInInt());
+                System.out.println("지출 카테고리:");
+                newExpenditure.setExpenditureCategory(SystemIn.SystemInString());
+                System.out.println("비고:");
+                newExpenditure.setNote(SystemIn.SystemInString());
+                es.insertExpenditure(newExpenditure);
                 break;
             case 4:
-                System.out.println("재무 보고서 조회");
+                System.out.println("지출 수정");
+                Expenditure updateExpenditure = new Expenditure();
+                System.out.println("수정할 지출 ID:");
+                updateExpenditure.setExpenditureId(SystemIn.SystemInString());
+                System.out.println("새 창고 ID:");
+                updateExpenditure.setWarehouseId(SystemIn.SystemInString());
+                System.out.println("새 지출 날짜 (yyyy-MM-dd):");
+                try {
+                    updateExpenditure.setExpenditureDate(SystemIn.SystemInDate());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("새 지출 금액:");
+                updateExpenditure.setExpenditureCharge(SystemIn.SystemInInt());
+                System.out.println("새 지출 카테고리:");
+                updateExpenditure.setExpenditureCategory(SystemIn.SystemInString());
+                System.out.println("새 비고:");
+                updateExpenditure.setNote(SystemIn.SystemInString());
+                es.updateExpenditure(updateExpenditure);
+                break;
+            case 5:
+                System.out.println("지출 삭제");
+                Expenditure deleteExpenditure = new Expenditure();
+                System.out.println("삭제할 지출 ID:");
+                deleteExpenditure.setExpenditureId(SystemIn.SystemInString());
+                System.out.println("창고 ID:");
+                deleteExpenditure.setWarehouseId(SystemIn.SystemInString());
+                es.deleteExpenditure(deleteExpenditure);
+                break;
+            case 6:
+                System.out.println("지출 조회 (ID)");
+                System.out.println("조회할 지출 ID:");
+                //es.printOneExpenditure(expenditureId);
                 break;
             default:
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
