@@ -1,6 +1,8 @@
 package config;
 
 import config.ConnectionFactory;
+import services.InboundServiceImpl;
+import services.WMS;
 import services.memberServices;
 import vo.LOGO;
 import vo.UserMessege;
@@ -61,6 +63,7 @@ public class CLIController {
     }
 
     public static void MemberMainMenu(String memberId) throws IOException {
+        WMS inboundservice = new WMS();
         System.out.println(memberId + " 님 환영합니다.");
         System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보");
         int select = SystemIn.SystemInInt();
@@ -69,6 +72,7 @@ public class CLIController {
             switch (select) {
                 case 1:
                     System.out.println("입고");
+                    inboundservice.serviceInbound();
                     validinput = true;
                     break;
                 case 2:
@@ -132,6 +136,7 @@ public class CLIController {
     }
 
     public static void adminMainMenu(String memberId) throws IOException {
+        WMS inboundService = new WMS();
         System.out.println(memberId + " 님 환영합니다.");
         System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 | 7.로그아웃");
         int select = SystemIn.SystemInInt();
@@ -140,6 +145,7 @@ public class CLIController {
             switch (select) {
                 case 1:
                     System.out.println("입고");
+                    inboundService.serviceInbound();
                     validinput = true;
                     break;
                 case 2:
