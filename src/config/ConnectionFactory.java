@@ -15,7 +15,7 @@ public class ConnectionFactory {
     }
 
     private static Connection connection = null;
-    private static String url = "jdbc:mysql://127.0.0.1:3306/";
+    private static String url = "jdbc:mysql://127.0.0.1:3306/wms";
     private static String id = "root";
     private static String pwd = "1234";
 

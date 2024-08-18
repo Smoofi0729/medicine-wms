@@ -1,3 +1,4 @@
+/*
 package services;
 
 import VO.InboundData;
@@ -54,3 +55,4 @@ public class Manager extends InboundDBIO{
     }
   }
 }
+*/

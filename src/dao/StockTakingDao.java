@@ -16,8 +16,8 @@ public class StockTakingDao {
         this.connection = connection;
     }
 
-    public List<StockTaking> selectStockTakingList() throws SQLException {
-        return executeQuery("SELECT * FROM stock_taking");
+    public int selectStockTakingList(List<StockTaking> stockTakings) throws SQLException {
+        return executeQuery("SELECT * FROM stock_taking WHERE stocktaking_id = ?", stockTaking);
     }
 
     public int insertStockTakingList(List<StockTaking> stockTakings) throws SQLException {

@@ -1,3 +1,4 @@
+/*
 package interfaces;
 
 import VO.InboundData;
@@ -5,3 +6,4 @@ import VO.InboundData;
 public interface SaveInbound {
   public void saveInboundData(InboundData ibdata);
 }
+*/

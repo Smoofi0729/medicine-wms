@@ -1,3 +1,4 @@
+/*
 package services;
 
 import Interface.ApproveInbound;
@@ -8,3 +9,4 @@ import Interface.SearchInbound;
 public interface InboundIO extends ApproveInbound, InspectInbound, SaveInbound, SearchInbound {
 
 }
+*/

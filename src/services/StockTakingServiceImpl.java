@@ -5,15 +5,20 @@ import interfaces.StockTakingService;
 import vo.Stock;
 import vo.StockTaking;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class StockTakingServiceImpl implements StockTakingService {
     private StockTakingDao stockTakingDao;
 
+    public StockTakingServiceImpl(Connection connection) {
+        this.stockTakingDao = new StockTakingDao(connection);
+    }
+
     @Override
-    public void printStockTakingList() throws SQLException {
-        stockTakingDao.selectStockTakingList();
+    public void printStockTakingList(List<StockTaking> stockTakings) throws SQLException {
+        stockTakingDao.selectStockTakingList(stockTakings);
     }
 
     @Override

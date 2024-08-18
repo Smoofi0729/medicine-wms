@@ -9,5 +9,5 @@ import java.util.List;
 public interface StockPrintService {
     public void printAllStock() throws SQLException;
 
-    public void printBySectionStock() throws SQLException;
+    public void printBySectionStock(Stock stock) throws SQLException;
 }
