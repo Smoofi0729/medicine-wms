@@ -1,6 +1,6 @@
 package interfaces;
 
-import DTO.InboundRequest;
+import vo.InboundRequest;
 import java.util.ArrayList;
 
 public interface InboundRequestService {

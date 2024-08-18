@@ -1,6 +1,6 @@
 package interfaces;
 
-import DTO.InboundInspection;
+import vo.InboundInspection;
 import java.util.ArrayList;
 
 public interface InboundInspectionService{
