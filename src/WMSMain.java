@@ -1,23 +1,28 @@
-/*
-import static dao.ObjectDBIO.startWMS;
+import config.ObjectDBIO;
+import dao.warehouse.SectionDao;
+import dao.warehouse.WarehouseDao;
+import interfaces.warehouse.SectionService;
+import interfaces.warehouse.WarehouseService;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import services.warehouse.SectionServiceImpl;
+import services.warehouse.WarehouseServiceImpl;
 
-import dto.warehouse.Warehouse;
-import service.warehouse.WarehouseServiceImpl;
-
-public class WMSMain {
+public class WMSMain extends ObjectDBIO {
 
   public static void main(String[] args) {
-    startWMS();
-    WarehouseServiceImpl wi = new WarehouseServiceImpl();
-    Warehouse wh1 = new Warehouse(1, "1", "a","b",1,"a");
-    Warehouse wh2 = new Warehouse(2, "11", "b","b",1,"b");
-    Warehouse wh3 = new Warehouse(3, "111", "b","b",1,"a");
-    Warehouse wh4 = new Warehouse(4, "1111", "a","b",1,"b");
-    wi.addWarehouseToList(wh1);
-    wi.addWarehouseToList(wh2);
-    wi.addWarehouseToList(wh3);
-    wi.addWarehouseToList(wh4);
-    System.out.println(wi.readAllWh());
+    WarehouseDao warehouseDao = new WarehouseDao();
+    SectionDao sectionDao = new SectionDao();
+
+    SectionService sectionService = new SectionServiceImpl(sectionDao, warehouseDao, null); // 임시로 null을 전달
+    WarehouseService warehouseService = new WarehouseServiceImpl(warehouseDao, sectionService);
+
+    // 이제 SectionService에 WarehouseService를 다시 설정
+    ((SectionServiceImpl) sectionService).setWarehouseService(warehouseService);
+
+    warehouseService.warehouseMenu();
+
+
+
   }
 }
-*/
