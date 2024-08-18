@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class Revenue {
-    private int revenueId;
-    private String revenueHistory;
+    private String revenueId;
+    private String warehouseId;
     private Date revenueDate;
-    private String revenueCharge;
+    private int revenueCharge;
+    private String revenueCategory;
     private String note;
 }
