@@ -1,6 +1,6 @@
 package config;
 
-import dao.ConnectionFactory;
+import config.ConnectionFactory;
 import services.memberServices;
 import vo.LOGO;
 import vo.UserMessege;
