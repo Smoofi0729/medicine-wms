@@ -452,21 +452,17 @@ public void MemberMainMenu(String memberId) throws IOException {
                 switch (choice) {
                     case 1:
                         System.out.println("지출 수정");
-                        System.out.println("수정할 지출 ID:");
-                        expenditure.setExpenditureId(SystemIn.SystemInString());
-                        System.out.println("새 창고 ID:");
-                        expenditure.setWarehouseId(SystemIn.SystemInString());
-                        System.out.println("새 지출 날짜 (yyyy-MM-dd):");
+                        System.out.println("수정할 지출 날짜 (yyyy-MM-dd):");
                         try {
                             expenditure.setExpenditureDate(SystemIn.SystemInDate());
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
-                        System.out.println("새 지출 금액:");
+                        System.out.println("수정할 지출 금액:");
                         expenditure.setExpenditureCharge(SystemIn.SystemInInt());
-                        System.out.println("새 지출 카테고리:");
+                        System.out.println("수정할 지출 내역:");
                         expenditure.setExpenditureCategory(SystemIn.SystemInString());
-                        System.out.println("새 비고:");
+                        System.out.println("수정할 비고:");
                         expenditure.setNote(SystemIn.SystemInString());
 
                         es.updateExpenditure(expenditure);
@@ -482,6 +478,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                     default:
                         System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
                 }
+                break;
             case 4:
                 System.out.println("지출 등록");
                 Expenditure ex = new Expenditure();
