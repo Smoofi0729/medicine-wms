@@ -13,9 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class memberServices {
-    private static Connection connection; 
+    private static Connection connection;
 
-    public static void signInMember() throws Exception { 
+    public static void signInMember() throws Exception {
         try {
             connection = ConnectionFactory.getInstance().open();
             UserMessege.SIGN_UP.println();
@@ -99,7 +99,7 @@ public class memberServices {
             String sql = "INSERT INTO member (member_id, member_name, member_password, member_phoneNumber, member_email, "
                     + "member_address, member_type, member_status, approval, createAt, lastLogin, business_name, "
                     + "business_address, warehouse_name, truck_type, truck_number) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?, ?, ?)";
+                    + "VALUES (?, ?, HEX(AES_ENCRYPT(?, 'encryption_key')), ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setString(1, memberId);
@@ -123,7 +123,7 @@ public class memberServices {
                 } else {
                     System.out.println("회원가입 실패.");
                 }
-                new CLIController().BasicMenu(); 
+                new CLIController().BasicMenu();
             }
 
         } catch (SQLException e) {
@@ -139,7 +139,7 @@ public class memberServices {
         }
     }
 
-    public static boolean login() throws SQLException { 
+    public static boolean login() throws SQLException {
         try {
             connection = ConnectionFactory.getInstance().open();
             UserMessege.LOGIN.println();
@@ -149,21 +149,30 @@ public class memberServices {
             UserMessege.PASSWORD.println();
             String password = SystemIn.SystemInString();
 
-            String sql = "SELECT member_id, approval FROM member WHERE member_id = ? AND member_password = ?";
+            String sql = "SELECT member_id, approval, AES_DECRYPT(UNHEX(member_password), 'encryption_key') as decrypted_password "
+                    + "FROM member WHERE member_id = ?";
+
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setString(1, userid);
-                pstmt.setString(2, password);
 
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
+                        String decryptedPassword = rs.getString("decrypted_password");
                         String approval = rs.getString("approval");
-                        if ("true".equalsIgnoreCase(approval)) {
-                            System.out.print(userid + " ");
-                            UserMessege.MENU_WELCOME.println();
-                            new CLIController().showMenu(userid);
-                            return true;
+
+                        if (decryptedPassword.equals(password)) {
+                            if ("true".equalsIgnoreCase(approval)) {
+                                System.out.print(userid + " ");
+                                UserMessege.MENU_WELCOME.println();
+                                new CLIController().showMenu(userid);
+                                return true;
+                            } else {
+                                System.out.println("승인 대기중입니다. 관리자에게 문의하세요!");
+                                return false;
+                            }
                         } else {
-                            System.out.println("승인 대기중입니다. 관리자에게 문의하세요!");
+                            UserMessege.LOGIN_ERROR.println();
+                            login();
                             return false;
                         }
                     } else {
@@ -188,7 +197,7 @@ public class memberServices {
         }
     }
 
-    public static String findId() throws SQLException, IOException { 
+    public static String findId() throws SQLException, IOException {
         try {
             connection = ConnectionFactory.getInstance().open();
 
@@ -228,7 +237,7 @@ public class memberServices {
         }
     }
 
-    public static boolean resetPassword() throws IOException { 
+    public static boolean resetPassword() throws IOException {
         try {
             connection = ConnectionFactory.getInstance().open();
 
@@ -252,7 +261,7 @@ public class memberServices {
                         UserMessege.NEW_PASSWORD.println();
                         String newPassword = SystemIn.SystemInString();
 
-                        String updateSql = "UPDATE member SET member_password = ? WHERE member_id = ?";
+                        String updateSql = "UPDATE member SET member_password = HEX(AES_ENCRYPT(?, 'encryption_key')) WHERE member_id = ?";
                         try (PreparedStatement updatePstmt = connection.prepareStatement(updateSql)) {
                             updatePstmt.setString(1, newPassword);
                             updatePstmt.setString(2, memberId);
@@ -285,11 +294,9 @@ public class memberServices {
             }
         }
     }
-    public void logout(String memberId) {
-        
-        System.out.println("회원 " + memberId + " 님이 로그아웃되었습니다.");
 
-      
+    public void logout(String memberId) {
+        System.out.println("회원 " + memberId + " 님이 로그아웃되었습니다.");
         try {
             new CLIController().BasicMenu();
         } catch (Exception e) {
@@ -297,7 +304,7 @@ public class memberServices {
         }
     }
 
-    public static void viewMemberInfo(String memberId) throws IOException { 
+    public static void viewMemberInfo(String memberId) throws IOException {
         boolean validinput = false;
         MemberCRUDImpl memberCRUD = new MemberCRUDImpl();
 
