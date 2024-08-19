@@ -20,9 +20,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public class CLIController {
-    private Connection connection; // Changed to non-static
+    private Connection connection; 
 
-    public void BasicMenu() throws Exception { // Changed to non-static
+    public void BasicMenu() throws Exception { 
         boolean validinput = false;
 
         LOGO.logo(); // 로고
@@ -68,7 +68,7 @@ public class CLIController {
         }
     }
 
-    public void MemberMainMenu(String memberId) throws IOException { // Changed to non-static
+    public void MemberMainMenu(String memberId) throws IOException { 
         boolean exit = false;
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
@@ -112,7 +112,7 @@ public class CLIController {
         }
     }
 
-    public void DeliveryMainMenu(String memberId) throws IOException { // Changed to non-static
+    public void DeliveryMainMenu(String memberId) throws IOException {
         boolean exit = false;
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
@@ -140,7 +140,7 @@ public class CLIController {
         }
     }
 
-    public void adminMainMenu(String memberId) throws IOException, SQLException { // Changed to non-static
+    public void adminMainMenu(String memberId) throws IOException, SQLException { 
         boolean exit = false;
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
@@ -184,7 +184,7 @@ public class CLIController {
         }
     }
 
-    private void manageMemberInfo(String memberId) throws IOException, SQLException { // Changed to non-static and private
+    private void manageMemberInfo(String memberId) throws IOException, SQLException { 
         boolean exit = false;
         while (!exit) {
             System.out.println("1. 개인 정보 관리 | 2. 회원 정보 관리 | 3. 뒤로가기");
@@ -205,7 +205,7 @@ public class CLIController {
         }
     }
 
-    private void manageAllMembers() throws SQLException, IOException { // Changed to non-static and private
+    private void manageAllMembers() throws SQLException, IOException {
         boolean exit = false;
         while (!exit) {
             System.out.println("회원 정보 관리 : 1.모든 사용자 조회 | 2.회원 타입별 조회 | 3.회원 ID로 조회 | 4.권한 승인 요청 조회 | 5.권한 승인 |  6.삭제 | 7.뒤로가기");
@@ -255,7 +255,7 @@ public class CLIController {
         }
     }
 
-    public void showMenu(String memberId) throws SQLException, IOException { // Changed to non-static
+    public void showMenu(String memberId) throws SQLException, IOException { 
         try {
             connection = ConnectionFactory.getInstance().open();
             String sql = "SELECT member_type FROM member WHERE member_id = ?";
@@ -456,7 +456,7 @@ public class CLIController {
             case 6:
                 System.out.println("지출 조회 (ID)");
                 System.out.println("조회할 지출 ID:");
-                //es.printOneExpenditure(expenditureId);
+              
                 break;
             default:
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
