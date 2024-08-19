@@ -3,6 +3,7 @@ package interfaces;
 import vo.Expenditure;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public interface ExpenditureService {
     public void printAllExpenditure() throws SQLException;
@@ -13,5 +14,5 @@ public interface ExpenditureService {
 
     public void deleteExpenditure(Expenditure expenditure) throws SQLException;
 
-    public Expenditure printOneExpenditure(Expenditure expenditure) throws SQLException;
+    Optional<Expenditure> printOneExpenditure(Expenditure expenditure) throws SQLException;
 }

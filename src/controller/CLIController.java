@@ -492,7 +492,17 @@ public void MemberMainMenu(String memberId) throws IOException {
                 System.out.println("조회할 지출 ID를 입력하세요.");
                 System.out.print("->");
                 expenditure.setExpenditureId(SystemIn.SystemInString());
-                expenditure = es.printOneExpenditure(expenditure);
+
+                Optional<Expenditure> optionalExpenditure = es.printOneExpenditure(expenditure);
+
+                if (!optionalExpenditure.isPresent()) {
+                    System.out.println("지출 ID가 존재하지 않습니다. 다시 시도해주세요.");
+                    return;
+                }
+
+                expenditure = optionalExpenditure.get();
+                System.out.println("지출id \t창고id \t지출일자 \t지출액 \t지출분류 \t비고");
+                System.out.println(expenditure.getExpenditureId() + "\t" + expenditure.getWarehouseId() + "\t" + expenditure.getExpenditureDate() + "\t" + expenditure.getExpenditureCharge() + "\t" + expenditure.getExpenditureCategory() + "\t" + expenditure.getNote());
 
                 System.out.println("1. 지출 수정 2. 지출 삭제");
                 System.out.print("->");
@@ -551,7 +561,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                 System.out.println("지출 금액");
                 System.out.print("->");
                 ex.setExpenditureCharge(SystemIn.SystemInInt());
-                System.out.println("지출 카테고리");
+                System.out.println("지출 내역");
                 System.out.print("->");
                 ex.setExpenditureCategory(SystemIn.SystemInString());
                 System.out.println("비고:");
