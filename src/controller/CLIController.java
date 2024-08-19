@@ -337,7 +337,7 @@ public void MemberMainMenu(String memberId) throws IOException {
     }
 
     public void stockMenu() throws SQLException, IOException, ParseException {
-        System.out.println("1. 재고 전체 조회 2. 재고 구역 별 조회 3. 재고 실사");
+        System.out.println("1. 재고 전체 조회 2. 재고 구역 별 조회 3. 재고 실사 조회(수정, 삭제) 4. 재고 실사 등록");
         System.out.print("->");
         int num = SystemIn.SystemInInt();
         StockPrintService sps = new StockPrintServiceImpl(ConnectionFactory.getInstance().open());
@@ -407,8 +407,6 @@ public void MemberMainMenu(String memberId) throws IOException {
                 stockTaking.setProductId(SystemIn.SystemInString());
                 System.out.println("제품 이름");
                 stockTaking.setProductName(SystemIn.SystemInString());
-                System.out.println("총 수량");
-                stockTaking.setTotal(SystemIn.SystemInInt());
                 System.out.println("로트 번호");
                 stockTaking.setLotNo(SystemIn.SystemInString());
                 System.out.println("전산 상 재고");

@@ -28,18 +28,18 @@ public class StockTakingDao {
     }
 
     public int insertStockTaking(StockTaking stockTaking) throws SQLException {
-        String query = "INSERT INTO stock_taking VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO stock_taking VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            setStockTakingParameters(pstmt, stockTaking);
+            setStockTakingInsert(pstmt, stockTaking);
             return pstmt.executeUpdate();
         }
     }
 
     public int updateStockTaking(StockTaking stockTaking) throws SQLException {
-        String query = "UPDATE stock_taking SET warehouse_id = ?, product_id = ?, product_name = ?, total = ?, lotno = ?, computerized_stock = ?, physical_stock = ?, difference_quantity = ?, stocktaking_date = ?, note = ? WHERE stocktaking_id = ?";
+        String query = "UPDATE stock_taking SET computerized_stock = ?, physical_stock = ?, difference_quantity = ?, note = ? WHERE stocktaking_id = ?;";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            setStockTakingParameters(pstmt, stockTaking);
-            pstmt.setString(12, stockTaking.getStockTakingId());
+            setStockTakingUpdate(pstmt, stockTaking);
+            pstmt.setString(5, stockTaking.getStockTakingId());
             return pstmt.executeUpdate();
         }
     }
@@ -58,7 +58,6 @@ public class StockTakingDao {
         stockTaking.setWarehouseId(rs.getString("warehouse_id"));
         stockTaking.setProductId(rs.getString("product_id"));
         stockTaking.setProductName(rs.getString("product_name"));
-        stockTaking.setTotal(rs.getInt("total"));
         stockTaking.setLotNo(rs.getString("lotno"));
         stockTaking.setComputerizedStock(rs.getInt("computerized_stock"));
         stockTaking.setPhysicalStock(rs.getInt("physical_stock"));
@@ -68,17 +67,23 @@ public class StockTakingDao {
         return stockTaking;
     }
 
-    private void setStockTakingParameters(PreparedStatement pstmt, StockTaking stockTaking) throws SQLException {
+    private void setStockTakingUpdate(PreparedStatement pstmt, StockTaking stockTaking) throws SQLException {
+        pstmt.setInt(1, stockTaking.getComputerizedStock());
+        pstmt.setInt(2, stockTaking.getPhysicalStock());
+        pstmt.setInt(3, stockTaking.getPhysicalStock());
+        pstmt.setString(4, stockTaking.getNote());
+    }
+
+    private void setStockTakingInsert(PreparedStatement pstmt, StockTaking stockTaking) throws SQLException {
         pstmt.setString(1, stockTaking.getStockTakingId());
         pstmt.setString(2, stockTaking.getWarehouseId());
         pstmt.setString(3, stockTaking.getProductId());
         pstmt.setString(4, stockTaking.getProductName());
-        pstmt.setInt(5, stockTaking.getTotal());
-        pstmt.setString(6, stockTaking.getLotNo());
-        pstmt.setInt(7, stockTaking.getComputerizedStock());
-        pstmt.setInt(8, stockTaking.getPhysicalStock());
-        pstmt.setInt(9, stockTaking.getDifferenceQuantity());
-        pstmt.setTimestamp(10, new Timestamp(stockTaking.getStockTakingDate().getTime()));
-        pstmt.setString(11, stockTaking.getNote());
+        pstmt.setString(5, stockTaking.getLotNo());
+        pstmt.setInt(6, stockTaking.getComputerizedStock());
+        pstmt.setInt(7, stockTaking.getPhysicalStock());
+        pstmt.setInt(8, stockTaking.getDifferenceQuantity());
+        pstmt.setTimestamp(9, new Timestamp(stockTaking.getStockTakingDate().getTime()));
+        pstmt.setString(10, stockTaking.getNote());
     }
 }
