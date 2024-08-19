@@ -7,13 +7,13 @@ import static config.UtilMethod.selectColumn;
 import static config.enums.Messeges.*;
 
 import config.UtilMethod;
-import config.enums.ApprovalStatus;
+import enums.ApprovalStatus;
 import dao.release.ReleaseInspectionDao;
 import interfaces.release.ReleaseInspectionService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 @Data

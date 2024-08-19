@@ -1,20 +1,10 @@
 package dao.release;
 
-import static config.UtilMethod.autoCreateId;
-import static config.UtilMethod.inputInt;
-import static config.UtilMethod.inputStr;
+import enums.ApprovalStatus;
 
-import config.enums.ApprovalStatus;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ReleaseInspectionDao extends ReleaseDBIO {
 

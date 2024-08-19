@@ -1,7 +1,7 @@
 package config;
 
-import config.enums.TaskAbbreviations;
-import config.enums.SectionType;
+import enums.TaskAbbreviations;
+import enums.SectionType;
 import dao.MysqlDBIO;
 import java.io.BufferedReader;
 import java.io.IOException;

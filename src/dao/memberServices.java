@@ -1,10 +1,10 @@
-package services;
+package dao;
 
-import config.CLIController;
+import controller.CLIController;
 import config.ConnectionFactory;
 import config.SystemIn;
-import dao.MemberCRUDImpl;
-import vo.UserMessege;
+import services.MemberCRUDImpl;
+import enums.UserMessege;
 
 import java.io.IOException;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package vo;
+package config;
 public class LOGO {
     public static void main(String[] args) {
         logo();

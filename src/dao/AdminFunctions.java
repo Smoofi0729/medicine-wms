@@ -1,4 +1,4 @@
-package services;
+package dao;
 
 import config.ConnectionFactory;
 

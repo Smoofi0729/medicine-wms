@@ -1,4 +1,7 @@
-package services;
+/*
+package controller;
+
+import services.InboundServiceImpl;
 
 import java.util.Scanner;
 
@@ -66,3 +69,4 @@ public class InboundService {
   }
 
 }
+*/

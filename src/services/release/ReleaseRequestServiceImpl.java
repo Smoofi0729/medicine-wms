@@ -7,15 +7,14 @@ import static config.UtilMethod.recheckDelete;
 import static config.UtilMethod.selectColumn;
 import static config.enums.Messeges.*;
 
-import config.UtilMethod;
-import config.enums.ApprovalStatus;
+import enums.ApprovalStatus;
 import dao.release.ReleaseRequestDao;
 import interfaces.release.ReleaseRequestService;
-import interfaces.warehouse.SectionService;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 @Data

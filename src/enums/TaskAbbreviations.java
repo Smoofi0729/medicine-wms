@@ -1,4 +1,4 @@
-package config.enums;
+package enums;
 
 public enum TaskAbbreviations {
   RR("출고요청"),
