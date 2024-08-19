@@ -13,9 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class memberServices {
-    private static Connection connection; // Changed to non-static
+    private static Connection connection; 
 
-    public static void signInMember() throws Exception { // Changed to non-static
+    public static void signInMember() throws Exception { 
         try {
             connection = ConnectionFactory.getInstance().open();
             UserMessege.SIGN_UP.println();
@@ -123,7 +123,7 @@ public class memberServices {
                 } else {
                     System.out.println("회원가입 실패.");
                 }
-                new CLIController().BasicMenu(); // Changed to non-static call
+                new CLIController().BasicMenu(); 
             }
 
         } catch (SQLException e) {
@@ -139,7 +139,7 @@ public class memberServices {
         }
     }
 
-    public static boolean login() throws SQLException { // Changed to non-static
+    public static boolean login() throws SQLException { 
         try {
             connection = ConnectionFactory.getInstance().open();
             UserMessege.LOGIN.println();
@@ -160,7 +160,7 @@ public class memberServices {
                         if ("true".equalsIgnoreCase(approval)) {
                             System.out.print(userid + " ");
                             UserMessege.MENU_WELCOME.println();
-                            new CLIController().showMenu(userid); // Changed to non-static call
+                            new CLIController().showMenu(userid);
                             return true;
                         } else {
                             System.out.println("승인 대기중입니다. 관리자에게 문의하세요!");
@@ -188,7 +188,7 @@ public class memberServices {
         }
     }
 
-    public static String findId() throws SQLException, IOException { // Changed to non-static
+    public static String findId() throws SQLException, IOException { 
         try {
             connection = ConnectionFactory.getInstance().open();
 
@@ -228,7 +228,7 @@ public class memberServices {
         }
     }
 
-    public static boolean resetPassword() throws IOException { // Changed to non-static
+    public static boolean resetPassword() throws IOException { 
         try {
             connection = ConnectionFactory.getInstance().open();
 
@@ -286,10 +286,10 @@ public class memberServices {
         }
     }
     public void logout(String memberId) {
-        // Perform any necessary cleanup (if needed)
+        
         System.out.println("회원 " + memberId + " 님이 로그아웃되었습니다.");
 
-        // Optionally, redirect to the basic menu
+      
         try {
             new CLIController().BasicMenu();
         } catch (Exception e) {
@@ -297,7 +297,7 @@ public class memberServices {
         }
     }
 
-    public static void viewMemberInfo(String memberId) throws IOException { // Changed to non-static
+    public static void viewMemberInfo(String memberId) throws IOException { 
         boolean validinput = false;
         MemberCRUDImpl memberCRUD = new MemberCRUDImpl();
 
