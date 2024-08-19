@@ -100,7 +100,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                     switch (inputInt("메뉴선택")) {
                         case 1 :
                             ReleaseRequestService releaseRequestService = new ReleaseRequestServiceImpl();
-                            releaseRequestService.releaseRequestMenuForMall();
+                            releaseRequestService.releaseRequestMenuForMall(memberId);
                             break;
                         case 2:
                             ReleaseService releaseService = new ReleaseServiceImpl();
@@ -178,7 +178,7 @@ public void MemberMainMenu(String memberId) throws IOException {
         
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
-            System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 관리 | 7.로그아웃");
+            System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.창고 | 6.회원정보 관리 | 7.로그아웃");
             int select = SystemIn.SystemInInt();
             switch (select) {
                 case 1:
@@ -186,9 +186,8 @@ public void MemberMainMenu(String memberId) throws IOException {
                     inboundService.serviceInboundForManager(memberId);
                     break;
                 case 2:
-                    System.out.println(" 고");
                     ReleaseService releaseService = new ReleaseServiceImpl();
-                    releaseService.showReleaseMenuForManager();
+                    releaseService.showReleaseMenuForManager(memberId);
                     break;
                 case 3:
                     try {
@@ -209,7 +208,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                     break;
                 case 5:
                     WarehouseService warehouseService = new WarehouseServiceImpl();
-                    warehouseService.warehouseMenu();
+                    warehouseService.warehouseMenu(memberId);
                     break;
                 case 6:
                     manageMemberInfo(memberId);

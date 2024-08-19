@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class ReleaseRequestDao extends ReleaseDBIO {
 
-  public boolean registerReleaseRequest() {
+  public boolean registerReleaseRequest(String memberId) {
 
     String query = "INSERT release_request VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -24,14 +24,14 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       System.out.println("*표시는 필수입력사항입니다.");
       pstmt.setString(1, autoCreateId("출고요청", LocalDateTime.now()));
       pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-      pstmt.setString(3, inputStr("주문회원ID(*)"));
+      pstmt.setString(3, memberId);
       pstmt.setString(4, inputStr("출고물품ID(*)"));
       pstmt.setInt(5, inputInt("주문수량(*)"));
       pstmt.setString(6, inputStr("수취인이름(*)"));
       pstmt.setString(7, inputStr("수취인주소(*)"));
       pstmt.setString(8, inputStr("수취인연락처(*)"));
       pstmt.setString(9, inputStr("주문요청사항"));
-      pstmt.setString(10, ApprovalStatus.ON_PROCESS.getDescription());
+      pstmt.setString(10, "처리중");
       pstmt.setString(11, inputStr("비고"));
       pstmt.executeUpdate();
       System.out.println("등록성공");

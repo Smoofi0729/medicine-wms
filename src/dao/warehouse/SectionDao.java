@@ -1,6 +1,5 @@
 package dao.warehouse;
 
-import static config.UtilMethod.inputSectionType;
 import static config.UtilMethod.inputStr;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,7 +20,7 @@ public class SectionDao extends WarehouseDBIO {
       pstmt.setInt(3, width);
       pstmt.setInt(4, length);
       pstmt.setInt(5, height);
-      pstmt.setString(6, inputSectionType("섹션종류(냉장,냉동,실온)").toString());
+      pstmt.setString(6, inputStr("섹션종류(냉장,냉동,실온)"));
       pstmt.setInt(7, sectionCapacity);
       pstmt.setString(8, inputStr("비고"));
       pstmt.executeUpdate();

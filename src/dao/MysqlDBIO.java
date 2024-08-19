@@ -14,9 +14,9 @@ public class MysqlDBIO extends ObjectDBIO1 {
   private Connection connection;
   private PreparedStatement pstmt;
   private ResultSet rs;
-  private String MYSQL_URL = "jdbc:mysql://localhost:3306/wms";
-  private String MYSQL_ID = "ssg";
-  private String MYSQL_PW = "ssg";
+  private String MYSQL_URL = "jdbc:mysql://localhost:3306/wms?serverTimezone=Asia/Seoul";
+  private String MYSQL_ID = "root";
+  private String MYSQL_PW = "1234";
 
   @Override
   public Connection open() {
