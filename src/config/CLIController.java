@@ -102,9 +102,7 @@ public class CLIController {
                             ReleaseService releaseService = new ReleaseServiceImpl();
                             releaseService.showReleasesForMall();
                     }
-
-
-                    validinput = true;
+                    
                     break;
                 case 3:
                     System.out.println("재고 조회");
