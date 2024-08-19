@@ -1,9 +1,10 @@
 package interfaces.release;
 
 public interface ReleaseRequestService {
-  void releaseRequestMenuForMall();
 
   void releaseRequestMenuForManager();
+
+  void releaseRequestMenuForMall(String memberId);
 
   void readReleaseRequestByApprovalStatus();
 

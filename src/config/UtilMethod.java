@@ -43,19 +43,6 @@ public class UtilMethod{
     }
   }
 
-  public static SectionType inputSectionType(String input) {
-    System.out.print(input + " : ");
-    try {
-      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      return SectionType.fromDescription(br.readLine()); // 입력값을 enum으로 변환
-    } catch (IllegalArgumentException e) {
-      System.out.println("잘못된 입력입니다. 다시 시도해주세요.");
-      return inputSectionType(input); // 재귀 호출을 통해 재입력 요청
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public static boolean recheckDelete() {
     System.out.println("정말로 삭제하시겠습니까?");
     System.out.println("1. 예 | 2. 아니오");
@@ -96,14 +83,14 @@ public class UtilMethod{
   public static HashMap<Integer, String> selectColumn(String table) {
     HashMap<Integer, String> columns = new HashMap<>();
     int number = 0;
-    String query = "select column_name from information_schema.columns where table_name = '" + table + "'";
+    String query = "select column_name from information_schema.columns where table_name = '" + table + "' order by ordinal_position";
     try (Connection connection = new MysqlDBIO().open();
         PreparedStatement pstmt = connection.prepareStatement(query)) {
 
       try (ResultSet rs = pstmt.executeQuery()) {
 
         while (rs.next()) {
-          number++;
+          ++number;
           columns.put(number, rs.getString("column_name"));
         }
         return columns;

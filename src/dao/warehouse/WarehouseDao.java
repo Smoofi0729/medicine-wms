@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class WarehouseDao extends WarehouseDBIO {
 
-  public void registerWh() {
+  public void registerWh(String memberId) {
 
     String procedure = "{CALL registerWarehouse(?,?,?,?,?,?,?,?,?)}";
     boolean success = false;
@@ -32,7 +32,7 @@ public class WarehouseDao extends WarehouseDBIO {
         cstmt.setInt(5, capacity);
         cstmt.setInt(6, capacity);
         cstmt.setDate(7, Date.valueOf(LocalDate.now()));
-        cstmt.setString(8, inputStr("관리자id"));
+        cstmt.setString(8, memberId);
         cstmt.setString(9, inputStr("비고"));
         cstmt.executeUpdate();
         System.out.println("등록성공");

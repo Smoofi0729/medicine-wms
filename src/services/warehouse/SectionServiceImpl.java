@@ -4,7 +4,7 @@ import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.selectColumn;
-import static config.enums.Messeges.*;
+import static enums.Messeges.*;
 
 import enums.SectionType;
 import config.UtilMethod;
@@ -12,6 +12,7 @@ import dao.warehouse.SectionDao;
 import dao.warehouse.WarehouseDao;
 import interfaces.warehouse.SectionService;
 import interfaces.warehouse.WarehouseService;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class SectionServiceImpl implements SectionService {
   }
 
   @Override
-  public void sectionMenu() {
+  public void sectionMenu(String memberId) throws SQLException, IOException {
     while (true) {
       printMessage(SC_MENU);
       System.out.println("1. 등록 | 2. 조회 | 3. 수정 및 삭제 | 4. 상위메뉴로");
@@ -53,9 +54,9 @@ public class SectionServiceImpl implements SectionService {
             }
           }
         }
-        case 2 -> showSelectMenu();
+        case 2 -> showSelectMenu(memberId);
         case 3 -> showUpdateMenu();
-        case 4 -> warehouseService.warehouseMenu();
+        case 4 -> {return;}
         default -> printMessage(WRONG_INPUT);
       }
     }
@@ -79,13 +80,13 @@ public class SectionServiceImpl implements SectionService {
     }
   }
 
-  public void showSelectMenu() {
+  public void showSelectMenu(String memberId) throws SQLException, IOException {
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 타입별조회 | 4. 상위메뉴");
     switch (inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllSection();
       case 2 -> readBySectionId();
       case 3 -> readSectionByType();
-      case 4 -> sectionMenu();
+      case 4 -> sectionMenu(memberId);
     }
   }
 
