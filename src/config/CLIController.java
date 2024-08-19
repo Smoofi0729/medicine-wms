@@ -1,7 +1,5 @@
 package config;
 
-import config.ConnectionFactory;
-import services.InboundServiceImpl;
 import services.WMS;
 import services.memberServices;
 import vo.LOGO;
