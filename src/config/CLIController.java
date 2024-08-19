@@ -186,7 +186,6 @@ public class CLIController {
                     System.out.println(" 고");
                     ReleaseService releaseService = new ReleaseServiceImpl();
                     releaseService.showReleaseMenuForManager();
-                    validinput = true;
                     break;
                 case 3:
                     try {
@@ -208,7 +207,6 @@ public class CLIController {
                 case 5:
                     WarehouseService warehouseService = new WarehouseServiceImpl();
                     warehouseService.warehouseMenu();
-                    validinput = true;
                     break;
                 case 6:
                     manageMemberInfo(memberId);
