@@ -21,8 +21,12 @@ public class ReleaseServiceImpl implements ReleaseService {
 
   private ReleaseDao releaseDao;
 
+  public ReleaseServiceImpl() {
+    this.releaseDao = new ReleaseDao();
+  }
+
   @Override
-  public void releaseMenu() {
+  public void showReleaseMenuForManager() {
     while (true) {
       System.out.println("=====================================================================");
       System.out.println("출고관리 메뉴");
@@ -30,11 +34,11 @@ public class ReleaseServiceImpl implements ReleaseService {
 
       System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정");
       switch (UtilMethod.inputInt("메뉴선택")) {
-        case 1 -> showReleaseMenu();
+        case 1 -> showReadReleaseMenu();
         case 2 -> showUpdateMenu("releases");
-        case 3 -> showDispatchMenu();
+        case 3 -> showReadDispatchMenu();
         case 4 -> showUpdateMenu("dispatch");
-        case 5 -> showWayBillMenu();
+        case 5 -> showReadWayBillMenu();
         case 6 -> showUpdateMenu("waybill");
         default -> System.out.println("입력이 잘못되었습니다.");
       }
@@ -47,36 +51,36 @@ public class ReleaseServiceImpl implements ReleaseService {
     releaseDao.callMyReleaseProc(inputStr("회원ID"));
   }
 
-  public void showReleaseMenu() {
+  public void showReadReleaseMenu() {
     String table = "releases";
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 출고날짜별 조회 | 4. 상위메뉴로");
     switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
       case 3 -> readReleaseByDate();
-      case 4 -> releaseMenu();
+      case 4 -> showReadReleaseMenu();
     }
   }
 
-  public void showDispatchMenu() {
+  public void showReadDispatchMenu() {
     String table = "dispatch";
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 등록대기중배차 조회 | 4. 상위메뉴로");
     switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
       case 3 -> releaseDao.readDispatchByStatus(ApprovalStatus.ON_PROCESS);
-      case 4 -> releaseMenu();
+      case 4 -> showReadReleaseMenu();
     }
   }
 
-  public void showWayBillMenu() {
+  public void showReadWayBillMenu() {
     String table = "waybill";
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 배송출발날짜별 조회 | 4. 상위메뉴로");
     switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
       case 3 -> readWayBillByDate();
-      case 4 -> releaseMenu();
+      case 4 -> showReadReleaseMenu();
     }
   }
 

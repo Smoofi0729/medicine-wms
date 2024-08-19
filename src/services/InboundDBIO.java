@@ -1,6 +1,6 @@
 package services;
 
-import dao.ObjectDBIO;
+import config.ObjectDBIO;
 import vo.*;
 import interfaces.InboundIO;
 import java.sql.ResultSet;

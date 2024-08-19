@@ -1,28 +1,39 @@
 package config;
 
+import static config.UtilMethod.inputInt;
 import config.ConnectionFactory;
 import services.AdminFunctions;
 import interfaces.ExpenditureService;
 import interfaces.RevenueService;
 import interfaces.StockPrintService;
 import interfaces.StockTakingService;
-import services.FinanceServiceImpl;
-import services.StockPrintServiceImpl;
-import services.StockTakingServiceImpl;
-import services.memberServices;
-import vo.*;
-
+import interfaces.release.ReleaseRequestService;
+import interfaces.release.ReleaseService;
+import interfaces.warehouse.WarehouseService;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import services.FinanceServiceImpl;
+import services.StockPrintServiceImpl;
+import services.StockTakingServiceImpl;
+import services.memberServices;
+import services.release.ReleaseRequestServiceImpl;
+import services.release.ReleaseServiceImpl;
+import services.warehouse.WarehouseServiceImpl;
+import vo.Expenditure;
+import vo.LOGO;
+import vo.Stock;
+import vo.StockTaking;
+import vo.UserMessege;
 
 public class CLIController {
-    private Connection connection; // Changed to non-static
+    private static Connection connection;
 
-    public void BasicMenu() throws Exception { // Changed to non-static
+    public static void BasicMenu() throws Exception {
+
         boolean validinput = false;
 
         LOGO.logo(); // 로고
@@ -81,7 +92,19 @@ public class CLIController {
                     System.out.println("입고");
                     break;
                 case 2:
-                    System.out.println("출고");
+                    System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고현황");
+                    switch (inputInt("메뉴선택")) {
+                        case 1 :
+                            ReleaseRequestService releaseRequestService = new ReleaseRequestServiceImpl();
+                            releaseRequestService.releaseRequestMenuForMall();
+                            break;
+                        case 2:
+                            ReleaseService releaseService = new ReleaseServiceImpl();
+                            releaseService.showReleasesForMall();
+                    }
+
+
+                    validinput = true;
                     break;
                 case 3:
                     System.out.println("재고 조회");
@@ -160,7 +183,10 @@ public class CLIController {
                     System.out.println("입고");
                     break;
                 case 2:
-                    System.out.println("출고");
+                    System.out.println(" 고");
+                    ReleaseService releaseService = new ReleaseServiceImpl();
+                    releaseService.showReleaseMenuForManager();
+                    validinput = true;
                     break;
                 case 3:
                     try {
@@ -180,7 +206,9 @@ public class CLIController {
                     }
                     break;
                 case 5:
-                    System.out.println("고객센터");
+                    WarehouseService warehouseService = new WarehouseServiceImpl();
+                    warehouseService.warehouseMenu();
+                    validinput = true;
                     break;
                 case 6:
                     manageMemberInfo(memberId);
