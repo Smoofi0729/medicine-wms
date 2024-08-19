@@ -4,6 +4,7 @@ import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.selectColumn;
+import static config.enums.Messeges.*;
 
 import config.enums.SectionType;
 import config.UtilMethod;
@@ -39,7 +40,7 @@ public class SectionServiceImpl implements SectionService {
   @Override
   public void sectionMenu() {
     while (true) {
-      System.out.println("섹션관리 메뉴");
+      printMessage(SC_MENU);
       System.out.println("1. 등록 | 2. 조회 | 3. 수정 및 삭제 | 4. 상위메뉴로");
       switch (inputInt("메뉴선택")) {
         case 1 -> {
@@ -55,7 +56,7 @@ public class SectionServiceImpl implements SectionService {
         case 2 -> showSelectMenu();
         case 3 -> showUpdateMenu();
         case 4 -> warehouseService.warehouseMenu();
-        default -> System.out.println("입력이 잘못되었습니다.");
+        default -> printMessage(WRONG_INPUT);
       }
     }
   }
@@ -80,7 +81,7 @@ public class SectionServiceImpl implements SectionService {
 
   public void showSelectMenu() {
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 타입별조회 | 4. 상위메뉴");
-    switch (inputInt("조회방법을 선택해주세요")) {
+    switch (inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllSection();
       case 2 -> readBySectionId();
       case 3 -> readSectionByType();
@@ -106,16 +107,16 @@ public class SectionServiceImpl implements SectionService {
   }
 
   public void showUpdateMenu() {
-    String id = inputStr("수정 및 삭제할 섹션의 id를 입력하세요");
+    String id = inputStr(WHICH_ID.getDescription());
     ResultSet rs = sectionDao.selectFilterBy("section_id", id);
     if (isValidId(sectionDao.selectFilterBy("section_id", id))) {
       printInfo(rs);
-      System.out.println("1. 수정 | 2. 삭제");
+      printMessage(UPDATE_OR_DELETE);
       switch (inputInt("메뉴선택")) {
         case 1:
 
           HashMap<String, String> updates = new HashMap<>();
-          System.out.println(("수정할 항목을 선택해주세요 (없으면 0 입력)"));
+          printMessage(WHICH_COLUMN);
           System.out.println("1.섹션ID 2.창고ID 3.가로길이 4.세로길이 5.높이 6.섹션종류");
           while (true) {
             int choice = inputInt("수정할 항목");
@@ -123,21 +124,21 @@ public class SectionServiceImpl implements SectionService {
             if (choice == 0) {
               break;
             }
-            String update = inputStr("수정할 내용을 입력해주세요");
+            String update = inputStr(UPDATE_HOW.getDescription());
             updates.put(column, update);
           }
           boolean success = sectionDao.updateSection(updates, id);
           if (success) {
-            System.out.println("업데이트 성공");
+            printMessage(UPDATE_SUCCESS);
           } else {
-            System.out.println("업데이트 실패");
+            printMessage(UPDATE_CANCEL);
           }
         case 2:
           if (UtilMethod.recheckDelete()) {
             sectionDao.deleteSection(id);
-            System.out.println("삭제 성공");
+            printMessage(DELETE_SUCCESS);
           } else {
-            System.out.println("삭제 철회");
+            printMessage(DELETE_CANCEL);
           }
           break;
       }

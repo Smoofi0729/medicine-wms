@@ -5,7 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class WMS {
+public class  WMS {
   static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
   static InboundServiceImpl InboundService = new InboundServiceImpl();
   static int nsel;
