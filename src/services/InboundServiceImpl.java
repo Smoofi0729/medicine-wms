@@ -1,8 +1,6 @@
 package services;
 
-import DTO.InboundApproval;
-import DTO.InboundInspection;
-import DTO.InboundRequest;
+import vo.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
