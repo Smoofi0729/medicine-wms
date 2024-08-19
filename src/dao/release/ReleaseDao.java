@@ -2,6 +2,7 @@ package dao.release;
 
 import enums.ApprovalStatus;
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -55,22 +56,33 @@ public class ReleaseDao extends ReleaseDBIO {
     }
   }
 
-  public void callMyReleaseProc(String id) {
-    String procedure = "{CALL GetMemberReleaseStatus(?)}";
-    try (CallableStatement cstmt = getConnection().prepareCall(procedure)) {
-      cstmt.setString(1, id);
+  public void callMyRelease(String memberId) {
+    String procedure = "{CALL GetMemberReleaseStatus()}";
+    try (Connection connection = open();
+        CallableStatement cstmt = connection.prepareCall(procedure)) {
       try (ResultSet rs = cstmt.executeQuery()) {
+        if (!rs.next()) {
+          System.out.println("예정된 출고가 없습니다.");
+          return;
+        }
         while (rs.next()) {
-          System.out.println("출고요청ID: " + rs.getString("release_reqId"));
-          System.out.println("출고물품번호: " + rs.getString("product_lotno"));
-          System.out.println("주문수량: " + rs.getInt("order_quantity"));
-          System.out.println("출고날짜: " + rs.getString("releases_date"));
-          System.out.println("배송상태: " + rs.getString("delivery_status"));
-          System.out.println("배송출발날짜: " + rs.getDate("departure_date"));
+          System.out.print("출고요청ID: " + rs.getString("release_reqId") + "\t");
+          System.out.print("출고물품번호: " + rs.getString("product_lotno") + "\t");
+          System.out.print("주문수량: " + rs.getInt("order_quantity") + "\t");
+
+          System.out.print("출고날짜: " + rs.getDate("release_date") + "\t");
+          System.out.print("배송상태: " + rs.getString("delivery_status") + "\t");
+          System.out.println("배송출발날짜: " + rs.getDate("departure_date") + "\t");
         }
       }
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      if (e.getMessage().contains("Column 'release_date' not found")) {
+        System.out.println("(출고대기중)");
+      } else if (e.getMessage().contains("Column 'delivery_status' not found")) {
+        System.out.println("(배차대기중)");
+      } else if (e.getMessage().contains("Column 'departure_date' not found")){
+        System.out.println("(배송준비중)");
+      }
     }
   }
 

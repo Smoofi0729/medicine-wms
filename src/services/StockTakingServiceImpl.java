@@ -2,12 +2,9 @@ package services;
 
 import dao.StockTakingDao;
 import interfaces.StockTakingService;
-import vo.Stock;
-import vo.StockTaking;
-
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
+import vo.StockTaking;
 
 public class StockTakingServiceImpl implements StockTakingService {
     private StockTakingDao stockTakingDao;

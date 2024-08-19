@@ -31,7 +31,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   }
 
   @Override
-  public void showReleaseMenuForManager(String memberId) throws SQLException, IOException {
+  public void releaseMenuForManager(String memberId) throws SQLException, IOException {
     while (true) {
 
       printMessage(DEVIDER);
@@ -52,9 +52,9 @@ public class ReleaseServiceImpl implements ReleaseService {
   }
 
   @Override
-  public void showReleasesForMall() {
+  public void showReleasesForMall(String memberId) {
     System.out.println("나의 출고현황");
-    releaseDao.callMyReleaseProc(inputStr("회원ID"));
+    releaseDao.callMyRelease(memberId);
   }
 
   public void showReadReleaseMenu() {

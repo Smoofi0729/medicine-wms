@@ -53,7 +53,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
           String update = inputStr(UPDATE_HOW.getDescription());
           String updateValue = "수정요청 - " + update;
-          updateRequest.put("release_request_note", updateValue);
+          updateRequest.put("release_req_note", updateValue);
 
           boolean requestSuccess = releaseRequestDao.updateReleaseRequest(updateRequest, id);
           if (requestSuccess) {
@@ -68,7 +68,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
           if (recheckDelete()) {
             HashMap<String, String> deleteRequest = new HashMap<>();
             String deleteValue = "삭제요청";
-            deleteRequest.put("release_request_note", deleteValue);
+            deleteRequest.put("release_req_note", deleteValue);
 
             requestSuccess = releaseRequestDao.updateReleaseRequest(deleteRequest, id);
             if (requestSuccess) {
@@ -136,8 +136,8 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
   @Override
   public void readByCustId() {
-    String custName = inputStr("주문자이름");
-    printInfo(releaseRequestDao.selectFilterBy("customer_name", custName));
+    String custId = inputStr("주문회원ID");
+    printInfo(releaseRequestDao.selectFilterBy("member_id", custId));
   }
 
   public void readRequestByMall() {
@@ -190,7 +190,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
   public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append(
-        "출고요청ID\t\t\t요청날짜\t\t\t주문회원ID\t\t\t출고물품ID\t\t\t주문수량\t\t\t수취인이름\t\t\t수취인주소\t\t\t수취인연락처\t\t\t주문요청사항\t\t\t요청처리상태\t\t\t비고\t\t\t\n");
+        "출고요청ID\t\t\t\t\t\t\t요청날짜\t\t\t\t\t\t\t\t주문회원ID\t\t출고물품ID\t\t주문수량\t\t수취인이름\t\t수취인주소\t\t수취인연락처\t\t주문요청사항\t\t요청처리상태\t\t비고\t\t\t\t\t\n");
     try {
       while (rs.next()) {
         result.append(releaseRequestDao.getRs().getString("release_reqId")).append("\t\t");

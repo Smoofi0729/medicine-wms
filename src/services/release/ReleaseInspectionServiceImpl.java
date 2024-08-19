@@ -82,7 +82,7 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
       printInfo(rs);
       HashMap<String, String> updates = new HashMap<>();
       printMessage(WHICH_COLUMN);
-      System.out.println("1.출고검수ID 2.출고요청ID 3.검수날짜 4.검수자 5.검수시간 6.비고");
+      System.out.println("1.출고검수ID 2.출고요청ID 3.검수결과 4.검수자 5.검수시간 6.비고");
       while (true) {
         int choice = inputInt("수정할 항목");
         String column = selectColumn(table).get(choice);
@@ -105,7 +105,7 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
     public void printInfo(ResultSet rs){
       StringBuilder result = new StringBuilder();
       result.append(
-          "출고검수ID\t\t\t출고요청ID\t\t\t검수날짜\t\t\t검수자\t\t\t검수시간\t\t\t비고\n");
+          "출고검수ID\t\t\t\t\t\t\t출고요청ID\t\t\t\t\t\t\t검수결과\t\t검수자\t\t검수시간\t\t\t비고\n");
       try {
         while (rs.next()) {
           result.append(releaseInspectionDao.getRs().getString("release_insptId")).append("\t\t");

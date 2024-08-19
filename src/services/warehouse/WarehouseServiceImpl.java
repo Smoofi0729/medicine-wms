@@ -46,7 +46,6 @@ public class WarehouseServiceImpl implements WarehouseService {
         case 3 -> showUpdateMenu();
         case 4 -> {
           sectionService.sectionMenu(memberId);
-          break;
         }
         case 5 -> {return;}
         default -> printMessage(WRONG_INPUT);

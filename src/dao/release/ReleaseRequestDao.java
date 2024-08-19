@@ -3,6 +3,8 @@ package dao.release;
 import static config.UtilMethod.autoCreateId;
 import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
+import static enums.Messeges.DEVIDER;
+import static enums.Messeges.printMessage;
 
 import enums.ApprovalStatus;
 import java.sql.Connection;
@@ -86,13 +88,10 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       readyPstmt(query);
       getPstmt().setString(1, status.getDescription());
       setRs(getPstmt().executeQuery());
-      while (true) {
-        if (getRs().next()) {
-          System.out.print("처리상태가 " +status.getDescription()+ "인 출고요청ID 목록\n" + getRs().getString("release_reqId") + "\n");
-        } else {
-          System.out.println("데이터가 존재하지 않습니다.");
-          break;
-        }
+      System.out.println("처리상태가 '" + status.getDescription() + "' 인 출고요청ID 목록");
+      printMessage(DEVIDER);
+      while (getRs().next()) {
+         getRs().getString("release_reqId" + "\n");
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -161,7 +160,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       return true;
     } catch (SQLException e) {
       throw new RuntimeException(e);
-    } finally{
+    } finally {
       close(getPstmt());
       close(getConnection());
     }

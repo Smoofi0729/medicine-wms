@@ -24,6 +24,7 @@ import java.text.ParseException;
 import services.FinanceServiceImpl;
 import services.StockPrintServiceImpl;
 import services.StockTakingServiceImpl;
+import services.release.ReleaseMainMenu;
 import services.release.ReleaseRequestServiceImpl;
 import services.release.ReleaseServiceImpl;
 import services.warehouse.WarehouseServiceImpl;
@@ -84,7 +85,7 @@ public class CLIController {
 public void MemberMainMenu(String memberId) throws IOException {
                     boolean exit = false;
                     CLIController cliController = new CLIController();
-                    InboundService inboundService = new InboundService();
+//                    InboundService inboundService = new InboundService();
 
                     while (!exit) {
                         System.out.println(memberId + " 님 환영합니다.");
@@ -93,10 +94,10 @@ public void MemberMainMenu(String memberId) throws IOException {
                         switch (select) {
                             case 1:
                                 System.out.println("입고");
-                                inboundService.serviceInboundForMember(memberId);
+//                                inboundService.serviceInboundForMember(memberId);
                     break;
                 case 2:
-                    System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고현황");
+                    System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고예정현황");
                     switch (inputInt("메뉴선택")) {
                         case 1 :
                             ReleaseRequestService releaseRequestService = new ReleaseRequestServiceImpl();
@@ -104,7 +105,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                             break;
                         case 2:
                             ReleaseService releaseService = new ReleaseServiceImpl();
-                            releaseService.showReleasesForMall();
+                            releaseService.showReleasesForMall(memberId);
                     }
                     break;
                 case 3:
@@ -173,7 +174,7 @@ public void MemberMainMenu(String memberId) throws IOException {
 
     public void adminMainMenu(String memberId) throws IOException, SQLException { 
         boolean exit = false;
-        InboundService inboundService = new InboundService();
+//        InboundService inboundService = new InboundService();
         CLIController cliController = new CLIController();
         
         while (!exit) {
@@ -183,11 +184,11 @@ public void MemberMainMenu(String memberId) throws IOException {
             switch (select) {
                 case 1:
                     System.out.println("입고");
-                    inboundService.serviceInboundForManager(memberId);
+//                    inboundService.serviceInboundForManager(memberId);
                     break;
                 case 2:
-                    ReleaseService releaseService = new ReleaseServiceImpl();
-                    releaseService.showReleaseMenuForManager(memberId);
+
+                    new ReleaseMainMenu().showReleaseManageMenu(memberId);
                     break;
                 case 3:
                     try {
