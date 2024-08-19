@@ -1,28 +1,26 @@
-/*
 package controller;
 
-import services.InboundServiceImpl;
-
 import java.util.Scanner;
+import services.InboundServiceImpl;
 
 public class InboundService {
   public static Scanner sc = new Scanner(System.in);
   public static int nsel;
-
-  public static void main(String[] args) {
+  public static int auto_increment = 0;
+/*  public static void main(String[] args) {
     InboundService Instance = new InboundService();
-    System.out.println("회원구분 입력(관리자:1, 회원:2): ");
+    System.out.print("회원구분 입력(관리자:1, 회원:2): ");
     int nsel = sc.nextInt();
     if(nsel == 1)
-      Instance.serviceInboundForManager();
+      Instance.serviceInboundForManager("G001");
     else
-      Instance.serviceInboundForMember("M001");
-  }
+      Instance.serviceInboundForMember("M003");
+  }*/
 
   public void serviceInboundForMember(String memberId){ //회원의 입고정보에 대해서만
     InboundServiceImpl InboundService = new InboundServiceImpl();
     while(true){
-      System.out.println("===========[1. 입고]===========");
+      System.out.println("======================[1. 입고]======================");
       System.out.println("        1. 입고요청");
       System.out.println("        2. 입고요청 현황");
       System.out.println("        3. 이전으로");
@@ -31,6 +29,7 @@ public class InboundService {
       switch (nsel){
         case 1:
           InboundService.processInboundRequest(memberId);
+          continue;
         case 2:
           InboundService.printInboundRequest(memberId);
           continue;
@@ -41,10 +40,10 @@ public class InboundService {
     }
   }
 
-  public void serviceInboundForManager(){ //전체입고 정보에 대해서
+  public void serviceInboundForManager(String managerId){ //전체입고 정보에 대해서
     InboundServiceImpl InboundService = new InboundServiceImpl();
     while(true){
-      System.out.println("===========[1. 입고]===========");
+      System.out.println("======================[1. 입고]======================");
       System.out.println("        1. 입고요청 검수");
       System.out.println("        2. 입고요청 승인");
       System.out.println("        3. 입고요청 현황");
@@ -53,10 +52,10 @@ public class InboundService {
       nsel = sc.nextInt();
       switch (nsel){
         case 1:
-          InboundService.processInboundInspection();
+          InboundService.processInboundInspection(managerId);
           continue;
         case 2:
-          InboundService.processInboundApproval();
+          InboundService.processInboundApproval(managerId);
           continue;
         case 3:
           InboundService.printInboundRequest();
@@ -69,4 +68,3 @@ public class InboundService {
   }
 
 }
-*/

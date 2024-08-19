@@ -84,7 +84,7 @@ public class CLIController {
 public void MemberMainMenu(String memberId) throws IOException {
                     boolean exit = false;
                     CLIController cliController = new CLIController();
-                    //WMS inboundservice = new WMS();
+                    InboundService inboundService = new InboundService();
 
                     while (!exit) {
                         System.out.println(memberId + " 님 환영합니다.");
@@ -93,7 +93,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                         switch (select) {
                             case 1:
                                 System.out.println("입고");
-                                //inboundservice.serviceInbound();
+                                inboundService.serviceInboundForMember(memberId);
                     break;
                 case 2:
                     System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고현황");
@@ -173,7 +173,7 @@ public void MemberMainMenu(String memberId) throws IOException {
 
     public void adminMainMenu(String memberId) throws IOException, SQLException { 
         boolean exit = false;
-        //WMS inboundService = new WMS();
+        InboundService inboundService = new InboundService();
         CLIController cliController = new CLIController();
         
         while (!exit) {
@@ -183,7 +183,7 @@ public void MemberMainMenu(String memberId) throws IOException {
             switch (select) {
                 case 1:
                     System.out.println("입고");
-                    //inboundService.serviceInbound();
+                    inboundService.serviceInboundForManager(memberId);
                     break;
                 case 2:
                     System.out.println(" 고");
