@@ -55,16 +55,16 @@ public class FinanceDao {
     public int insertExpenditure(Expenditure expenditure) throws SQLException {
         String query = "INSERT INTO expenditure (expenditure_id, warehouse_id, expenditure_date, expenditure_charge, expenditure_category, note) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            setExpenditureParameters(pstmt, expenditure);
+            setExpenditureInsert(pstmt, expenditure);
             return pstmt.executeUpdate();
         }
     }
 
     public int updateExpenditure(Expenditure expenditure) throws SQLException {
-        String query = "UPDATE expenditure SET warehouse_id = ?, expenditure_date = ?, expenditure_charge = ?, expenditure_category = ?, note = ? WHERE expenditure_id = ?";
+        String query = "UPDATE expenditure SET expenditure_date = ?, expenditure_charge = ?, expenditure_category = ?, note = ? WHERE expenditure_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            setExpenditureParameters(pstmt, expenditure);
-            pstmt.setString(6, expenditure.getExpenditureId());
+            setExpenditureUpdate(pstmt, expenditure);
+            pstmt.setString(5, expenditure.getExpenditureId());
             return pstmt.executeUpdate();
         }
     }
@@ -100,7 +100,14 @@ public class FinanceDao {
         return expenditure;
     }
 
-    private void setExpenditureParameters(PreparedStatement pstmt, Expenditure expenditure) throws SQLException {
+    private void setExpenditureUpdate(PreparedStatement pstmt, Expenditure expenditure) throws SQLException {
+        pstmt.setDate(1, new Date(expenditure.getExpenditureDate().getTime()));
+        pstmt.setInt(2, expenditure.getExpenditureCharge());
+        pstmt.setString(3, expenditure.getExpenditureCategory());
+        pstmt.setString(4, expenditure.getNote());
+    }
+
+    private void setExpenditureInsert(PreparedStatement pstmt, Expenditure expenditure) throws SQLException {
         pstmt.setString(1, expenditure.getExpenditureId());
         pstmt.setString(2, expenditure.getWarehouseId());
         pstmt.setDate(3, new Date(expenditure.getExpenditureDate().getTime()));

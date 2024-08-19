@@ -14,8 +14,8 @@ public class StockDao {
 
     private final Connection connection;
     private Stock stock;
-    private String defaultQuery = "select st.product_lotno, p.product_name, st.section_id, w.warehouse_name, st.total, st.expiration_date from stock st, warehouse w, product p, section se\n" +
-            "where st.product_id = p.product_id and st.section_id = se.section_id and w.warehouse_id = st.warehouse_id";
+    private String defaultQuery = "select st.product_lotno, p.product_name, st.section_id, w.warehouse_name, st.total, p.product_id " +
+            "from stock st, warehouse w, product p, section se where st.product_id = p.product_id and st.section_id = se.section_id and w.warehouse_id = st.warehouse_id";
 
     public StockDao() {
         this.connection = ConnectionFactory.getInstance().open();
@@ -26,7 +26,7 @@ public class StockDao {
     }
 
     public List<Stock> selectBySectionStock(Stock stock) throws SQLException {
-        return executeQuery(defaultQuery + " where st.section_id = ?;", stock);
+        return executeQuery(defaultQuery + " and st.section_id = ?;", stock);
     }
 
     private List<Stock> executeQuery(String query) throws SQLException {
@@ -57,12 +57,10 @@ public class StockDao {
         Stock stock = new Stock();
         stock.setProductLotNo(rs.getString("product_lotno"));
         stock.setProductName(rs.getString("product_name"));
-        stock.setUnit(rs.getString("unit"));
         stock.setTotal(rs.getInt("total"));
-        stock.setExpirationDate(rs.getInt("expiration_date"));
         stock.setProductId(rs.getString("product_id"));
-        stock.setWarehouseId(rs.getString("warehouse_id"));
         stock.setSectionId(rs.getString("section_id"));
+        stock.setWarehouseName(rs.getString("warehouse_name"));
         return stock;
     }
 }
