@@ -1,5 +1,9 @@
 package config;
 
+import services.WMS;
+import services.memberServices;
+import vo.LOGO;
+import vo.UserMessege;
 import static config.UtilMethod.inputInt;
 import config.ConnectionFactory;
 import services.AdminFunctions;
@@ -79,17 +83,19 @@ public class CLIController {
         }
     }
 
-    public void MemberMainMenu(String memberId) throws IOException { 
-        boolean exit = false;
-        CLIController cliController = new CLIController();
+public void MemberMainMenu(String memberId) throws IOException {
+                    boolean exit = false;
+                    CLIController cliController = new CLIController();
+                    WMS inboundservice = new WMS();
 
-        while (!exit) {
-            System.out.println(memberId + " 님 환영합니다.");
-            System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 | 7.로그아웃");
-            int select = SystemIn.SystemInInt();
-            switch (select) {
-                case 1:
-                    System.out.println("입고");
+                    while (!exit) {
+                        System.out.println(memberId + " 님 환영합니다.");
+                        System.out.println("메인 메뉴 : 1.입고 | 2.출고 | 3.재고 | 4.재무 | 5.고객센터 | 6.회원정보 | 7.로그아웃");
+                        int select = SystemIn.SystemInInt();
+                        switch (select) {
+                            case 1:
+                                System.out.println("입고");
+                                inboundservice.serviceInbound();
                     break;
                 case 2:
                     System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고현황");
@@ -169,6 +175,7 @@ public class CLIController {
 
     public void adminMainMenu(String memberId) throws IOException, SQLException { 
         boolean exit = false;
+        WMS inboundService = new WMS();
         CLIController cliController = new CLIController();
         
         while (!exit) {
@@ -178,6 +185,7 @@ public class CLIController {
             switch (select) {
                 case 1:
                     System.out.println("입고");
+                    inboundService.serviceInbound();
                     break;
                 case 2:
                     System.out.println(" 고");
