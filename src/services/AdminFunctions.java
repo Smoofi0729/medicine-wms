@@ -9,13 +9,13 @@ import java.sql.SQLException;
 
 public class AdminFunctions {
 
-    private Connection connection; // Changed to non-static
+    private Connection connection;
 
-    public AdminFunctions() { // Constructor to initialize the connection
+    public AdminFunctions() {
         this.connection = ConnectionFactory.getInstance().open();
     }
 
-    public void searchAllMembers() throws SQLException { // Changed to non-static
+    public void searchAllMembers() throws SQLException { 
         String sql = "SELECT * FROM member";
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -23,7 +23,7 @@ public class AdminFunctions {
         }
     }
 
-    public void searchMembersByType(String type) throws SQLException { // Changed to non-static
+    public void searchMembersByType(String type) throws SQLException { 
         String sql = "SELECT * FROM member WHERE member_type = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, type);
@@ -33,7 +33,7 @@ public class AdminFunctions {
         }
     }
 
-    public void searchMemberById(String memberId) throws SQLException { // Changed to non-static
+    public void searchMemberById(String memberId) throws SQLException {
         String sql = "SELECT * FROM member WHERE member_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, memberId);
@@ -43,7 +43,7 @@ public class AdminFunctions {
         }
     }
 
-    public void searchMembersWithPendingApproval() throws SQLException { // Changed to non-static
+    public void searchMembersWithPendingApproval() throws SQLException {
         String sql = "SELECT * FROM member WHERE approval = 'false'";
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -51,7 +51,7 @@ public class AdminFunctions {
         }
     }
 
-    public void approveMember(String memberId) throws SQLException { // Changed to non-static
+    public void approveMember(String memberId) throws SQLException { 
         String sql = "UPDATE member SET approval = 'true' WHERE member_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, memberId);
@@ -63,7 +63,7 @@ public class AdminFunctions {
             }
         }
     }
-    public void finalizeMemberDeletion(String memberId) throws SQLException { // Changed to non-static
+    public void finalizeMemberDeletion(String memberId) throws SQLException {
         String sql = "UPDATE member SET member_status = '비활성', approval = 'true' WHERE member_id = ? AND member_status = '비활성 요청'";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, memberId);
@@ -78,7 +78,7 @@ public class AdminFunctions {
         }
     }
 
-    private void printMemberResults(ResultSet rs) throws SQLException { // Changed to private and non-static
+    private void printMemberResults(ResultSet rs) throws SQLException {
         while (rs.next()) {
             System.out.println("ID: " + rs.getString("member_id"));
             System.out.println("이름: " + rs.getString("member_name"));

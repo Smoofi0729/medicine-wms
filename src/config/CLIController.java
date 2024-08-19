@@ -30,9 +30,9 @@ import vo.StockTaking;
 import vo.UserMessege;
 
 public class CLIController {
-    private static Connection connection;
+    private Connection connection; 
 
-    public static void BasicMenu() throws Exception {
+    public void BasicMenu() throws Exception { 
 
         boolean validinput = false;
 
@@ -79,7 +79,7 @@ public class CLIController {
         }
     }
 
-    public void MemberMainMenu(String memberId) throws IOException { // Changed to non-static
+    public void MemberMainMenu(String memberId) throws IOException { 
         boolean exit = false;
         CLIController cliController = new CLIController();
 
@@ -142,7 +142,7 @@ public class CLIController {
         }
     }
 
-    public void DeliveryMainMenu(String memberId) throws IOException { // Changed to non-static
+    public void DeliveryMainMenu(String memberId) throws IOException {
         boolean exit = false;
         while (!exit) {
             System.out.println(memberId + " 님 환영합니다.");
@@ -170,7 +170,7 @@ public class CLIController {
         }
     }
 
-    public void adminMainMenu(String memberId) throws IOException, SQLException { // Changed to non-static
+    public void adminMainMenu(String memberId) throws IOException, SQLException { 
         boolean exit = false;
         CLIController cliController = new CLIController();
         
@@ -223,7 +223,7 @@ public class CLIController {
         }
     }
 
-    private void manageMemberInfo(String memberId) throws IOException, SQLException { // Changed to non-static and private
+    private void manageMemberInfo(String memberId) throws IOException, SQLException { 
         boolean exit = false;
         while (!exit) {
             System.out.println("1. 개인 정보 관리 | 2. 회원 정보 관리 | 3. 뒤로가기");
@@ -244,7 +244,7 @@ public class CLIController {
         }
     }
 
-    private void manageAllMembers() throws SQLException, IOException { // Changed to non-static and private
+    private void manageAllMembers() throws SQLException, IOException {
         boolean exit = false;
         while (!exit) {
             System.out.println("회원 정보 관리 : 1.모든 사용자 조회 | 2.회원 타입별 조회 | 3.회원 ID로 조회 | 4.권한 승인 요청 조회 | 5.권한 승인 |  6.삭제 | 7.뒤로가기");
@@ -294,7 +294,7 @@ public class CLIController {
         }
     }
 
-    public void showMenu(String memberId) throws SQLException, IOException { // Changed to non-static
+    public void showMenu(String memberId) throws SQLException, IOException { 
         try {
             connection = ConnectionFactory.getInstance().open();
             String sql = "SELECT member_type FROM member WHERE member_id = ?";
@@ -501,9 +501,46 @@ public class CLIController {
                 System.out.println("지출 카테고리:");
                 ex.setExpenditureCategory(SystemIn.SystemInString());
                 System.out.println("비고:");
-                ex.setNote(SystemIn.SystemInString());
-
-                es.insertExpenditure(ex);
+                newExpenditure.setNote(SystemIn.SystemInString());
+                es.insertExpenditure(newExpenditure);
+                break;
+            case 4:
+                System.out.println("지출 수정");
+                Expenditure updateExpenditure = new Expenditure();
+                System.out.println("수정할 지출 ID:");
+                updateExpenditure.setExpenditureId(SystemIn.SystemInString());
+                System.out.println("새 창고 ID:");
+                updateExpenditure.setWarehouseId(SystemIn.SystemInString());
+                System.out.println("새 지출 날짜 (yyyy-MM-dd):");
+                try {
+                    updateExpenditure.setExpenditureDate(SystemIn.SystemInDate());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("새 지출 금액:");
+                updateExpenditure.setExpenditureCharge(SystemIn.SystemInInt());
+                System.out.println("새 지출 카테고리:");
+                updateExpenditure.setExpenditureCategory(SystemIn.SystemInString());
+                System.out.println("새 비고:");
+                updateExpenditure.setNote(SystemIn.SystemInString());
+                es.updateExpenditure(updateExpenditure);
+                break;
+            case 5:
+                System.out.println("지출 삭제");
+                Expenditure deleteExpenditure = new Expenditure();
+                System.out.println("삭제할 지출 ID:");
+                deleteExpenditure.setExpenditureId(SystemIn.SystemInString());
+                System.out.println("창고 ID:");
+                deleteExpenditure.setWarehouseId(SystemIn.SystemInString());
+                es.deleteExpenditure(deleteExpenditure);
+                break;
+            case 6:
+                System.out.println("지출 조회 (ID)");
+                System.out.println("조회할 지출 ID:");
+              
+                break;
+            default:
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
         }
 
     }
