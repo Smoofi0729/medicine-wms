@@ -1,6 +1,6 @@
 package dao.release;
 
-import config.enums.ApprovalStatus;
+import enums.ApprovalStatus;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

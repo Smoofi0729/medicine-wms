@@ -1,12 +1,13 @@
-package config;
+package controller;
 
-import services.WMS;
-import services.memberServices;
-import vo.LOGO;
-import vo.UserMessege;
-import static config.UtilMethod.inputInt;
 import config.ConnectionFactory;
-import services.AdminFunctions;
+import config.SystemIn;
+import dao.memberServices;
+import config.LOGO;
+import enums.UserMessege;
+import static config.UtilMethod.inputInt;
+
+import dao.AdminFunctions;
 import interfaces.ExpenditureService;
 import interfaces.RevenueService;
 import interfaces.StockPrintService;
@@ -23,15 +24,12 @@ import java.text.ParseException;
 import services.FinanceServiceImpl;
 import services.StockPrintServiceImpl;
 import services.StockTakingServiceImpl;
-import services.memberServices;
 import services.release.ReleaseRequestServiceImpl;
 import services.release.ReleaseServiceImpl;
 import services.warehouse.WarehouseServiceImpl;
 import vo.Expenditure;
-import vo.LOGO;
 import vo.Stock;
 import vo.StockTaking;
-import vo.UserMessege;
 
 public class CLIController {
     private Connection connection; 
@@ -86,7 +84,7 @@ public class CLIController {
 public void MemberMainMenu(String memberId) throws IOException {
                     boolean exit = false;
                     CLIController cliController = new CLIController();
-                    WMS inboundservice = new WMS();
+                    //WMS inboundservice = new WMS();
 
                     while (!exit) {
                         System.out.println(memberId + " 님 환영합니다.");
@@ -95,7 +93,7 @@ public void MemberMainMenu(String memberId) throws IOException {
                         switch (select) {
                             case 1:
                                 System.out.println("입고");
-                                inboundservice.serviceInbound();
+                                //inboundservice.serviceInbound();
                     break;
                 case 2:
                     System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고현황");
@@ -175,7 +173,7 @@ public void MemberMainMenu(String memberId) throws IOException {
 
     public void adminMainMenu(String memberId) throws IOException, SQLException { 
         boolean exit = false;
-        WMS inboundService = new WMS();
+        //WMS inboundService = new WMS();
         CLIController cliController = new CLIController();
         
         while (!exit) {
@@ -185,7 +183,7 @@ public void MemberMainMenu(String memberId) throws IOException {
             switch (select) {
                 case 1:
                     System.out.println("입고");
-                    inboundService.serviceInbound();
+                    //inboundService.serviceInbound();
                     break;
                 case 2:
                     System.out.println(" 고");

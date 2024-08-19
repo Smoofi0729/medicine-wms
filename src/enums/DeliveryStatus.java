@@ -1,4 +1,4 @@
-package config.enums;
+package enums;
 
 public enum DeliveryStatus {
     ON_DELIVERY("배송중"),

@@ -1,4 +1,4 @@
-package config.enums;
+package enums;
 
 public enum ApprovalStatus {
     ON_PROCESS("처리중"),

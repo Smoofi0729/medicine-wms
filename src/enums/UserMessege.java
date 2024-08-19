@@ -1,4 +1,4 @@
-package vo;
+package enums;
 
 public enum UserMessege {
 

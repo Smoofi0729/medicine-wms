@@ -1,4 +1,4 @@
-package services;
+package config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public abstract class ObjectDBIO {
+public abstract class ObjectDBIO2 {
   private Connection connection = null;
   private String db_url = "jdbc:mysql://localhost:3306/wms";
   private String db_id = "root";

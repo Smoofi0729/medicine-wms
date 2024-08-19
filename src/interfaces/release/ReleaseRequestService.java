@@ -1,8 +1,5 @@
 package interfaces.release;
 
-import interfaces.CrudService;
-import java.sql.ResultSet;
-
 public interface ReleaseRequestService {
   void releaseRequestMenuForMall();
 

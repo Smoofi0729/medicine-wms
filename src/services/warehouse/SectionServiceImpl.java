@@ -5,7 +5,7 @@ import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.selectColumn;
 
-import config.enums.SectionType;
+import enums.SectionType;
 import config.UtilMethod;
 import dao.warehouse.SectionDao;
 import dao.warehouse.WarehouseDao;
@@ -14,7 +14,7 @@ import interfaces.warehouse.WarehouseService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 
 @Data

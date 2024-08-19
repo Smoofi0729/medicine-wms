@@ -4,7 +4,7 @@ import static config.UtilMethod.autoCreateId;
 import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 
-import config.enums.ApprovalStatus;
+import enums.ApprovalStatus;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
