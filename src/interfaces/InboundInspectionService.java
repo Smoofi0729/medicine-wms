@@ -5,5 +5,5 @@ import java.util.ArrayList;
 
 public interface InboundInspectionService{
   public ArrayList<InboundInspection> getInboundInspection();
-  public int updateInboundInspection(String requestId, String InspectionStatus);
+  public int updateInboundInspection(String requestId, String managerID, String InspectionStatus);
 }
