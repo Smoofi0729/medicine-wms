@@ -1,7 +1,5 @@
-/*
 package services;
 
-import config.ObjectDBIO1;
 import vo.*;
 import interfaces.InboundIO;
 import java.sql.ResultSet;
@@ -10,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class InboundDBIO extends ObjectDBIO1 implements InboundIO {
+public abstract class InboundDBIO extends ObjectDBIO implements InboundIO {
 
   @Override
   public ArrayList<InboundApproval> getInboundApproval() {
@@ -106,4 +104,3 @@ public abstract class InboundDBIO extends ObjectDBIO1 implements InboundIO {
     return inboundRequestList;
   }
 }
-*/

@@ -5,6 +5,7 @@ import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.recheckDelete;
 import static config.UtilMethod.selectColumn;
+import static config.enums.Messeges.*;
 
 import config.UtilMethod;
 import enums.ApprovalStatus;
@@ -28,10 +29,10 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Override
   public void showReleaseMenuForManager() {
     while (true) {
-      System.out.println("=====================================================================");
-      System.out.println("출고관리 메뉴");
-      System.out.println("=====================================================================");
 
+      printMessage(DEVIDER);
+      printMessage(RL_MENU);
+      printMessage(DEVIDER);
       System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정");
       switch (UtilMethod.inputInt("메뉴선택")) {
         case 1 -> showReadReleaseMenu();
@@ -40,7 +41,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         case 4 -> showUpdateMenu("dispatch");
         case 5 -> showReadWayBillMenu();
         case 6 -> showUpdateMenu("waybill");
-        default -> System.out.println("입력이 잘못되었습니다.");
+        default -> printMessage(WRONG_INPUT);
       }
     }
   }
@@ -54,7 +55,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   public void showReadReleaseMenu() {
     String table = "releases";
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 출고날짜별 조회 | 4. 상위메뉴로");
-    switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
+    switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
       case 3 -> readReleaseByDate();
@@ -65,7 +66,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   public void showReadDispatchMenu() {
     String table = "dispatch";
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 등록대기중배차 조회 | 4. 상위메뉴로");
-    switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
+    switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
       case 3 -> releaseDao.readDispatchByStatus(ApprovalStatus.ON_PROCESS);
@@ -76,7 +77,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   public void showReadWayBillMenu() {
     String table = "waybill";
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 배송출발날짜별 조회 | 4. 상위메뉴로");
-    switch (UtilMethod.inputInt("조회방법을 선택해주세요")) {
+    switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
       case 3 -> readWayBillByDate();
@@ -123,7 +124,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   }
 
   public void showUpdateMenu(String table) {
-    String id = inputStr("수정 및 삭제할 ID를 입력하세요");
+    String id = inputStr(WHICH_ID.getDescription());
     ResultSet rs = releaseDao.selectFilterBy(table, table + "_id", id);
     if (isValidId(releaseDao.selectFilterBy(table, table + "_id", id))) {
       if (table.equals("releases")) {
@@ -134,11 +135,11 @@ public class ReleaseServiceImpl implements ReleaseService {
         printWayBillInfo(rs);
       }
       releaseDao.close(rs);
-      System.out.println("1. 수정 | 2. 삭제");
+      printMessage(UPDATE_OR_DELETE);
       switch (inputInt("메뉴선택")) {
         case 1:
           HashMap<String, String> updates = new HashMap<>();
-          System.out.println(("수정할 항목을 선택해주세요 (없으면 0 입력)"));
+          printMessage(WHICH_COLUMN);
           if (table.equals("releases")) {
             System.out.println("1.출고ID 2.출고요청ID 3.배차ID 4.출고날짜 5.출고담당자 6.비고");
           } else if (table.equals("dispatch")) {
@@ -152,22 +153,22 @@ public class ReleaseServiceImpl implements ReleaseService {
             if (choice==0) {
               break;
             }
-            String update = inputStr("수정할 내용을 입력해주세요");
+            String update = inputStr(UPDATE_HOW.getDescription());
             updates.put(column, update);
           }
           boolean success = releaseDao.updateData(table, updates, id);
           if (success) {
-            System.out.println("업데이트 성공");
+            printMessage(UPDATE_SUCCESS);
           } else {
-            System.out.println("업데이트 실패");
+            printMessage(UPDATE_CANCEL);
           }
           break;
         case 2:
           if (recheckDelete()) {
             releaseDao.deleteRelease(id);
-            System.out.println("삭제 성공");
+            printMessage(DELETE_SUCCESS);
           } else {
-            System.out.println("삭제 철회");
+            printMessage(DELETE_CANCEL);
           }
       }
     }

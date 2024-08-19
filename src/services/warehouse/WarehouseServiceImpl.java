@@ -4,6 +4,8 @@ import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.selectColumn;
+import static config.enums.Messeges.*;
+import static config.enums.Messeges.printMessage;
 
 import config.UtilMethod;
 import dao.warehouse.WarehouseDao;
@@ -29,9 +31,9 @@ public class WarehouseServiceImpl implements WarehouseService {
   @Override
   public void warehouseMenu() {
     while (true) {
-      System.out.println("=====================================================================");
-      System.out.println("창고관리 메뉴");
-      System.out.println("=====================================================================");
+      printMessage(DEVIDER);
+      printMessage(WH_MENU);
+      printMessage(DEVIDER);
 
       System.out.println("1. 창고등록 | 2. 창고조회 | 3. 창고수정 및 삭제 | 4. 섹션관리 | 5. 상위메뉴로");
       switch (inputInt("메뉴선택")) {
@@ -42,14 +44,14 @@ public class WarehouseServiceImpl implements WarehouseService {
           sectionService.sectionMenu();
           return;
         }
-        default -> System.out.println("입력이 잘못되었습니다.");
+        default -> printMessage(WRONG_INPUT);
       }
     }
   }
 
   public void showSelectMenu() {
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 지역별조회 | 4. 현재 가용량조회 | 5. 상위메뉴로");
-    switch (inputInt("조회방법을 선택해주세요")) {
+    switch (inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllWh();
       case 2 -> readByWhId();
       case 3 -> readByWhLocation();
@@ -58,39 +60,39 @@ public class WarehouseServiceImpl implements WarehouseService {
   }
 
   public void showUpdateMenu() {
-    String id = inputStr("수정 및 삭제할 창고의 id를 입력하세요");
+    String id = inputStr(WHICH_ID.getDescription());
     ResultSet rs = warehouseDao.selectFilterBy("warehouse_id", id);
     if (isValidId(warehouseDao.selectFilterBy("warehouse_id", id))) {
       printInfo(rs);
-      System.out.println("1. 수정 | 2. 삭제");
+      printMessage(UPDATE_OR_DELETE);
       switch (inputInt("메뉴선택")) {
         case 1:
 
           HashMap<String, String> updates = new HashMap<>();
-          System.out.println(("수정할 항목을 선택해주세요 (없으면 0 입력)"));
+          System.out.println(WHICH_COLUMN.getDescription());
           System.out.println("1.창고ID 2.창고이름	3.창고주소 4.창고연락처 5.창고수용량 6.현재가용량 7.등록날짜 8.관리자ID	9.비고");
           while (true) {
             int choice = inputInt("수정할 항목");
             String column = selectColumn(table).get(choice);
-            if (choice==0) {
+            if (choice == 0) {
               break;
             }
-            String update = inputStr("수정할 내용을 입력해주세요");
+            String update = inputStr(UPDATE_HOW.getDescription());
             updates.put(column, update);
           }
           boolean success = warehouseDao.updateWh(updates, id);
           if (success) {
-            System.out.println("업데이트 성공");
+            printMessage(UPDATE_SUCCESS);
           } else {
-            System.out.println("업데이트 실패");
+            printMessage(UPDATE_CANCEL);
           }
           break;
         case 2:
           if (UtilMethod.recheckDelete()) {
             warehouseDao.deleteWh(id);
-            System.out.println("삭제 성공");
+            printMessage(DELETE_SUCCESS);
           } else {
-            System.out.println("삭제 철회");
+            printMessage(DELETE_CANCEL);
           }
       }
     }
