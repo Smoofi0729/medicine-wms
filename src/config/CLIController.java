@@ -108,6 +108,17 @@ public void MemberMainMenu(String memberId) throws IOException {
                             ReleaseService releaseService = new ReleaseServiceImpl();
                             releaseService.showReleasesForMall();
                     }
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+                    
+=======
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                     break;
                 case 3:
                     System.out.println("재고 조회");
