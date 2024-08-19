@@ -4,6 +4,7 @@ import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.recheckDelete;
+import static config.UtilMethod.selectColumn;
 
 import config.UtilMethod;
 import config.enums.ApprovalStatus;
@@ -17,29 +18,33 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
+  private String table = "release_request";
   private ReleaseRequestDao releaseRequestDao;
+
+  public ReleaseRequestServiceImpl() {
+    this.releaseRequestDao = new ReleaseRequestDao();
+  }
 
   @Override
   public void releaseRequestMenuForMall() {
     System.out.println("출고요청 메뉴");
-    System.out.println("1. 보유재고조회 | 2. 출고요청 | 3. 수정 및 삭제 요청 | 4. 요청처리상태 확인");
+    System.out.println("1. 출고요청 | 2. 수정 및 삭제 요청 | 3. 요청처리상태 확인");
     switch (inputInt("메뉴선택")) {
       case 1 -> showSelectMenu();
       case 2 -> releaseRequestDao.registerReleaseRequest();
-      case 3 -> requestUpdate();
+      case 3 -> requestUpdateByMall();
       case 4 -> System.out.println(
           "처리상태 : " + releaseRequestDao.checkRequestStatus(inputStr("확인할 출고요청ID")));
       default -> System.out.println("입력이 잘못되었습니다.");
     }
   }
 
-  public void requestUpdate() {
+  public void requestUpdateByMall() {
     String id = inputStr("수정 및 삭제할 출고요청의 id를 입력하세요");
-    ResultSet rs = releaseRequestDao.selectFilterBy("section_id", id);
-    if (isValidId(releaseRequestDao.selectFilterBy("section_id", id))) {
+    ResultSet rs = releaseRequestDao.selectFilterBy("release_reqId", id);
+    if (isValidId(releaseRequestDao.selectFilterBy("release_reqId", id))) {
       printInfo(rs);
       System.out.println("1. 수정 | 2. 삭제");
       switch (inputInt("메뉴선택")) {
@@ -80,23 +85,6 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
     }
   }
 
-
-  @Override
-  public void releaseRequestMenuForManager() {
-    while (true) {
-      System.out.println("=====================================================================");
-      System.out.println("출고요청관리 메뉴");
-      System.out.println("=====================================================================");
-
-      System.out.println("1. 조회 | 2. 수정 및 삭제");
-      switch (inputInt("메뉴선택")) {
-        case 1 -> showSelectMenu();
-        case 2 -> showUpdateMenu();
-        default -> System.out.println("입력이 잘못되었습니다.");
-      }
-    }
-  }
-
   public void showSelectMenu() {
     System.out.println("1. 전체조회 | 2. 개별조회 | 3. 처리상태별 조회 | 4. 주문자별조회 | 5. 쇼핑몰요청확인");
 
@@ -117,6 +105,22 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
       case 1 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.ON_PROCESS);
       case 2 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.APPROVED);
       case 3 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.REJECTED);
+    }
+  }
+
+  @Override
+  public void releaseRequestMenuForManager() {
+    while (true) {
+      System.out.println("=====================================================================");
+      System.out.println("출고요청관리 메뉴");
+      System.out.println("=====================================================================");
+
+      System.out.println("1. 조회 | 2. 수정 및 삭제");
+      switch (inputInt("메뉴선택")) {
+        case 1 -> showSelectMenu();
+        case 2 -> showUpdateMenu();
+        default -> System.out.println("입력이 잘못되었습니다.");
+      }
     }
   }
 
@@ -146,17 +150,21 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
   public void showUpdateMenu() {
     String id = inputStr("수정 및 삭제할 출고요청의 id를 입력하세요");
-    ResultSet rs = releaseRequestDao.selectFilterBy("section_id", id);
-    if (isValidId(releaseRequestDao.selectFilterBy("section_id", id))) {
+    ResultSet rs = releaseRequestDao.selectFilterBy("release_reqId", id);
+    if (isValidId(releaseRequestDao.selectFilterBy("release_reqId", id))) {
       printInfo(rs);
       releaseRequestDao.close(rs);
       System.out.println("1. 수정 | 2. 삭제");
       switch (inputInt("메뉴선택")) {
         case 1:
+
           HashMap<String, String> updates = new HashMap<>();
+          System.out.println(("수정할 항목을 선택해주세요 (없으면 0 입력)"));
+          System.out.println("1.출고요청ID 2.요청날짜 3.주문회원ID 4.출고물품ID 5.주문수량 6.수취인이름 7.수취인주소 8.수취인연락처 9.주문요청사항 10. 요청처리상태 11.비고");
           while (true) {
-            String column = inputStr("수정할 항목을 입력해주세요 (없으면 exit 입력)");
-            if (column.equals("exit")) {
+            int choice = inputInt("수정할 항목");
+            String column = selectColumn(table).get(choice);
+            if (choice==0) {
               break;
             }
             String update = inputStr("수정할 내용을 입력해주세요");
@@ -180,11 +188,10 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
     }
   }
 
-  @Override
   public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append(
-        "출고요청ID\t\t\t요청날짜\t\t\t주문회원ID\t\t\t출고물품ID\t\t\t주문수량\t\t\t수취인이름\t\t\t수취인주소\t\t\t수취인연락처\t\t\t주문요청사항\t\t\t요청처리상태비고\t\t\t\n");
+        "출고요청ID\t\t\t요청날짜\t\t\t주문회원ID\t\t\t출고물품ID\t\t\t주문수량\t\t\t수취인이름\t\t\t수취인주소\t\t\t수취인연락처\t\t\t주문요청사항\t\t\t요청처리상태\t\t\t비고\t\t\t\n");
     try {
       while (rs.next()) {
         result.append(releaseRequestDao.getRs().getString("release_reqId")).append("\t\t");

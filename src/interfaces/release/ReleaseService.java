@@ -1,11 +1,11 @@
 package interfaces.release;
 
-import interfaces.Services;
+import interfaces.CrudService;
 import java.sql.ResultSet;
 
-public interface ReleaseService extends Services {
+public interface ReleaseService {
 
-  void releaseMenu();
+  void showReleaseMenuForManager();
 
   void showReleasesForMall();
 
@@ -16,6 +16,4 @@ public interface ReleaseService extends Services {
   void readReleaseByDate();
 
   void readWayBillByDate();
-
-  void printInfo(ResultSet rs);
 }

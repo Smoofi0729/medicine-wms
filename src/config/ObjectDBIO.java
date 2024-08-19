@@ -10,32 +10,9 @@ import lombok.Data;
 @Data
 public abstract class ObjectDBIO {
 
-  private String MYSQL_URL = "jdbc:mysql://localhost:3306/wms";
-  private String MYSQL_ID = "ssg";
-  private String MYSQL_PW = "ssg";
-  private Connection connection;
-  private PreparedStatement pstmt;
-  private ResultSet rs;
 
 
-  public Connection open() {
-    try {
-      this.connection = DriverManager.getConnection(this.getMYSQL_URL(), this.getMYSQL_ID(),
-          this.getMYSQL_PW());
-      return this.connection;
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public PreparedStatement readyPstmt(String query) {
-    try  {
-      this.pstmt = getConnection().prepareStatement(query);
-      return this.pstmt;
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
-    }
-  }
+  public abstract Connection open();
 
   public <T extends AutoCloseable> void close(T t) {
     try {

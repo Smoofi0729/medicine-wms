@@ -1,8 +1,8 @@
 package services;
 
 import config.CLIController;
+import config.ConnectionFactory;
 import config.SystemIn;
-import dao.ConnectionFactory;
 import dao.MemberCRUDImpl;
 import vo.UserMessege;
 
@@ -13,12 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class memberServices {
-    private static Connection connection;
+    private static Connection connection; 
 
-    //회원가입
-    public static void signInMember() throws Exception {
+    public static void signInMember() throws Exception { 
         try {
-            connection = ConnectionFactory.open();
+            connection = ConnectionFactory.getInstance().open();
             UserMessege.SIGN_UP.println();
             UserMessege.ID.println();
             String memberId = SystemIn.SystemInString();
@@ -45,7 +44,7 @@ public class memberServices {
             String warehouseName = null;
             String truckType = null;
             String truckNumber = null;
-            String memberStatus = "활성"; // Default status
+            String memberStatus = "활성";
 
             boolean validInputType = false;
 
@@ -53,7 +52,7 @@ public class memberServices {
                 UserMessege.SIGN_UP_MEMBER_TYPE.println();
                 switch (SystemIn.SystemInInt()) {
                     case 1:
-                        memberType = "일반회원"; // 일반회원
+                        memberType = "일반회원";
                         UserMessege.SIGN_UP_BUSINESS_NAME.println();
                         businessName = SystemIn.SystemInString();
                         UserMessege.SIGN_UP_BUSINESS_NUMER.println();
@@ -61,7 +60,7 @@ public class memberServices {
                         validInputType = true;
                         break;
                     case 2:
-                        memberType = "배송기사"; // 배송기사
+                        memberType = "배송기사";
                         boolean validInput = false;
                         while (!validInput) {
                             UserMessege.SIGN_UP_TRUCK_FUNCTION.println();
@@ -87,7 +86,7 @@ public class memberServices {
                         validInputType = true;
                         break;
                     case 3:
-                        memberType = "관리자"; // 관리자
+                        memberType = "관리자";
                         UserMessege.SIGN_UP_WAREHOUSE_NAME.println();
                         warehouseName = SystemIn.SystemInString();
                         validInputType = true;
@@ -124,7 +123,7 @@ public class memberServices {
                 } else {
                     System.out.println("회원가입 실패.");
                 }
-                CLIController.BasicMenu();
+                new CLIController().BasicMenu(); 
             }
 
         } catch (SQLException e) {
@@ -140,10 +139,9 @@ public class memberServices {
         }
     }
 
-    //로그인
-    public static boolean login() throws SQLException {
+    public static boolean login() throws SQLException { 
         try {
-            connection = ConnectionFactory.open();
+            connection = ConnectionFactory.getInstance().open();
             UserMessege.LOGIN.println();
             UserMessege.ID.println();
             String userid = SystemIn.SystemInString();
@@ -162,7 +160,7 @@ public class memberServices {
                         if ("true".equalsIgnoreCase(approval)) {
                             System.out.print(userid + " ");
                             UserMessege.MENU_WELCOME.println();
-                            CLIController.showMenu(userid);  // Show main menu based on user type
+                            new CLIController().showMenu(userid);
                             return true;
                         } else {
                             System.out.println("승인 대기중입니다. 관리자에게 문의하세요!");
@@ -170,7 +168,7 @@ public class memberServices {
                         }
                     } else {
                         UserMessege.LOGIN_ERROR.println();
-                        login();  // Recursive call for retry
+                        login();
                         return false;
                     }
                 }
@@ -190,10 +188,9 @@ public class memberServices {
         }
     }
 
-    //ID찾기
-    public static String findId() throws SQLException, IOException {
+    public static String findId() throws SQLException, IOException { 
         try {
-            connection = ConnectionFactory.open();
+            connection = ConnectionFactory.getInstance().open();
 
             UserMessege.SIGN_UP_Name.println();
             String name = SystemIn.SystemInString();
@@ -231,10 +228,9 @@ public class memberServices {
         }
     }
 
-    // 비밀번호 재설정
-    public static boolean resetPassword() throws IOException {
+    public static boolean resetPassword() throws IOException { 
         try {
-            connection = ConnectionFactory.open();
+            connection = ConnectionFactory.getInstance().open();
 
             UserMessege.ID.println();
             String memberId = SystemIn.SystemInString();
@@ -253,7 +249,6 @@ public class memberServices {
 
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
-                        // 사용자 확인 완료, 비밀번호 재설정 허용
                         UserMessege.NEW_PASSWORD.println();
                         String newPassword = SystemIn.SystemInString();
 
@@ -290,24 +285,33 @@ public class memberServices {
             }
         }
     }
+    public void logout(String memberId) {
+        
+        System.out.println("회원 " + memberId + " 님이 로그아웃되었습니다.");
 
-    public static void viewMemberInfo(String memberId) throws IOException {
+      
+        try {
+            new CLIController().BasicMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void viewMemberInfo(String memberId) throws IOException { 
         boolean validinput = false;
         MemberCRUDImpl memberCRUD = new MemberCRUDImpl();
 
         System.out.println("1. 회원정보 조회 | 2. 회원정보 수정 | 3. 회원 탈퇴");
-        int select = SystemIn.SystemInInt(); // 사용자 입력을 받는 메서드
+        int select = SystemIn.SystemInInt();
 
         while (!validinput) {
             switch (select) {
                 case 1:
-                    // 회원정보 조회
                     memberCRUD.viewMember(memberId);
                     validinput = true;
                     break;
 
                 case 2:
-                    // 회원정보 수정
                     String editMemberId = memberId;
 
                     System.out.print("새 이름을 입력하세요 (그대로 두려면 Enter): ");
@@ -330,7 +334,6 @@ public class memberServices {
                     break;
 
                 case 3:
-                    // 회원 탈퇴 요청
                     System.out.println("회원을 탈퇴하시겠습니까");
                     System.out.println("1. YES | 2. NO ");
                     int selectNum = SystemIn.SystemInInt();
@@ -344,9 +347,7 @@ public class memberServices {
                     System.out.println("잘못된 입력입니다. 다시 한번 입력해주세요.");
             }
 
-            // 연결 종료
             memberCRUD.closeConnection();
-
         }
     }
 }
