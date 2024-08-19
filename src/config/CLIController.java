@@ -102,7 +102,6 @@ public class CLIController {
                             ReleaseService releaseService = new ReleaseServiceImpl();
                             releaseService.showReleasesForMall();
                     }
-                    
                     break;
                 case 3:
                     System.out.println("재고 조회");
@@ -497,10 +496,10 @@ public class CLIController {
                 System.out.println("지출 카테고리:");
                 ex.setExpenditureCategory(SystemIn.SystemInString());
                 System.out.println("비고:");
-                newExpenditure.setNote(SystemIn.SystemInString());
-                es.insertExpenditure(newExpenditure);
+                ex.setNote(SystemIn.SystemInString());
+                es.insertExpenditure(ex);
                 break;
-            case 4:
+            case 5:
                 System.out.println("지출 수정");
                 Expenditure updateExpenditure = new Expenditure();
                 System.out.println("수정할 지출 ID:");
@@ -521,7 +520,7 @@ public class CLIController {
                 updateExpenditure.setNote(SystemIn.SystemInString());
                 es.updateExpenditure(updateExpenditure);
                 break;
-            case 5:
+            case 6:
                 System.out.println("지출 삭제");
                 Expenditure deleteExpenditure = new Expenditure();
                 System.out.println("삭제할 지출 ID:");
@@ -530,7 +529,7 @@ public class CLIController {
                 deleteExpenditure.setWarehouseId(SystemIn.SystemInString());
                 es.deleteExpenditure(deleteExpenditure);
                 break;
-            case 6:
+            case 7:
                 System.out.println("지출 조회 (ID)");
                 System.out.println("조회할 지출 ID:");
               
