@@ -43,6 +43,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
     }
   }
 
+
   public ResultSet selectReleaseRequest() {
     String query = "SELECT * FROM release_request";
     try {
@@ -81,14 +82,14 @@ public class ReleaseRequestDao extends ReleaseDBIO {
     }
   }
 
-  public void selectRequestIdByStatus(ApprovalStatus status) {
+  public void selectRequestIdByStatus(String status) {
     String query = "SELECT * FROM release_request where release_req_status = ?";
     try {
       open();
       readyPstmt(query);
-      getPstmt().setString(1, status.getDescription());
+      getPstmt().setString(1, status);
       setRs(getPstmt().executeQuery());
-      System.out.println("처리상태가 '" + status.getDescription() + "' 인 출고요청ID 목록");
+      System.out.println("처리상태가 '" + status + "' 인 출고요청ID 목록");
       printMessage(DEVIDER);
       while (getRs().next()) {
          getRs().getString("release_reqId" + "\n");
@@ -102,7 +103,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
     }
   }
 
-  public String checkRequestStatus(String id) {
+  public void checkRequestStatus(String id) {
     String query = "SELECT release_req_status FROM release_request where release_reqId = ?";
     try {
       open();
@@ -110,10 +111,9 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       getPstmt().setString(1, id);
       setRs(getPstmt().executeQuery());
       if (getRs().next()) {
-        return getRs().getString("release_req_status");
+        System.out.println("처리상태 : " + getRs().getString("release_req_status"));
       } else {
         System.out.println("데이터가 존재하지 않습니다.");
-        return null;
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);

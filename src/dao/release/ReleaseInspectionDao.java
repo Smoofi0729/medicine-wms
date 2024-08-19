@@ -1,5 +1,8 @@
 package dao.release;
 
+import static enums.Messeges.DEVIDER;
+import static enums.Messeges.printMessage;
+
 import enums.ApprovalStatus;
 
 import java.sql.ResultSet;
@@ -35,21 +38,18 @@ public class ReleaseInspectionDao extends ReleaseDBIO {
     }
   }
 
-  public void checkInspectionResult(ApprovalStatus status) {
-    String query = "SELECT release_insptId FROM release_inspection where release_insptId = ?";
+  public void checkInspectionResult(String status) {
+    String query = "SELECT release_insptId FROM release_inspection where inspection_result = ?";
 
     try {
       open();
       readyPstmt(query);
-      getPstmt().setString(1, status.getDescription());
+      getPstmt().setString(1, status);
       setRs(getPstmt().executeQuery());
-      while (true) {
-        if (getRs().next()) {
-          System.out.print("처리상태가 " +status.getDescription()+ "인 출고검수ID 목록\n " + getRs().getString("release_insptId") + "\n");
-        } else {
-          System.out.println("데이터가 존재하지 않습니다.");
-          break;
-        }
+      System.out.println("처리상태가 '" +status+ "' 인 출고검수ID 목록");
+      printMessage(DEVIDER);
+      while (getRs().next()) {
+          System.out.println(getRs().getString("release_insptId"));
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -60,7 +60,8 @@ public class ReleaseInspectionDao extends ReleaseDBIO {
     StringBuilder query = new StringBuilder()
         .append("UPDATE release_inspection SET ");
     for (String column : columns.keySet()) {
-      query.append(column).append(" = ?, ");
+      query.append(column)
+          .append(" = ?, ");
     }
     query.setLength(query.length() - 2);
     query.append(" where release_insptId = ?");
@@ -69,8 +70,9 @@ public class ReleaseInspectionDao extends ReleaseDBIO {
       open();
       readyPstmt(query.toString());
       int index = 1;
-      for (String column : columns.values()) {
-        getPstmt().setString(index++, column);
+      for (String value : columns.values()) {
+
+        getPstmt().setString(index++, value);
       }
       getPstmt().setString(index, id);
       getPstmt().executeUpdate();

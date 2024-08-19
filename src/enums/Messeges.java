@@ -22,7 +22,7 @@ public enum Messeges {
   SC_MENU("섹션관리 메뉴"),
   RR_MENU("출고요청관리 메뉴"),
   RI_MENU("출고검수관리 메뉴"),
-  RL_MENU("출고관리 메뉴"),
+  RL_MENU("출고, 배차 및 운송장 관리 메뉴"),
   RL_MAINMENU("출고관리자 메뉴");
 
 

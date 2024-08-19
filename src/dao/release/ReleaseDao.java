@@ -35,13 +35,13 @@ public class ReleaseDao extends ReleaseDBIO {
     }
   }
 
-  public void readDispatchByStatus(ApprovalStatus status) {
+  public void readDispatchByStatus(String status) {
     String query = "SELECT dispatch_id FROM dispatch where dispatch_status = ?";
 
     try {
       open();
       readyPstmt(query);
-      getPstmt().setString(1, status.getDescription());
+      getPstmt().setString(1, status);
       setRs(getPstmt().executeQuery());
       while (true) {
         if (getRs().next()) {
@@ -57,14 +57,15 @@ public class ReleaseDao extends ReleaseDBIO {
   }
 
   public void callMyRelease(String memberId) {
-    String procedure = "{CALL GetMemberReleaseStatus()}";
+    String procedure = "{CALL GetMemberReleaseStatus(?)}";
     try (Connection connection = open();
         CallableStatement cstmt = connection.prepareCall(procedure)) {
+      cstmt.setString(1,memberId);
       try (ResultSet rs = cstmt.executeQuery()) {
-        if (!rs.next()) {
-          System.out.println("예정된 출고가 없습니다.");
-          return;
-        }
+//        if (!rs.next()) {
+//          System.out.println("예정된 출고가 없습니다.");
+//          return;
+//        }
         while (rs.next()) {
           System.out.print("출고요청ID: " + rs.getString("release_reqId") + "\t");
           System.out.print("출고물품번호: " + rs.getString("product_lotno") + "\t");

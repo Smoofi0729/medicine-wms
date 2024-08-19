@@ -1,5 +1,6 @@
 package config;
 
+import enums.ApprovalStatus;
 import enums.TaskAbbreviations;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 public class UtilMethod{
 
   private static int sequence = 0;
+  private static final int MAX_SEQUENCE=9999;
 
   public static String inputStr(String input) {
     System.out.print(input + " : ");
@@ -68,6 +70,7 @@ public class UtilMethod{
 
   public static String autoCreateId(String abbr,LocalDateTime now) {
     now = LocalDateTime.now();
+    sequence = (sequence > MAX_SEQUENCE) ? 1 : sequence;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
     String id = new StringBuilder()
         .append(TaskAbbreviations.fromDescription(abbr))
@@ -97,6 +100,13 @@ public class UtilMethod{
       e.printStackTrace();
       return null;
     }
+  }
+
+  public static ApprovalStatus catchApprovalDescription(String description) {
+    if (description.contains("승인") || description.contains("거절") || description.contains("처리중")) {
+      return ApprovalStatus.fromDescription(description);
+    }
+    throw new IllegalArgumentException("유효한 상태 설명이 아닙니다: " + description);
   }
 }
 
