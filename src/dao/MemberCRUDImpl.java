@@ -14,20 +14,18 @@ public class MemberCRUDImpl {
 
     public MemberCRUDImpl() {
         try {
-            this.connection = ConnectionFactory.open();
+            this.connection = ConnectionFactory.getInstance().open();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // View member information
     public void viewMember(String memberId) {
         String sql = "SELECT * FROM member WHERE member_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, memberId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                // Common member info
                 System.out.println("ID: " + rs.getString("member_id"));
                 System.out.println("Name: " + rs.getString("member_name"));
                 System.out.println("Phone Number: " + rs.getString("member_phoneNumber"));
@@ -38,22 +36,18 @@ public class MemberCRUDImpl {
 
                 String memberType = rs.getString("member_type");
 
-                // Display conditional fields based on member type
                 switch (memberType) {
                     case "일반회원":
-                        // General Member
                         System.out.println("Business Name: " + rs.getString("business_name"));
                         System.out.println("Business Address: " + rs.getString("business_address"));
                         break;
 
                     case "배송기사":
-                        // Delivery Driver
                         System.out.println("Truck Type: " + rs.getString("truck_type"));
                         System.out.println("Truck Number: " + rs.getString("truck_number"));
                         break;
 
                     case "관리자":
-                        // Administrator
                         System.out.println("Warehouse Name: " + rs.getString("warehouse_name"));
                         break;
 
@@ -69,7 +63,6 @@ public class MemberCRUDImpl {
         }
     }
 
-    // Edit member information based on member type, including password
     public void editMember(String memberId, String newName, String newPhoneNumber, String newEmail, String newAddress, String newPassword) {
         String selectSql = "SELECT * FROM member WHERE member_id = ?";
         String memberType = null;
@@ -84,7 +77,6 @@ public class MemberCRUDImpl {
         String currentTruckNumber = null;
         String currentWarehouseName = null;
 
-        // Retrieve the current member information and type
         try (PreparedStatement selectPstmt = connection.prepareStatement(selectSql)) {
             selectPstmt.setString(1, memberId);
             try (ResultSet rs = selectPstmt.executeQuery()) {
@@ -96,7 +88,6 @@ public class MemberCRUDImpl {
                     currentAddress = rs.getString("member_address");
                     currentPassword = rs.getString("member_password");
 
-                    // Retrieve type-specific fields
                     switch (memberType) {
                         case "일반회원":
                             currentBusinessName = rs.getString("business_name");
@@ -122,14 +113,12 @@ public class MemberCRUDImpl {
             return;
         }
 
-        // Use existing values if no input is provided
         newName = newName.isEmpty() ? currentName : newName;
         newPhoneNumber = newPhoneNumber.isEmpty() ? currentPhoneNumber : newPhoneNumber;
         newEmail = newEmail.isEmpty() ? currentEmail : newEmail;
         newAddress = newAddress.isEmpty() ? currentAddress : newAddress;
         newPassword = newPassword.isEmpty() ? currentPassword : newPassword;
 
-        // Build the SQL query based on the member type
         StringBuilder sql = new StringBuilder("UPDATE member SET member_name = ?, member_phoneNumber = ?, member_email = ?, member_address = ?, member_password = ?");
 
         switch (memberType) {
@@ -152,7 +141,6 @@ public class MemberCRUDImpl {
 
         sql.append(" WHERE member_id = ?");
 
-        // Execute the update with the additional fields
         try (PreparedStatement pstmt = connection.prepareStatement(sql.toString())) {
             pstmt.setString(1, newName);
             pstmt.setString(2, newPhoneNumber);
@@ -162,7 +150,6 @@ public class MemberCRUDImpl {
 
             Scanner scanner = new Scanner(System.in);
 
-            // Set additional fields based on member type
             int parameterIndex = 6;
             switch (memberType) {
                 case "일반회원":
@@ -205,7 +192,6 @@ public class MemberCRUDImpl {
         }
     }
 
-    // Request deletion of member information
     public void requestDeletion(String memberId) {
         String sql = "UPDATE member SET member_status = '비활성 요청' WHERE member_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -221,7 +207,6 @@ public class MemberCRUDImpl {
         }
     }
 
-    // Admin approve deletion request
     public void approveDeletion(String memberId) {
         String sql = "UPDATE member SET member_status = '비활성', approval = 'true' WHERE member_id = ? AND approval = 'pending'";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -237,7 +222,21 @@ public class MemberCRUDImpl {
         }
     }
 
-    // Close the connection
+    public void finalizeMemberDeletion(String memberId) throws SQLException {
+        String sql = "UPDATE member SET member_status = '비활성', approval = 'true' WHERE member_id = ? AND member_status = '비활성 요청'";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, memberId);
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("회원의 상태가 '비활성'으로 변경되었습니다.");
+            } else {
+                System.out.println("비활성 요청이 없거나, 삭제에 실패했습니다.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
