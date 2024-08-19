@@ -1,17 +1,15 @@
 package services;
 
-import Connection.ObjectDBIO;
-import DTO.InboundApproval;
-import DTO.InboundInspection;
-import DTO.InboundRequest;
-import Interface.InboundIO;
+import config.ObjectDBIO2;
+import vo.*;
+import interfaces.InboundIO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class InboundDBIO extends ObjectDBIO implements InboundIO {
+public abstract class InboundDBIO extends ObjectDBIO2 implements InboundIO {
 
   @Override
   public ArrayList<InboundApproval> getInboundApproval() {
