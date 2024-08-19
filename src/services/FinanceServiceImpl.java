@@ -9,6 +9,7 @@ import vo.Revenue;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class FinanceServiceImpl implements ExpenditureService, RevenueService {
     private FinanceDao financeDao;
@@ -22,12 +23,14 @@ public class FinanceServiceImpl implements ExpenditureService, RevenueService {
     @Override
     public void printAllRevenue() throws SQLException {
         List<Revenue> revenues = financeDao.selectAllRevenue();
+        System.out.println("매출id \t\t 매출일자 \t\t 매출액 \t 창고id \t매출분류");
         revenues.forEach(revenue -> System.out.println(revenue));
     }
 
     @Override
     public void printAllExpenditure() throws SQLException {
         List<Expenditure> expenditures = financeDao.selectAllExpenditure();
+        System.out.println("지출id \t 지출일자 지출액 창고id \t지출분류");
         expenditures.forEach(expenditure -> System.out.println(expenditure));
     }
 
@@ -65,9 +68,8 @@ public class FinanceServiceImpl implements ExpenditureService, RevenueService {
     }
 
     @Override
-    public Expenditure printOneExpenditure(Expenditure expenditure) throws SQLException {
+    public Optional<Expenditure> printOneExpenditure(Expenditure expenditure) throws SQLException {
         Expenditure ex = financeDao.selectOneExpenditure(expenditure);
-        System.out.println(ex);
-        return ex;
+        return Optional.ofNullable(ex);
     }
 }
