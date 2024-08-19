@@ -4,7 +4,7 @@ import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.selectColumn;
-import static config.enums.Messeges.*;
+import static enums.Messeges.*;
 
 import config.UtilMethod;
 import enums.ApprovalStatus;

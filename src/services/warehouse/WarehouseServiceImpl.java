@@ -4,13 +4,15 @@ import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.selectColumn;
-import static config.enums.Messeges.*;
-import static config.enums.Messeges.printMessage;
+import static enums.Messeges.*;
+import static enums.Messeges.printMessage;
 
 import config.UtilMethod;
+import controller.CLIController;
 import dao.warehouse.WarehouseDao;
 import interfaces.warehouse.SectionService;
 import interfaces.warehouse.WarehouseService;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,30 +22,33 @@ import lombok.Data;
 public class WarehouseServiceImpl implements WarehouseService {
 
   private String table = "warehouse";
+  private CLIController cliController;
   private WarehouseDao warehouseDao;
   private SectionService sectionService;
 
   public WarehouseServiceImpl() {
+    this.cliController = new CLIController();
     this.warehouseDao = new WarehouseDao();
     this.sectionService = new SectionServiceImpl(this);
   }
 
   @Override
-  public void warehouseMenu() {
+  public void warehouseMenu(String memberId) throws SQLException, IOException {
     while (true) {
       printMessage(DEVIDER);
       printMessage(WH_MENU);
       printMessage(DEVIDER);
 
-      System.out.println("1. 창고등록 | 2. 창고조회 | 3. 창고수정 및 삭제 | 4. 섹션관리 | 5. 상위메뉴로");
+      System.out.println("1. 창고등록 | 2. 창고조회 | 3. 창고수정 및 삭제 | 4. 섹션관리 | 5. 관리자메뉴로");
       switch (inputInt("메뉴선택")) {
-        case 1 -> warehouseDao.registerWh();
+        case 1 -> warehouseDao.registerWh(memberId);
         case 2 -> showSelectMenu();
         case 3 -> showUpdateMenu();
         case 4 -> {
-          sectionService.sectionMenu();
-          return;
+          sectionService.sectionMenu(memberId);
+          break;
         }
+        case 5 -> {return;}
         default -> printMessage(WRONG_INPUT);
       }
     }

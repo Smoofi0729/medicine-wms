@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @AllArgsConstructor
 public enum Messeges {
   SELECT_HOW("조회할 방법을 선택하세요"),

@@ -5,7 +5,7 @@ import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.recheckDelete;
 import static config.UtilMethod.selectColumn;
-import static config.enums.Messeges.*;
+import static enums.Messeges.*;
 
 import enums.ApprovalStatus;
 import dao.release.ReleaseRequestDao;
@@ -28,14 +28,13 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
   }
 
   @Override
-  public void releaseRequestMenuForMall() {
+  public void releaseRequestMenuForMall(String memberId) {
     printMessage(RR_MENU);
     System.out.println("1. 출고요청 | 2. 수정 및 삭제 요청 | 3. 요청처리상태 확인");
     switch (inputInt("메뉴선택")) {
-      case 1 -> showSelectMenu();
-      case 2 -> releaseRequestDao.registerReleaseRequest();
-      case 3 -> requestUpdateByMall();
-      case 4 -> System.out.println(
+      case 1 -> releaseRequestDao.registerReleaseRequest(memberId);
+      case 2 -> requestUpdateByMall();
+      case 3 -> System.out.println(
           "처리상태 : " + releaseRequestDao.checkRequestStatus(inputStr("확인할 출고요청ID")));
       default -> System.out.println("입력이 잘못되었습니다.");
     }

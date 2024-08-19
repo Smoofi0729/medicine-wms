@@ -5,12 +5,14 @@ import static config.UtilMethod.inputStr;
 import static config.UtilMethod.isValidId;
 import static config.UtilMethod.recheckDelete;
 import static config.UtilMethod.selectColumn;
-import static config.enums.Messeges.*;
+import static enums.Messeges.*;
 
 import config.UtilMethod;
+import controller.CLIController;
 import enums.ApprovalStatus;
 import dao.release.ReleaseDao;
 import interfaces.release.ReleaseService;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -21,19 +23,21 @@ import lombok.Data;
 public class ReleaseServiceImpl implements ReleaseService {
 
   private ReleaseDao releaseDao;
+  private CLIController cliController;
 
   public ReleaseServiceImpl() {
     this.releaseDao = new ReleaseDao();
+    this.cliController = new CLIController();
   }
 
   @Override
-  public void showReleaseMenuForManager() {
+  public void showReleaseMenuForManager(String memberId) throws SQLException, IOException {
     while (true) {
 
       printMessage(DEVIDER);
       printMessage(RL_MENU);
       printMessage(DEVIDER);
-      System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정");
+      System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정 | 7. 관리자메뉴로");
       switch (UtilMethod.inputInt("메뉴선택")) {
         case 1 -> showReadReleaseMenu();
         case 2 -> showUpdateMenu("releases");
@@ -41,6 +45,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         case 4 -> showUpdateMenu("dispatch");
         case 5 -> showReadWayBillMenu();
         case 6 -> showUpdateMenu("waybill");
+        case 7 -> cliController.adminMainMenu(memberId);
         default -> printMessage(WRONG_INPUT);
       }
     }
