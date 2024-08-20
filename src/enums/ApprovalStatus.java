@@ -1,9 +1,9 @@
 package enums;
 
 public enum ApprovalStatus {
-    ON_PROCESS("처리중"),
-    APPROVED("승인"),
-    REJECTED("거절");
+    승인("승인"),
+  거절("거절"),
+  처리중("처리중");
 
     private final String description;
 

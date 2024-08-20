@@ -1,6 +1,6 @@
 package dao.warehouse;
 
-import dao.MysqlDBIO;
+import config.MysqlDBIO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 

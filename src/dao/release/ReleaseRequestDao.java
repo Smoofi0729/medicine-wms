@@ -3,6 +3,8 @@ package dao.release;
 import static config.UtilMethod.autoCreateId;
 import static config.UtilMethod.inputInt;
 import static config.UtilMethod.inputStr;
+import static enums.Messeges.DEVIDER;
+import static enums.Messeges.printMessage;
 
 import enums.ApprovalStatus;
 import java.sql.Connection;
@@ -40,6 +42,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       throw new RuntimeException(e);
     }
   }
+
 
   public ResultSet selectReleaseRequest() {
     String query = "SELECT * FROM release_request";
@@ -79,20 +82,17 @@ public class ReleaseRequestDao extends ReleaseDBIO {
     }
   }
 
-  public void selectRequestIdByStatus(ApprovalStatus status) {
-    String query = "SELECT * FROM release_request where release_req_status = ?";
+  public void selectRequestIdByStatus(String status) {
+    String query = "SELECT release_reqId FROM release_request where release_req_status = '";
     try {
       open();
       readyPstmt(query);
-      getPstmt().setString(1, status.getDescription());
+      getPstmt().setString(1, status);
       setRs(getPstmt().executeQuery());
-      while (true) {
-        if (getRs().next()) {
-          System.out.print("처리상태가 " +status.getDescription()+ "인 출고요청ID 목록\n" + getRs().getString("release_reqId") + "\n");
-        } else {
-          System.out.println("데이터가 존재하지 않습니다.");
-          break;
-        }
+      System.out.println("처리상태가 '" + status + "' 인 출고요청ID 목록");
+      printMessage(DEVIDER);
+      while (getRs().next()) {
+         getRs().getString("release_reqId" + "\n");
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -103,7 +103,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
     }
   }
 
-  public String checkRequestStatus(String id) {
+  public void checkRequestStatus(String id) {
     String query = "SELECT release_req_status FROM release_request where release_reqId = ?";
     try {
       open();
@@ -111,10 +111,9 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       getPstmt().setString(1, id);
       setRs(getPstmt().executeQuery());
       if (getRs().next()) {
-        return getRs().getString("release_req_status");
+        System.out.println("처리상태 : " + getRs().getString("release_req_status"));
       } else {
         System.out.println("데이터가 존재하지 않습니다.");
-        return null;
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -161,7 +160,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       return true;
     } catch (SQLException e) {
       throw new RuntimeException(e);
-    } finally{
+    } finally {
       close(getPstmt());
       close(getConnection());
     }

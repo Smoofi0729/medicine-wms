@@ -1,4 +1,4 @@
-package dao;
+package config;
 
 import config.ObjectDBIO1;
 import java.sql.Connection;

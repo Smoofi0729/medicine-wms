@@ -31,13 +31,13 @@ public class ReleaseServiceImpl implements ReleaseService {
   }
 
   @Override
-  public void showReleaseMenuForManager(String memberId) throws SQLException, IOException {
+  public void releaseMenuForManager(String memberId) throws SQLException, IOException {
     while (true) {
 
       printMessage(DEVIDER);
       printMessage(RL_MENU);
       printMessage(DEVIDER);
-      System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정 | 7. 관리자메뉴로");
+      System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정 | 7. 출고관리메뉴로");
       switch (UtilMethod.inputInt("메뉴선택")) {
         case 1 -> showReadReleaseMenu();
         case 2 -> showUpdateMenu("releases");
@@ -45,26 +45,30 @@ public class ReleaseServiceImpl implements ReleaseService {
         case 4 -> showUpdateMenu("dispatch");
         case 5 -> showReadWayBillMenu();
         case 6 -> showUpdateMenu("waybill");
-        case 7 -> cliController.adminMainMenu(memberId);
+        case 7 -> {
+          return;
+        }
         default -> printMessage(WRONG_INPUT);
       }
     }
   }
 
   @Override
-  public void showReleasesForMall() {
+  public void showReleasesForMall(String memberId) {
     System.out.println("나의 출고현황");
-    releaseDao.callMyReleaseProc(inputStr("회원ID"));
+    releaseDao.callMyRelease(memberId);
   }
 
   public void showReadReleaseMenu() {
     String table = "releases";
-    System.out.println("1. 전체조회 | 2. 개별조회 | 3. 출고날짜별 조회 | 4. 상위메뉴로");
-    switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
-      case 1 -> readAllData(table);
-      case 2 -> readDataById(table);
-      case 3 -> readReleaseByDate();
-      case 4 -> showReadReleaseMenu();
+    while (true) {
+      System.out.println("1. 전체조회 | 2. 개별조회 | 3. 출고날짜별 조회 | 4. 상위메뉴로");
+      switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
+        case 1 -> readAllData(table);
+        case 2 -> readDataById(table);
+        case 3 -> readReleaseByDate();
+        case 4 -> {return;}
+      }
     }
   }
 
@@ -74,7 +78,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
       case 1 -> readAllData(table);
       case 2 -> readDataById(table);
-      case 3 -> releaseDao.readDispatchByStatus(ApprovalStatus.ON_PROCESS);
+      case 3 -> releaseDao.readDispatchByStatus("처리중");
       case 4 -> showReadReleaseMenu();
     }
   }

@@ -13,7 +13,7 @@ public enum Messeges {
   UPDATE_CANCEL("업데이트 실패"),
   UPDATE_HOW("수정할 내용을 입력해주세요"),
   WHICH_COLUMN("수정할 항목을 선택해주세요 (없으면 0 입력)"),
-  WHICH_ID("수정 및 삭제할 섹션의 id를 입력하세요"),
+  WHICH_ID("수정 및 삭제할 id를 입력하세요"),
   UPDATE_OR_DELETE("1. 수정 | 2. 삭제"),
   WRONG_INPUT("입력이 잘못되었습니다."),
   APPROVAL_STATUS("1. 처리중 | 2. 승인 | 3. 거절"),
@@ -22,7 +22,8 @@ public enum Messeges {
   SC_MENU("섹션관리 메뉴"),
   RR_MENU("출고요청관리 메뉴"),
   RI_MENU("출고검수관리 메뉴"),
-  RL_MENU("출고관리 메뉴");
+  RL_MENU("출고, 배차 및 운송장 관리 메뉴"),
+  RL_MAINMENU("출고관리자 메뉴");
 
 
 
