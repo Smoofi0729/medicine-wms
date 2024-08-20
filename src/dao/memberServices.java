@@ -168,7 +168,7 @@ public class memberServices {
                         }
                     } else {
                         UserMessege.LOGIN_ERROR.println();
-                        login();
+                        //login();
                         return false;
                     }
                 }
@@ -188,7 +188,7 @@ public class memberServices {
         }
     }
 
-    public static String findId() throws SQLException, IOException { 
+    public static String findId() throws Exception {
         try {
             connection = ConnectionFactory.getInstance().open();
 

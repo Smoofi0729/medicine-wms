@@ -53,27 +53,23 @@ public class CLIController {
                 case 1:
                     System.out.println("로그인");
                     memberServices.login();
-                    validinput = true;
                     break;
 
                 // 회원가입
                 case 2:
                     System.out.println("회원가입");
                     memberServices.signInMember();
-                    validinput = true;
                     break;
 
                 // ID 찾기
                 case 3:
                     System.out.println("ID 찾기");
-                    validinput = true;
                     memberServices.findId();
                     break;
 
                 // 비밀번호 찾기
                 case 4:
                     System.out.println("비밀번호 찾기");
-                    validinput = true;
                     memberServices.resetPassword();
                     break;
 
