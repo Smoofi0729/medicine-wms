@@ -5,6 +5,8 @@ import interfaces.StockTakingService;
 import java.sql.Connection;
 import java.sql.SQLException;
 import vo.StockTaking;
+import java.util.List;
+import java.util.Optional;
 
 public class StockTakingServiceImpl implements StockTakingService {
     private StockTakingDao stockTakingDao;
@@ -16,10 +18,10 @@ public class StockTakingServiceImpl implements StockTakingService {
     }
 
     @Override
-    public StockTaking printStockTakingList(StockTaking stockTaking) throws SQLException {
+    public Optional<StockTaking> printStockTakingList(StockTaking stockTaking) throws SQLException {
         st = stockTakingDao.selectStockTaking(stockTaking);
-        System.out.println(st.toString());
-        return st;
+        //System.out.println(st.toString());
+        return Optional.ofNullable(st);
     }
 
     @Override

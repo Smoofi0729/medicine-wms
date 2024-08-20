@@ -14,4 +14,9 @@ public class Expenditure {
     private int expenditureCharge;
     private String expenditureCategory;
     private String note;
+
+    @Override
+    public String toString() {
+        return expenditureId + "\t" + expenditureDate + "\t" + expenditureCharge + "\t" + warehouseId + "\t" + expenditureCategory;
+    }
 }

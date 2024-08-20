@@ -40,7 +40,7 @@ public class FinanceDao {
     }
 
     public Expenditure selectOneExpenditure(Expenditure expenditure) throws SQLException {
-        String query = "SELECT * FROM expenditure WHERE expenditure_id = ?";
+        String query = "SELECT * FROM expenditure WHERE expenditure_id = ?;";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, expenditure.getExpenditureId());
             try (ResultSet rs = stmt.executeQuery()) {

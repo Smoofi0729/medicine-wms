@@ -12,4 +12,9 @@ public class Revenue {
     private int revenueCharge;
     private String revenueCategory;
     private String note;
+
+    @Override
+    public String toString() {
+        return revenueId + "\t" + revenueDate + "\t" + revenueCharge + "\t" + warehouseId + "\t" + revenueCategory;
+    }
 }

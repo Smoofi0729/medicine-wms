@@ -4,10 +4,11 @@ import vo.StockTaking;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface StockTakingService {
 
-    public StockTaking printStockTakingList(StockTaking stockTaking) throws SQLException;
+    Optional<StockTaking> printStockTakingList(StockTaking stockTaking) throws SQLException;
 
     public void UpdateStockTakingList(StockTaking stockTaking) throws SQLException;
 

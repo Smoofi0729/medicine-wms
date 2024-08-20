@@ -21,6 +21,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Optional;
+
 import services.FinanceServiceImpl;
 import services.StockPrintServiceImpl;
 import services.StockTakingServiceImpl;
@@ -343,85 +345,130 @@ public void MemberMainMenu(String memberId) throws IOException {
         StockPrintService sps = new StockPrintServiceImpl(ConnectionFactory.getInstance().open());
         StockTakingService sts = new StockTakingServiceImpl(ConnectionFactory.getInstance().open());
         switch (num) {
-            // 재고 조회
             case 1:
-                System.out.println("전체 재고를 조회합니다.");
-                sps.printAllStock();
+                printAllStock(sps);
                 break;
-            //재고 실사
             case 2:
-                System.out.println("재고 구역별 조회. 구역 아이디를 입력하세요.");
-                System.out.print("->");
-
-                String sectionId = SystemIn.SystemInString();
-                Stock stock = new Stock();
-                stock.setSectionId(sectionId);
-
-                sps.printBySectionStock(stock);
+                printStockBySection(sps);
                 break;
             case 3:
-                System.out.println("재고 실사 조회. 재고 실사 아이디를 입력해주세요.");
-                System.out.print("->");
-                String stockTakingId = SystemIn.SystemInString();
-                StockTaking s = new StockTaking();
-                s.setStockTakingId(stockTakingId);
-                s = sts.printStockTakingList(s);
-
-                System.out.println("1. 재고 실사 수정 2. 재고 실사 삭제");
-                int choice = SystemIn.SystemInInt();
-                switch (choice) {
-                    case 1:
-                        System.out.println("재고 실사 수정. 재고 실사 정보를 수정해주세요.");
-                        // 재고 실사 수정 값 입력받기
-                        System.out.println("전산 상 재고");
-                        s.setComputerizedStock(SystemIn.SystemInInt());
-                        System.out.println("실제 재고");
-                        s.setPhysicalStock(SystemIn.SystemInInt());
-                        System.out.println("차이 수량");
-                        s.setDifferenceQuantity(SystemIn.SystemInInt());
-                        System.out.println("비고");
-                        s.setNote(SystemIn.SystemInString());
-
-                        sts.UpdateStockTakingList(s);
-                        break;
-                    case 2:
-                        System.out.println("재고 실사 삭제. 해당 재고 실사 정보를 삭제할까요? 예, 아니오");
-                        String answer = SystemIn.SystemInString();
-                        if (answer.equals("예"))
-                            sts.deleteStockTakingList(s);
-                        else
-                            System.out.println("삭제를 취소합니다.");
-                        break;
-                    default:
-                        System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
-                }
+                manageStockTaking(sts);
                 break;
             case 4:
-                System.out.println("재고 실사 등록. 재고 실사 정보를 등록해주세요.");
-                StockTaking stockTaking = new StockTaking();
-                System.out.println("재고 실사 아이디");
-                stockTaking.setStockTakingId(SystemIn.SystemInString());
-                System.out.println("창고 아이디");
-                stockTaking.setWarehouseId(SystemIn.SystemInString());
-                System.out.println("제품 아이디");
-                stockTaking.setProductId(SystemIn.SystemInString());
-                System.out.println("제품 이름");
-                stockTaking.setProductName(SystemIn.SystemInString());
-                System.out.println("로트 번호");
-                stockTaking.setLotNo(SystemIn.SystemInString());
-                System.out.println("전산 상 재고");
-                stockTaking.setComputerizedStock(SystemIn.SystemInInt());
-                System.out.println("실제 재고");
-                stockTaking.setPhysicalStock(SystemIn.SystemInInt());
-                System.out.println("차이 수량");
-                stockTaking.setDifferenceQuantity(SystemIn.SystemInInt());
-                System.out.println("재고 실사 날짜 ex) 2024-08-19");
-                stockTaking.setStockTakingDate(SystemIn.SystemInDate());
-                System.out.println("비고");
-                stockTaking.setNote(SystemIn.SystemInString());
-
-                sts.insertStockTakingList(stockTaking);
+                registerStockTaking(sts);
+                break;
+            default:
+                System.out.println("잘못된 입력입니다. 다시한번 입력해주세요");
         }
+    }
+
+    private void printAllStock(StockPrintService sps) throws SQLException {
+        System.out.println("전체 재고를 조회합니다.");
+        sps.printAllStock();
+    }
+
+    private void printStockBySection(StockPrintService sps) throws SQLException, IOException {
+        System.out.println("재고 구역별 조회. 구역 아이디를 입력하세요.");
+        System.out.print("->");
+        String sectionId = SystemIn.SystemInString();
+        Stock stock = new Stock();
+        stock.setSectionId(sectionId);
+        sps.printBySectionStock(stock);
+    }
+
+    private void manageStockTaking(StockTakingService sts) throws SQLException, IOException {
+        System.out.println("재고 실사 조회. 재고 실사 아이디를 입력해주세요.");
+        System.out.print("->");
+        String stockTakingId = SystemIn.SystemInString();
+        StockTaking s = new StockTaking();
+        s.setStockTakingId(stockTakingId);
+        Optional<StockTaking> optionalStockTaking = sts.printStockTakingList(s);
+
+        if (!optionalStockTaking.isPresent()) {
+            System.out.println("재고 실사 아이디가 존재하지 않습니다. 다시 시도해주세요.");
+            return;
+        }
+        s = optionalStockTaking.get();
+        System.out.println("재고 실사 정보"); //한줄로 출력하자
+        System.out.println("재고실사id \t창고id \t제품id \t제품이름 \t로트번호 \t전산상재고 \t실제재고 \t차이수량 \t재고실사날짜 \t비고");
+        System.out.println(s.getStockTakingId() + "\t\t" + s.getWarehouseId() + "\t\t" + s.getProductId() + "\t\t" + s.getProductName() + "\t\t" + s.getLotNo() + "\t\t" + s.getComputerizedStock() + "\t\t" + s.getPhysicalStock() + "\t\t" + s.getDifferenceQuantity() + "\t\t" + s.getStockTakingDate() + "\t\t" + s.getNote());
+
+        System.out.println("1. 재고 실사 수정 2. 재고 실사 삭제");
+        int choice = SystemIn.SystemInInt();
+        switch (choice) {
+            case 1:
+                updateStockTaking(sts, s);
+                break;
+            case 2:
+                deleteStockTaking(sts, s);
+                break;
+            default:
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+        }
+    }
+
+    private void updateStockTaking(StockTakingService sts, StockTaking s) throws SQLException, IOException {
+        System.out.println("재고 실사 수정. 재고 실사 정보를 수정해주세요.");
+        System.out.println("전산 상 재고");
+        System.out.print("->");
+        s.setComputerizedStock(SystemIn.SystemInInt());
+        System.out.println("실제 재고");
+        System.out.print("->");
+        s.setPhysicalStock(SystemIn.SystemInInt());
+        System.out.println("차이 수량");
+        System.out.print("->");
+        s.setDifferenceQuantity(SystemIn.SystemInInt());
+        System.out.println("비고");
+        System.out.print("->");
+        s.setNote(SystemIn.SystemInString());
+        sts.UpdateStockTakingList(s);
+    }
+
+    private void deleteStockTaking(StockTakingService sts, StockTaking s) throws SQLException, IOException {
+        System.out.println("재고 실사 삭제. 해당 재고 실사 정보를 삭제할까요? Y, N");
+        System.out.print("->");
+        String answer = SystemIn.SystemInString();
+        if (answer.equals("Y")) {
+            sts.deleteStockTakingList(s);
+        } else {
+            System.out.println("삭제를 취소합니다.");
+        }
+    }
+
+    private void registerStockTaking(StockTakingService sts) throws SQLException, IOException, ParseException {
+        System.out.println("재고 실사 등록. 재고 실사 정보를 등록해주세요.");
+        StockTaking stockTaking = new StockTaking();
+        System.out.println("재고 실사 아이디");
+        System.out.print("->");
+        stockTaking.setStockTakingId(SystemIn.SystemInString());
+        System.out.println("창고 아이디");
+        System.out.print("->");
+        stockTaking.setWarehouseId(SystemIn.SystemInString());
+        System.out.println("제품 아이디");
+        System.out.print("->");
+        stockTaking.setProductId(SystemIn.SystemInString());
+        System.out.println("제품 이름");
+        System.out.print("->");
+        stockTaking.setProductName(SystemIn.SystemInString());
+        System.out.println("로트 번호");
+        System.out.print("->");
+        stockTaking.setLotNo(SystemIn.SystemInString());
+        System.out.println("전산 상 재고");
+        System.out.print("->");
+        stockTaking.setComputerizedStock(SystemIn.SystemInInt());
+        System.out.println("실제 재고");
+        System.out.print("->");
+        stockTaking.setPhysicalStock(SystemIn.SystemInInt());
+        System.out.println("차이 수량");
+        System.out.print("->");
+        stockTaking.setDifferenceQuantity(SystemIn.SystemInInt());
+        System.out.println("재고 실사 날짜 ex) YYYY-MM-DD");
+        System.out.print("->");
+        stockTaking.setStockTakingDate(SystemIn.SystemInDate());
+        System.out.println("비고");
+        System.out.print("->");
+        stockTaking.setNote(SystemIn.SystemInString());
+        sts.insertStockTakingList(stockTaking);
     }
 
     public void financeMenu() throws SQLException, IOException {
@@ -444,33 +491,50 @@ public void MemberMainMenu(String memberId) throws IOException {
                 System.out.println("단일 지출 내역 조회");
                 Expenditure expenditure = new Expenditure();
                 System.out.println("조회할 지출 ID를 입력하세요.");
+                System.out.print("->");
                 expenditure.setExpenditureId(SystemIn.SystemInString());
-                expenditure = es.printOneExpenditure(expenditure);
+
+                Optional<Expenditure> optionalExpenditure = es.printOneExpenditure(expenditure);
+
+                if (!optionalExpenditure.isPresent()) {
+                    System.out.println("지출 ID가 존재하지 않습니다. 다시 시도해주세요.");
+                    return;
+                }
+
+                expenditure = optionalExpenditure.get();
+                System.out.println("지출id \t창고id \t지출일자 \t지출액 \t지출분류 \t비고");
+                System.out.println(expenditure.getExpenditureId() + "\t" + expenditure.getWarehouseId() + "\t" + expenditure.getExpenditureDate() + "\t" + expenditure.getExpenditureCharge() + "\t" + expenditure.getExpenditureCategory() + "\t" + expenditure.getNote());
 
                 System.out.println("1. 지출 수정 2. 지출 삭제");
+                System.out.print("->");
                 int choice = SystemIn.SystemInInt();
                 switch (choice) {
                     case 1:
                         System.out.println("지출 수정");
-                        System.out.println("수정할 지출 날짜 (yyyy-MM-dd):");
+                        System.out.println("수정할 지출 날짜 ex) YYYY-MM-DD");
+                        System.out.print("->");
                         try {
                             expenditure.setExpenditureDate(SystemIn.SystemInDate());
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
                         System.out.println("수정할 지출 금액:");
+                        System.out.print("->");
                         expenditure.setExpenditureCharge(SystemIn.SystemInInt());
                         System.out.println("수정할 지출 내역:");
+                        System.out.print("->");
                         expenditure.setExpenditureCategory(SystemIn.SystemInString());
                         System.out.println("수정할 비고:");
+                        System.out.print("->");
                         expenditure.setNote(SystemIn.SystemInString());
 
                         es.updateExpenditure(expenditure);
                         break;
                     case 2:
-                        System.out.println("재고 실사 삭제. 해당 재고 실사 정보를 삭제할까요? 예, 아니오");
+                        System.out.println("재고 실사 삭제. 해당 재고 실사 정보를 삭제할까요? Y, N");
+                        System.out.print("->");
                         String answer = SystemIn.SystemInString();
-                        if (answer.equals("예"))
+                        if (answer.equals("Y"))
                             es.deleteExpenditure(expenditure);
                         else
                             System.out.println("삭제를 취소합니다.");
@@ -482,58 +546,29 @@ public void MemberMainMenu(String memberId) throws IOException {
             case 4:
                 System.out.println("지출 등록");
                 Expenditure ex = new Expenditure();
-                System.out.println("지출 ID:");
+                System.out.println("지출 ID");
+                System.out.print("->");
                 ex.setExpenditureId(SystemIn.SystemInString());
-                System.out.println("창고 ID:");
+                System.out.println("창고 ID");
+                System.out.print("->");
                 ex.setWarehouseId(SystemIn.SystemInString());
-                System.out.println("지출 날짜 (yyyy-MM-dd):");
+                System.out.println("지출 날짜 ex)YYYY-MM-DD");
+                System.out.print("->");
                 try {
                     ex.setExpenditureDate(SystemIn.SystemInDate());
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("지출 금액:");
+                System.out.println("지출 금액");
+                System.out.print("->");
                 ex.setExpenditureCharge(SystemIn.SystemInInt());
-                System.out.println("지출 카테고리:");
+                System.out.println("지출 내역");
+                System.out.print("->");
                 ex.setExpenditureCategory(SystemIn.SystemInString());
                 System.out.println("비고:");
+                System.out.print("->");
                 ex.setNote(SystemIn.SystemInString());
                 es.insertExpenditure(ex);
-                break;
-            case 5:
-                System.out.println("지출 수정");
-                Expenditure updateExpenditure = new Expenditure();
-                System.out.println("수정할 지출 ID:");
-                updateExpenditure.setExpenditureId(SystemIn.SystemInString());
-                System.out.println("새 창고 ID:");
-                updateExpenditure.setWarehouseId(SystemIn.SystemInString());
-                System.out.println("새 지출 날짜 (yyyy-MM-dd):");
-                try {
-                    updateExpenditure.setExpenditureDate(SystemIn.SystemInDate());
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("새 지출 금액:");
-                updateExpenditure.setExpenditureCharge(SystemIn.SystemInInt());
-                System.out.println("새 지출 카테고리:");
-                updateExpenditure.setExpenditureCategory(SystemIn.SystemInString());
-                System.out.println("새 비고:");
-                updateExpenditure.setNote(SystemIn.SystemInString());
-                es.updateExpenditure(updateExpenditure);
-                break;
-            case 6:
-                System.out.println("지출 삭제");
-                Expenditure deleteExpenditure = new Expenditure();
-                System.out.println("삭제할 지출 ID:");
-                deleteExpenditure.setExpenditureId(SystemIn.SystemInString());
-                System.out.println("창고 ID:");
-                deleteExpenditure.setWarehouseId(SystemIn.SystemInString());
-                es.deleteExpenditure(deleteExpenditure);
-                break;
-            case 7:
-                System.out.println("지출 조회 (ID)");
-                System.out.println("조회할 지출 ID:");
-              
                 break;
             default:
                 System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
