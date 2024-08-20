@@ -59,11 +59,15 @@ public class WarehouseServiceImpl implements WarehouseService {
       case 1 -> readAllWh();
       case 2 -> readByWhId();
       case 3 -> readByWhLocation();
-      case 4 -> System.out.println("현재가용량 : " + warehouseDao.checkCapacity(inputStr("창고ID")));
+      case 4 -> {
+        readAllWh();
+        System.out.println("현재가용량 : " + warehouseDao.checkCapacity(inputStr("창고ID")));
+      }
     }
   }
 
   public void showUpdateMenu() {
+    readAllWh();
     String id = inputStr(WHICH_ID.getDescription());
     ResultSet rs = warehouseDao.selectFilterBy("warehouse_id", id);
     if (isValidId(warehouseDao.selectFilterBy("warehouse_id", id))) {

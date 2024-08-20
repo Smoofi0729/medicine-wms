@@ -102,11 +102,11 @@ public class UtilMethod{
     }
   }
 
-  public static ApprovalStatus catchApprovalDescription(String description) {
+  public static boolean catchApprovalDescription(String description) {
     if (description.contains("승인") || description.contains("거절") || description.contains("처리중")) {
-      return ApprovalStatus.fromDescription(description);
+      return true;
     }
-    throw new IllegalArgumentException("유효한 상태 설명이 아닙니다: " + description);
+    return false;
   }
 }
 

@@ -83,7 +83,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
   }
 
   public void selectRequestIdByStatus(String status) {
-    String query = "SELECT * FROM release_request where release_req_status = ?";
+    String query = "SELECT release_reqId FROM release_request where release_req_status = '";
     try {
       open();
       readyPstmt(query);

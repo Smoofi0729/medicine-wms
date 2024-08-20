@@ -211,7 +211,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
         result.append(releaseRequestDao.getRs().getString("customer_phone")).append("\t\t");
         result.append(releaseRequestDao.getRs().getString("customer_requirement")).append("\t\t");
         result.append(releaseRequestDao.getRs().getString("release_req_status")).append("\t\t");
-        result.append(releaseRequestDao.getRs().getString("release_req_note")).append("\t\t");
+        result.append(releaseRequestDao.getRs().getString("release_req_note")).append("\n");
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);

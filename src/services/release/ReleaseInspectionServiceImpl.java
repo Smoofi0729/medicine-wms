@@ -136,7 +136,7 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
         result.append(releaseInspectionDao.getRs().getString("member_id")).append("\t\t");
         String inspectionTime = releaseInspectionDao.getRs().getString("inspection_time");
         if (inspectionTime == null) {
-          inspectionTime = "(검수대기중)";
+          inspectionTime = "검수대기중";
         }
         result.append(inspectionTime).append("\t\t");
         result.append(releaseInspectionDao.getRs().getString("inspection_note")).append("\n");

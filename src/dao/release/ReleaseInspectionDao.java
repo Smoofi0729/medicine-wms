@@ -1,5 +1,6 @@
 package dao.release;
 
+import static config.UtilMethod.catchApprovalDescription;
 import static enums.Messeges.DEVIDER;
 import static enums.Messeges.printMessage;
 
@@ -61,7 +62,7 @@ public class ReleaseInspectionDao extends ReleaseDBIO {
         .append("UPDATE release_inspection SET ");
     for (String column : columns.keySet()) {
       query.append(column)
-          .append(" = ?, ");
+          .append(" = ?, "); // ' = ?,'로 수정
     }
     query.setLength(query.length() - 2);
     query.append(" where release_insptId = ?");
@@ -70,12 +71,14 @@ public class ReleaseInspectionDao extends ReleaseDBIO {
       open();
       readyPstmt(query.toString());
       int index = 1;
-      for (String value : columns.values()) {
 
+      for (String value : columns.values()) {
+        System.out.println("Binding value at index " + index + ": " + value);
         getPstmt().setString(index++, value);
       }
+      System.out.println("Binding id at index " + index + ": " + id);
       getPstmt().setString(index, id);
-      getPstmt().executeUpdate();
+      // getPstmt().executeUpdate();
       return true;
     } catch (SQLException e) {
       throw new RuntimeException(e);
