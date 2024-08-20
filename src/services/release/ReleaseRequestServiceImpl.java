@@ -29,14 +29,21 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
   @Override
   public void releaseRequestMenuForMall(String memberId) {
+    while(true){
     printMessage(RR_MENU);
-    System.out.println("1. 출고요청 | 2. 수정 및 삭제 요청 | 3. 요청처리상태 확인");
+    printMessage(DEVIDER);
+    System.out.println("나의 출고요청 목록");
+    printMessage(DEVIDER);
+    printInfo(releaseRequestDao.selectFilterBy("member_id", memberId));
+    printMessage(DEVIDER);
+    System.out.println("1. 출고요청 등록 | 2. 수정 및 삭제 요청 | 3. 요청처리상태 확인 | 4. 회원메뉴로");
     switch (inputInt("메뉴선택")) {
       case 1 -> releaseRequestDao.registerReleaseRequest(memberId);
       case 2 -> requestUpdateByMall();
-      case 3 -> System.out.println(
-          "처리상태 : " + releaseRequestDao.checkRequestStatus(inputStr("확인할 출고요청ID")));
+      case 3 -> releaseRequestDao.checkRequestStatus(inputStr("확인할 출고요청ID"));
+      case 4 ->{return;}
       default -> System.out.println("입력이 잘못되었습니다.");
+    }
     }
   }
 
@@ -53,7 +60,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
           String update = inputStr(UPDATE_HOW.getDescription());
           String updateValue = "수정요청 - " + update;
-          updateRequest.put("release_request_note", updateValue);
+          updateRequest.put("release_req_note", updateValue);
 
           boolean requestSuccess = releaseRequestDao.updateReleaseRequest(updateRequest, id);
           if (requestSuccess) {
@@ -68,7 +75,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
           if (recheckDelete()) {
             HashMap<String, String> deleteRequest = new HashMap<>();
             String deleteValue = "삭제요청";
-            deleteRequest.put("release_request_note", deleteValue);
+            deleteRequest.put("release_req_note", deleteValue);
 
             requestSuccess = releaseRequestDao.updateReleaseRequest(deleteRequest, id);
             if (requestSuccess) {
@@ -101,9 +108,9 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
   public void readReleaseRequestByApprovalStatus() {
     printMessage(APPROVAL_STATUS);
     switch (inputInt(SELECT_HOW.getDescription())) {
-      case 1 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.ON_PROCESS);
-      case 2 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.APPROVED);
-      case 3 -> releaseRequestDao.selectRequestIdByStatus(ApprovalStatus.REJECTED);
+      case 1 -> releaseRequestDao.selectRequestIdByStatus("처리중");
+      case 2 -> releaseRequestDao.selectRequestIdByStatus("승인");
+      case 3 -> releaseRequestDao.selectRequestIdByStatus("거절");
     }
   }
 
@@ -114,10 +121,11 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
       printMessage(DEVIDER);
       printMessage(RR_MENU);
       printMessage(DEVIDER);
-      System.out.println("1. 조회 | 2. 수정 및 삭제");
+      System.out.println("1. 조회 | 2. 수정 및 삭제 | 3. 출고관리메뉴로");
       switch (inputInt("메뉴선택")) {
         case 1 -> showSelectMenu();
         case 2 -> showUpdateMenu();
+        case 3 -> {return;}
         default -> printMessage(WRONG_INPUT);
       }
     }
@@ -136,13 +144,13 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
 
   @Override
   public void readByCustId() {
-    String custName = inputStr("주문자이름");
-    printInfo(releaseRequestDao.selectFilterBy("customer_name", custName));
+    String custId = inputStr("주문회원ID");
+    printInfo(releaseRequestDao.selectFilterBy("member_id", custId));
   }
 
   public void readRequestByMall() {
     String confirm = inputStr("확인할 요청 : 수정요청 or 삭제요청");
-    ResultSet rs = releaseRequestDao.selectFilterByLike("release_request_note", confirm +"%");
+    ResultSet rs = releaseRequestDao.selectFilterByLike("release_req_note", confirm +"%");
     printInfo(rs);
     releaseRequestDao.close(rs);
   }
@@ -190,7 +198,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
   public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append(
-        "출고요청ID\t\t\t요청날짜\t\t\t주문회원ID\t\t\t출고물품ID\t\t\t주문수량\t\t\t수취인이름\t\t\t수취인주소\t\t\t수취인연락처\t\t\t주문요청사항\t\t\t요청처리상태\t\t\t비고\t\t\t\n");
+        "출고요청ID\t\t\t\t\t\t\t요청날짜\t\t\t\t\t\t\t\t주문회원ID\t\t출고물품ID\t\t주문수량\t\t수취인이름\t\t수취인주소\t\t수취인연락처\t\t주문요청사항\t\t요청처리상태\t\t비고\t\t\t\t\t\n");
     try {
       while (rs.next()) {
         result.append(releaseRequestDao.getRs().getString("release_reqId")).append("\t\t");
@@ -203,7 +211,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
         result.append(releaseRequestDao.getRs().getString("customer_phone")).append("\t\t");
         result.append(releaseRequestDao.getRs().getString("customer_requirement")).append("\t\t");
         result.append(releaseRequestDao.getRs().getString("release_req_status")).append("\t\t");
-        result.append(releaseRequestDao.getRs().getString("release_req_note")).append("\t\t");
+        result.append(releaseRequestDao.getRs().getString("release_req_note")).append("\n");
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);

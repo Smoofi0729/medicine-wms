@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public interface ReleaseService {
 
-  void showReleaseMenuForManager(String memberId) throws SQLException, IOException;
+  void releaseMenuForManager(String memberId) throws SQLException, IOException;
 
-  void showReleasesForMall();
+  void showReleasesForMall(String memberId);
 
   void readAllData(String table);
 
