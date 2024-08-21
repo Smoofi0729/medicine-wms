@@ -81,7 +81,7 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
     printMessage(APPROVAL_STATUS);
     switch (inputInt(SELECT_HOW.getDescription())) {
       case 1 ->
-          releaseInspectionDao.checkInspectionResult(String.valueOf(ApprovalStatus.처리중));
+          releaseInspectionDao.checkInspectionResult(String.valueOf(ApprovalStatus.승인대기중));
       case 2 ->
           releaseInspectionDao.checkInspectionResult(String.valueOf(ApprovalStatus.승인));
       case 3 ->
@@ -127,7 +127,7 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
   public void printInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
     result.append(
-        "출고검수ID\t\t\t\t\t\t\t출고요청ID\t\t\t\t\t\t\t검수결과\t\t검수자\t\t검수시간\t\t\t비고\n");
+        "출고검수ID\t\t\t\t\t\t\t출고요청ID\t\t\t\t\t\t\t검수결과\t\t\t검수자\t\t\t\t검수시간\t\t\t비고\n");
     try {
       while (rs.next()) {
         result.append(releaseInspectionDao.getRs().getString("release_insptId")).append("\t\t");

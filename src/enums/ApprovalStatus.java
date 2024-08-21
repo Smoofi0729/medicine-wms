@@ -1,9 +1,9 @@
 package enums;
 
 public enum ApprovalStatus {
-    승인("승인"),
+  승인("승인"),
   거절("거절"),
-  처리중("처리중");
+  승인대기중("승인대기중");
 
     private final String description;
 
