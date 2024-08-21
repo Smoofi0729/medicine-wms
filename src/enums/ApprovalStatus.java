@@ -2,7 +2,7 @@ package enums;
 
 public enum ApprovalStatus {
   승인("승인"),
-  거절("거절"),
+  거부("거부"),
   승인대기중("승인대기중");
 
     private final String description;
@@ -24,6 +24,6 @@ public enum ApprovalStatus {
           return type;
         }
       }
-      throw new IllegalArgumentException("해당 설명에 해당하는 ApprovalStatus가 없습니다: " + description);
+      throw new IllegalArgumentException("해당하는 데이터가 없습니다: " + description);
     }
   }

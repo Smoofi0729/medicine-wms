@@ -99,7 +99,7 @@ public void MemberMainMenu(String memberId) throws IOException {
 //                                inboundService.serviceInboundForMember(memberId);
                     break;
                 case 2:
-                    System.out.println("나의 출고 메뉴 : 1.출고요청 | 2.출고예정현황");
+                    System.out.println("나의 출고 메뉴 : 1.출고요청 등록 | 2. 출고진행상황 조회");
                     switch (inputInt("메뉴선택")) {
                         case 1 :
                             ReleaseRequestService releaseRequestService = new ReleaseRequestServiceImpl();

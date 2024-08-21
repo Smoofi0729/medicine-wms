@@ -85,7 +85,7 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
       case 2 ->
           releaseInspectionDao.checkInspectionResult(String.valueOf(ApprovalStatus.승인));
       case 3 ->
-          releaseInspectionDao.checkInspectionResult(String.valueOf(ApprovalStatus.거절));
+          releaseInspectionDao.checkInspectionResult(String.valueOf(ApprovalStatus.거부));
     }
   }
 

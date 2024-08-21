@@ -80,8 +80,8 @@ public class ReleaseInspectionDao extends ReleaseDBIO {
       return true;
     } catch (SQLException e) {
       e.getMessage();
-      return false;
-//      throw new RuntimeException(e);
+//      return false;
+      throw new RuntimeException(e);
 
     } finally {
       close(getPstmt());
