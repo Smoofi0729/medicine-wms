@@ -78,6 +78,7 @@ public class SectionDao extends WarehouseDBIO {
     } catch (SQLException e) {
       System.out.println(e.getMessage());
       return false;
+//      throw new RuntimeException(e);
     } finally {
       close(getPstmt());
     }

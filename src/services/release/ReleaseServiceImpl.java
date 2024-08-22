@@ -185,7 +185,7 @@ public class ReleaseServiceImpl implements ReleaseService {
 
   public void printReleaseInfo(ResultSet rs) {
     StringBuilder result = new StringBuilder();
-    result.append("출고ID\t\t\t출고요청ID\t\t\t배차ID\t\t\t출고날짜\t\t\t출고담당자\t\t\t비고\n");
+    result.append("출고ID\t\t\t\t\t\t\t출고요청ID\t\t\t\t\t\t\t배차ID\t\t\t\t\t\t\t출고날짜\t\t\t출고담당자\t\t\t비고\n");
     try {
       while (rs.next()) {
         result.append(releaseDao.getRs().getString("release_id")).append("\t\t");
