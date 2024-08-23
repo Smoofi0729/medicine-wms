@@ -37,12 +37,12 @@ public class ReleaseServiceImpl implements ReleaseService {
       printMessage(DEVIDER);
       printMessage(RL_MENU);
       printMessage(DEVIDER);
-      System.out.println("1. 출고조회 | 2. 출고수정 및 삭제 | 3. 배차조회 | 4. 배차수정 | 5. 운송장조회 | 6. 운송장수정 | 7. 출고관리메뉴로");
+      System.out.println("1. 배차조회 | 2. 배차수정 | 3. 출고조회 | 4. 출고수정 및 삭제 | 5. 운송장조회 | 6. 운송장수정 | 7. 출고관리메뉴로");
       switch (UtilMethod.inputInt("메뉴선택")) {
-        case 1 -> showReadReleaseMenu();
-        case 2 -> showUpdateMenu("releases");
-        case 3 -> showReadDispatchMenu();
-        case 4 -> showUpdateMenu("dispatch");
+        case 1 -> showReadDispatchMenu();
+        case 2 -> showUpdateMenu("dispatch");
+        case 3 -> showReadReleaseMenu();
+        case 4 -> showUpdateMenu("releases");
         case 5 -> showReadWayBillMenu();
         case 6 -> showUpdateMenu("waybill");
         case 7 -> {
@@ -59,6 +59,17 @@ public class ReleaseServiceImpl implements ReleaseService {
     releaseDao.callMyRelease(memberId);
   }
 
+  public void showReadDispatchMenu() {
+    String table = "dispatch";
+    System.out.println("1. 전체조회 | 2. 개별조회 | 3. 등록대기중배차 조회 | 4. 상위메뉴로");
+    switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
+      case 1 -> readAllData(table);
+      case 2 -> readDataById(table);
+      case 3 -> releaseDao.readDispatchByStatus("처리중");
+      case 4 -> showReadReleaseMenu();
+    }
+  }
+
   public void showReadReleaseMenu() {
     String table = "releases";
     while (true) {
@@ -69,17 +80,6 @@ public class ReleaseServiceImpl implements ReleaseService {
         case 3 -> readReleaseByDate();
         case 4 -> {return;}
       }
-    }
-  }
-
-  public void showReadDispatchMenu() {
-    String table = "dispatch";
-    System.out.println("1. 전체조회 | 2. 개별조회 | 3. 등록대기중배차 조회 | 4. 상위메뉴로");
-    switch (UtilMethod.inputInt(SELECT_HOW.getDescription())) {
-      case 1 -> readAllData(table);
-      case 2 -> readDataById(table);
-      case 3 -> releaseDao.readDispatchByStatus("처리중");
-      case 4 -> showReadReleaseMenu();
     }
   }
 
@@ -121,15 +121,15 @@ public class ReleaseServiceImpl implements ReleaseService {
   }
 
   @Override
-  public void readReleaseByDate() {
-    String releaseDate = inputStr("출고날짜");
-    printReleaseInfo(releaseDao.selectFilterBy("releases", "releases_date", releaseDate));
-  }
-
-  @Override
   public void readWayBillByDate() {
     String departureDate = inputStr("배송출발날짜");
     printWayBillInfo(releaseDao.selectFilterBy("waybill", "departure_date", departureDate));
+  }
+
+  @Override
+  public void readReleaseByDate() {
+    String releaseDate = inputStr("출고날짜");
+    printReleaseInfo(releaseDao.selectFilterBy("releases", "releases_date", releaseDate));
   }
 
   public void showUpdateMenu(String table) {
@@ -221,6 +221,10 @@ public class ReleaseServiceImpl implements ReleaseService {
         result.append(releaseDao.getRs().getString("dispatch_status")).append("\t\t");
         result.append(releaseDao.getRs().getString("member_id")).append("\t\t");
         result.append(releaseDao.getRs().getString("dispatch_regiDate")).append("\t\t");
+        String dispatch_regiDate = releaseDao.getRs().getString("dispatch_regiDate");
+        if (dispatch_regiDate == null) {
+          dispatch_regiDate = "";
+        }
         result.append(releaseDao.getRs().getString("dispatch_note")).append("\t\t");
       }
     } catch (SQLException e) {
@@ -248,6 +252,10 @@ public class ReleaseServiceImpl implements ReleaseService {
         result.append(releaseDao.getRs().getString("releases_id")).append("\t\t");
         result.append(releaseDao.getRs().getString("delivery_status")).append("\t\t");
         result.append(releaseDao.getRs().getString("departure_date")).append("\t\t");
+        String departure_date = releaseDao.getRs().getString("departure_date");
+        if (departure_date == null) {
+          departure_date = "";
+        }
         result.append(releaseDao.getRs().getString("waybill_note")).append("\t\t");
       }
     } catch (SQLException e) {
