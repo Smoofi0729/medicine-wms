@@ -134,6 +134,7 @@ public class SectionServiceImpl implements SectionService {
           } else {
             printMessage(UPDATE_CANCEL);
           }
+          break;
         case 2:
           if (UtilMethod.recheckDelete()) {
             sectionDao.deleteSection(id);

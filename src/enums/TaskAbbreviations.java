@@ -27,6 +27,6 @@ public enum TaskAbbreviations {
       }
     }
     // description에 해당하는 ENUM값을 찾지 못한경우
-    throw new IllegalArgumentException("해당 설명에 해당하는 Abbreviation이 없습니다: " + description);
+    throw new IllegalArgumentException("해당하는 데이터가 없습니다: " + description);
   }
 }

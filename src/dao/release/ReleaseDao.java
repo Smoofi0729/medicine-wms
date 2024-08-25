@@ -94,7 +94,7 @@ public class ReleaseDao extends ReleaseDBIO {
       query.append(column).append(" = ?, ");
     }
     query.setLength(query.length() - 2);
-    query.append(" where release_id = ?");
+    query.append(" where " + table + "_id = ?");
 
     try {
       open();

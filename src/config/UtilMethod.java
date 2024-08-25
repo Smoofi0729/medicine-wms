@@ -83,7 +83,7 @@ public class UtilMethod{
 
   public static HashMap<Integer, String> selectColumn(String table) {
     HashMap<Integer, String> columns = new HashMap<>();
-    int number = 0;
+    int number = 1;
     String query = "select column_name from information_schema.columns where table_name = '" + table + "' order by ordinal_position";
     try (Connection connection = new MysqlDBIO().open();
         PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -91,8 +91,7 @@ public class UtilMethod{
       try (ResultSet rs = pstmt.executeQuery()) {
 
         while (rs.next()) {
-          ++number;
-          columns.put(number, rs.getString("column_name"));
+          columns.put(number++, rs.getString("column_name"));
         }
         return columns;
       }
@@ -100,13 +99,6 @@ public class UtilMethod{
       e.printStackTrace();
       return null;
     }
-  }
-
-  public static boolean catchApprovalDescription(String description) {
-    if (description.contains("승인") || description.contains("거절") || description.contains("처리중")) {
-      return true;
-    }
-    return false;
   }
 }
 

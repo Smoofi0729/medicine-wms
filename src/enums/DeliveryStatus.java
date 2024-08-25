@@ -24,6 +24,6 @@ public enum DeliveryStatus {
           return type;
         }
       }
-      throw new IllegalArgumentException("해당 설명에 해당하는 DeliveryStatus가 없습니다: " + description);
+      throw new IllegalArgumentException("해당하는 데이터가 없습니다: " + description);
     }
   }

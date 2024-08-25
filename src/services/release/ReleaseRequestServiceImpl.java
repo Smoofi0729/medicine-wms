@@ -36,7 +36,7 @@ public class ReleaseRequestServiceImpl implements ReleaseRequestService {
     printMessage(DEVIDER);
     printInfo(releaseRequestDao.selectFilterBy("member_id", memberId));
     printMessage(DEVIDER);
-    System.out.println("1. 출고요청 등록 | 2. 수정 및 삭제 요청 | 3. 요청처리상태 확인 | 4. 회원메뉴로");
+    System.out.println("1. 출고요청 등록 | 2. 수정 및 삭제 요청 | 3. 요청승인여부 확인 | 4. 회원메뉴로");
     switch (inputInt("메뉴선택")) {
       case 1 -> releaseRequestDao.registerReleaseRequest(memberId);
       case 2 -> requestUpdateByMall();

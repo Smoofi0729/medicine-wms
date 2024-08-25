@@ -33,7 +33,7 @@ public class ReleaseRequestDao extends ReleaseDBIO {
       pstmt.setString(7, inputStr("수취인주소(*)"));
       pstmt.setString(8, inputStr("수취인연락처(*)"));
       pstmt.setString(9, inputStr("주문요청사항"));
-      pstmt.setString(10, "처리중");
+      pstmt.setString(10, "승인대기중");
       pstmt.setString(11, inputStr("비고"));
       pstmt.executeUpdate();
       System.out.println("등록성공");

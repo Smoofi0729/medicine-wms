@@ -76,7 +76,7 @@ public class WarehouseServiceImpl implements WarehouseService {
       switch (inputInt("메뉴선택")) {
         case 1:
 
-          HashMap<String, String> updates = new HashMap<>();
+        HashMap<String, String> updates = new HashMap<>();
           System.out.println(WHICH_COLUMN.getDescription());
           System.out.println("1.창고ID 2.창고이름	3.창고주소 4.창고연락처 5.창고수용량 6.현재가용량 7.등록날짜 8.관리자ID	9.비고");
           while (true) {
@@ -95,7 +95,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             printMessage(UPDATE_CANCEL);
           }
           break;
-        case 2:
+          case 2:
           if (UtilMethod.recheckDelete()) {
             warehouseDao.deleteWh(id);
             printMessage(DELETE_SUCCESS);

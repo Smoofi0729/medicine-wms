@@ -68,15 +68,17 @@ public class SectionDao extends WarehouseDBIO {
     try {
       open();
       readyPstmt(query.toString());
-      getPstmt().setString(1, id);
-      int index = 2;
+      int index = 1;
       for (String column : columns.values()) {
         getPstmt().setString(index++, column);
       }
+      getPstmt().setString(index, id);
       getPstmt().executeUpdate();
       return true;
     } catch (SQLException e) {
+      System.out.println(e.getMessage());
       return false;
+//      throw new RuntimeException(e);
     } finally {
       close(getPstmt());
     }

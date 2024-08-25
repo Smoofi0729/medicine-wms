@@ -16,7 +16,7 @@ public class ConnectionFactory {
 
     private static Connection connection = null;
 
-    private static String url = "jdbc:mysql://127.0.0.1:3306/wms5";
+    private static String url = "jdbc:mysql://localhost:3306/wms?serverTimeZone=Asia/Seoul";
     private static String id = "root";
     private static String pwd = "1234";
 
