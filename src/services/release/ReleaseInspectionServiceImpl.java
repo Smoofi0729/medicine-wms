@@ -103,12 +103,12 @@ public class ReleaseInspectionServiceImpl implements ReleaseInspectionService {
       while (true) {
         int choice = inputInt("수정할 항목");
         String column = selectColumn(table).get(choice);
-//        if (column == null) {
-//          System.out.println("잘못 선택하셨습니다. 다시 입력하세요");
-//          continue;
-//        }
+
         if (choice == 0) {
           break;
+        } else if (column == null) {
+          System.out.println("잘못 선택하셨습니다. 다시 입력하세요");
+          continue;
         }
 
         String update = inputStr(UPDATE_HOW.getDescription());

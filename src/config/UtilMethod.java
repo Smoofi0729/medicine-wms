@@ -74,7 +74,9 @@ public class UtilMethod{
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
     String id = new StringBuilder()
         .append(TaskAbbreviations.fromDescription(abbr))
+        .append("-")
         .append(now.format(formatter))
+        .append("-")
         .append(String.format("%04d",sequence++))
         .toString();
 

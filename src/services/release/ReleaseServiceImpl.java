@@ -159,9 +159,14 @@ public class ReleaseServiceImpl implements ReleaseService {
           while (true) {
             int choice = inputInt("수정할 항목");
             String column = selectColumn(table).get(choice);
-            if (choice==0) {
+
+            if (choice == 0) {
               break;
+            } else if (column == null) {
+              System.out.println("잘못 선택하셨습니다. 다시 입력하세요");
+              continue;
             }
+
             String update = inputStr(UPDATE_HOW.getDescription());
             updates.put(column, update);
           }
@@ -191,7 +196,11 @@ public class ReleaseServiceImpl implements ReleaseService {
         result.append(releaseDao.getRs().getString("release_id")).append("\t\t");
         result.append(releaseDao.getRs().getString("release_reqId")).append("\t\t");
         result.append(releaseDao.getRs().getString("dispatch_id")).append("\t\t");
-        result.append(releaseDao.getRs().getString("release_date")).append("\t\t");
+        String release_date = releaseDao.getRs().getString("release_date");
+        if (release_date.equals("null")) {
+          release_date = "";
+        }
+        result.append(release_date).append("\t\t");
         result.append(releaseDao.getRs().getString("member_id")).append("\t\t");
         result.append(releaseDao.getRs().getString("release_note")).append("\t\t");
       }
@@ -225,6 +234,7 @@ public class ReleaseServiceImpl implements ReleaseService {
         if (dispatch_regiDate == null) {
           dispatch_regiDate = "";
         }
+        result.append(dispatch_regiDate).append("\t\t");
         result.append(releaseDao.getRs().getString("dispatch_note")).append("\t\t");
       }
     } catch (SQLException e) {
@@ -253,9 +263,10 @@ public class ReleaseServiceImpl implements ReleaseService {
         result.append(releaseDao.getRs().getString("delivery_status")).append("\t\t");
         result.append(releaseDao.getRs().getString("departure_date")).append("\t\t");
         String departure_date = releaseDao.getRs().getString("departure_date");
-        if (departure_date == null) {
+        if (departure_date.equals("null")) {
           departure_date = "";
         }
+        result.append(departure_date).append("\t\t");
         result.append(releaseDao.getRs().getString("waybill_note")).append("\t\t");
       }
     } catch (SQLException e) {
